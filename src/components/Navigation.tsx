@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 const navItems = [
   { href: "/", label: "🏠 首页", description: "我是谁" },
+  { href: "/blog", label: "📝 博客", description: "思想舞台" },
   { href: "/projects", label: "💼 项目作品", description: "做过的项目" },
   { href: "/growth", label: "📈 成长记录", description: "海星图 & 笔记" },
   { href: "/skills", label: "🛠️ 技能展示", description: "会什么技能" },
