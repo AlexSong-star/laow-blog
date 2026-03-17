@@ -85,9 +85,37 @@ export async function getPostContentHtml(slug: string): Promise<string> {
     return '';
   }
 
+  let content = post.contentHtml;
+
+  // 处理 B站视频
+  content = content.replace(
+    /\[video\]\(https?:\/\/www\.bilibili\.com\/video\/BV[\w]+\)/g,
+    (match) => {
+      const bvid = match.match(/BV[\w]+/)?.[0] || '';
+      return `<div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="//player.bilibili.com/player.html?bvid=${bvid}&page=1" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>`;
+    }
+  );
+
+  // 处理 YouTube 视频
+  content = content.replace(
+    /\[video\]\(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w-]+\)/g,
+    (match) => {
+      const vid = match.match(/v=([\w-]+)/)?.[1] || '';
+      return `<div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="https://www.youtube.com/embed/${vid}" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>`;
+    }
+  );
+
+  // 处理直接视频链接
+  content = content.replace(
+    /\[video\]\((https?:\/\/.*\.(mp4|webm|ogg))\)/g,
+    (match, url) => {
+      return `<video controls style="width: 100%; max-width: 800px; margin: 1rem 0;"><source src="${url}" /></video>`;
+    }
+  );
+
   const processedContent = await remark()
     .use(html)
-    .process(post.contentHtml);
+    .process(content);
   
   return processedContent.toString();
 }

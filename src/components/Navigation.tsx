@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import DarkModeToggle from "./DarkModeToggle";
 
 const navItems = [
   { href: "/", label: "🏠 首页", description: "我是谁" },
@@ -48,8 +49,10 @@ export default function Navigation() {
             })}
           </div>
 
-          {/* Mobile Menu Button */}
-          <MobileMenu pathname={pathname} />
+          <div className="flex items-center gap-2">
+            <DarkModeToggle />
+            <MobileMenu pathname={pathname} />
+          </div>
         </div>
       </div>
     </nav>

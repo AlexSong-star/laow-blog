@@ -5,11 +5,61 @@
   --primary: #10b981;
   --primary-dark: #059669;
   --primary-light: #34d399;
+}
+
+/* 暗黑模式（默认） */
+:root, .dark {
   --bg-dark: #0f172a;
   --bg-card: #1e293b;
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
 }
 
 body {
+  @apply min-h-screen transition-colors duration-300;
+}
+
+.dark body {
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  min-height: 100vh;
+  color: #fff;
+}
+
+/* 亮色模式 */
+:root:not(.dark) {
+  --bg-dark: #f8fafc;
+  --bg-card: #ffffff;
+}
+
+:not(.dark) body {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  color: #1e293b;
+}
+
+:not(.dark) .bg-slate-900 {
+  background-color: #f8fafc;
+}
+
+:not(.dark) .bg-slate-800 {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+}
+
+:not(.dark) .bg-slate-800\/50 {
+  background-color: #f1f5f9;
+}
+
+:not(.dark) .text-white {
+  color: #1e293b;
+}
+
+:not(.dark) .text-gray-300, :not(.dark) .text-gray-400 {
+  color: #64748b;
+}
+
+:not(.dark) .border-emerald-500\/20 {
+  border-color: #10b981;
+}
+
+:not(.dark) .hover\:bg-emerald-500\/20:hover {
+  background-color: #ecfdf5;
 }
