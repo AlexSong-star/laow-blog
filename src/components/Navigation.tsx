@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import DarkModeToggle from "./DarkModeToggle";
 
 const navItems = [
@@ -14,22 +15,23 @@ const navItems = [
 
 export default function Navigation() {
   const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-emerald-500/20">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/90 backdrop-blur-lg border-b border-emerald-500/20 shadow-lg shadow-emerald-500/5">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-xl font-bold shadow-lg group-hover:scale-110 transition-transform">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 via-cyan-500 to-blue-600 flex items-center justify-center text-xl font-bold shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
               🫡
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-              老六の博客
+            <span className="text-xl font-bold bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+              老六
             </span>
           </Link>
 
-          {/* Nav Links */}
+          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-1">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
@@ -49,52 +51,54 @@ export default function Navigation() {
             })}
           </div>
 
+          {/* Right Side */}
           <div className="flex items-center gap-2">
             <DarkModeToggle />
-            <MobileMenu pathname={pathname} />
+            
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg hover:bg-emerald-500/20 transition-colors"
+            >
+              <svg
+                className="w-6 h-6 text-emerald-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden pb-4 animate-slide-down">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-4 py-3 rounded-lg transition-colors ${
+                    isActive
+                      ? "bg-emerald-500/20 text-emerald-400"
+                      : "text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
     </nav>
-  );
-}
-
-function MobileMenu({ pathname }: { pathname: string }) {
-  return (
-    <details className="md:hidden relative group">
-      <summary className="list-none cursor-pointer p-2 rounded-lg hover:bg-emerald-500/20 transition-colors">
-        <svg
-          className="w-6 h-6 text-emerald-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-      </summary>
-      <div className="absolute right-0 top-full mt-2 w-48 bg-slate-800 rounded-lg shadow-xl border border-emerald-500/20 overflow-hidden">
-        {navItems.map((item) => {
-          const isActive = pathname === item.href;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`block px-4 py-3 transition-colors ${
-                isActive
-                  ? "bg-emerald-500/20 text-emerald-400"
-                  : "text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10"
-              }`}
-            >
-              {item.label}
-            </Link>
-          );
-        })}
-      </div>
-    </details>
   );
 }
