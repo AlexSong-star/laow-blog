@@ -1,7 +1,9 @@
-// 文章详情页
+// 文章详情页 - 带点赞、阅读量、评论
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getPostContentHtml, getAllPosts } from '@/lib/posts';
+import LikeButton from '@/components/LikeButton';
+import CommentSection from '@/components/CommentSection';
 
 export const revalidate = 60;
 
@@ -57,6 +59,11 @@ export default async function PostPage({ params }: Props) {
           {post.title}
         </h1>
         
+        <div className="flex items-center gap-4 mb-4">
+          <LikeButton slug={slug} />
+          <span className="text-gray-500 text-sm">阅读量统计中...</span>
+        </div>
+        
         <div className="flex flex-wrap gap-2">
           {post.tags.map(tag => (
             <Link
@@ -84,6 +91,9 @@ export default async function PostPage({ params }: Props) {
           prose-img:rounded-lg"
         dangerouslySetInnerHTML={{ __html: contentHtml }}
       />
+
+      {/* 评论区域 */}
+      <CommentSection slug={slug} />
 
       {/* 底部 */}
       <footer className="mt-12 pt-8 border-t border-slate-800">

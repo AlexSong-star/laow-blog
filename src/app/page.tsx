@@ -1,19 +1,16 @@
-import Link from "next/link";
+import Link from 'next/link';
+import { getAllPosts } from '@/lib/posts';
 
-const skills = [
-  "🤖 AI 助手", "💻 全栈开发", "🔧 自动化", "📱 移动端",
-  "☁️ 云服务", "🧠 机器学习", "📊 数据处理", "🔒 安全",
-  "🌐 多语言", "⚡ 性能优化"
-];
-
-const features = [
-  { icon: "⚡", title: "快速响应", desc: "7×24小时待命" },
-  { icon: "🧠", title: "智能理解", desc: "深度理解需求" },
-  { icon: "🎯", title: "精准执行", desc: "落地能力强" },
-  { icon: "📚", title: "持续学习", desc: "不断进化升级" },
-];
+export const revalidate = 60;
 
 export default function Home() {
+  const posts = getAllPosts().slice(0, 3); // 只显示最新3篇
+  const skills = [
+    "🤖 AI 助手", "💻 全栈开发", "🔧 自动化", "📱 移动端",
+    "☁️ 云服务", "🧠 机器学习", "📊 数据处理", "🔒 安全",
+    "🌐 多语言", "⚡ 性能优化"
+  ];
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
       {/* Hero Section */}
@@ -45,39 +42,61 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="flex justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-4">
           <Link
-            href="/projects"
+            href="/blog"
             className="px-8 py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-lg font-semibold text-white hover:from-emerald-400 hover:to-cyan-400 transition-all transform hover:scale-105 shadow-lg"
           >
-            看看我做过啥 →
+            📝 阅读博客 →
           </Link>
           <Link
-            href="/about"
+            href="/projects"
             className="px-8 py-3 bg-slate-800 border border-emerald-500/30 rounded-lg font-semibold text-emerald-400 hover:bg-emerald-500/20 transition-all"
           >
-            了解强哥 👤
+            💼 项目作品
           </Link>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
-        {features.map((feature, i) => (
-          <div
-            key={i}
-            className="p-6 bg-slate-800/50 border border-emerald-500/20 rounded-xl hover:border-emerald-400/50 hover:bg-slate-800 transition-all group"
-          >
-            <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">
-              {feature.icon}
-            </div>
-            <h3 className="text-lg font-semibold text-emerald-400 mb-2">
-              {feature.title}
-            </h3>
-            <p className="text-gray-400 text-sm">{feature.desc}</p>
+      {/* 最新文章 */}
+      {posts.length > 0 && (
+        <section className="mt-16">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-emerald-400">
+              📝 最新文章
+            </h2>
+            <Link
+              href="/blog"
+              className="text-emerald-400 hover:text-emerald-300 transition-colors"
+            >
+              查看全部 →
+            </Link>
           </div>
-        ))}
-      </section>
+          
+          <div className="grid gap-6">
+            {posts.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/posts/${post.slug}`}
+                className="block p-6 bg-slate-800/50 border border-emerald-500/20 rounded-xl hover:border-emerald-400/50 hover:bg-slate-800 transition-all group"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-xs text-gray-500">{`${post.date}`}</span>
+                  <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-xs rounded">
+                    {post.category}
+                  </span>
+                </div>
+                <h3 className="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors mb-2">
+                  {post.title}
+                </h3>
+                <p className="text-gray-400 text-sm">
+                  {post.excerpt}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Tech Stack */}
       <section className="mt-16 text-center">
