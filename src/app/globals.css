@@ -1,4 +1,6 @@
 /* 复刻 thefoodbrandguys.com 样式 - 完整版 */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
 :root {
   --bg-light: #f8f9fa;
   --bg-white: #ffffff;
@@ -29,9 +31,9 @@ body {
 .header .container { display: flex; justify-content: space-between; align-items: center; }
 .logo { font-size: 1.2rem; font-weight: 600; color: var(--text-primary); text-decoration: none; }
 
-/* 社交图标 */
-.social-icons { display: flex; gap: var(--space-md); font-size: 1.2rem; }
-.social-icons a { color: var(--text-muted); text-decoration: none; }
+/* 社交图标 - Font Awesome */
+.social-icons { display: flex; gap: var(--space-md); font-size: 1.1rem; }
+.social-icons a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
 .social-icons a:hover { color: var(--text-primary); }
 
 /* Hero */
@@ -71,10 +73,24 @@ body {
   margin: var(--space-lg) 0;
 }
 
-/* 文章内容 */
-.article-content { max-width: 800px; margin: 0 auto; padding: var(--space-xl) 0; }
-.article-content h1 { font-size: 2.2rem; font-weight: 700; margin: 0 0 var(--space-lg); line-height: 1.3; }
-.article-content p { font-size: 1.05rem; line-height: 1.75; margin-bottom: var(--space-md); color: var(--text-secondary); }
+/* 文章内容 - 居中对齐，和参考网站一致 */
+.article-content { 
+  max-width: 800px; 
+  margin: 0 auto; 
+  padding: var(--space-xl) 0; 
+}
+.article-content h1 { 
+  font-size: 2.2rem; 
+  font-weight: 700; 
+  margin: 0 0 var(--space-lg); 
+  line-height: 1.3; 
+}
+.article-content p { 
+  font-size: 1.05rem; 
+  line-height: 1.75; 
+  margin-bottom: var(--space-md); 
+  color: var(--text-secondary); 
+}
 .article-content strong { color: var(--text-primary); }
 .article-content a { color: var(--text-primary); text-decoration: underline; }
 .article-content ul, .article-content ol { margin: 0 0 var(--space-md); padding-left: var(--space-lg); }
@@ -82,12 +98,21 @@ body {
 .article-content h2 { font-size: 1.4rem; font-weight: 600; margin: var(--space-xl) 0 var(--space-md); }
 
 /* 按钮 */
-.btn { display: inline-block; padding: var(--space-sm) var(--space-lg); border: 1px solid var(--text-primary); background: transparent; color: var(--text-primary); text-decoration: none; font-size: 0.9rem; }
+.btn { 
+  display: inline-block; 
+  padding: var(--space-sm) var(--space-lg); 
+  border: 1px solid var(--text-primary); 
+  background: transparent; 
+  color: var(--text-primary); 
+  text-decoration: none; 
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
 .btn:hover { background: var(--text-primary); color: #fff; }
 
 /* 分享链接 */
-.share-links { margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--border-color); }
-.share-links a { color: var(--text-muted); text-decoration: none; margin-right: var(--space-md); font-size: 1.1rem; }
+.share-links { margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--border-color); text-align: right; }
+.share-links a { color: var(--text-muted); text-decoration: none; margin-left: var(--space-md); font-size: 1.1rem; }
 .share-links a:hover { color: var(--text-primary); }
 
 /* Footer */

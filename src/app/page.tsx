@@ -25,8 +25,8 @@ export default function Home() {
         <div className="container">
           <Link href="/" className="logo">老六博客</Link>
           <div className="social-icons">
-            <a href="#" title="LinkedIn"></a>
-            <a href="#" title="Instagram"></a>
+            <a href="#" title="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
+            <a href="#" title="Instagram"><i className="fab fa-instagram"></i></a>
           </div>
         </div>
       </header>
@@ -80,8 +80,8 @@ export default function Home() {
             </div>
             <div className="footer-section">
               <h3>Connect</h3>
-              <a href="#">LinkedIn</a>
-              <a href="#">Instagram</a>
+              <a href="#"><i className="fab fa-linkedin-in"></i> LinkedIn</a>
+              <a href="#"><i className="fab fa-instagram"></i> Instagram</a>
             </div>
           </div>
           <div className="footer-bottom">

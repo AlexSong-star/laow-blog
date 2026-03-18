@@ -43,8 +43,8 @@ export default async function PostPage({ params }: Props) {
         <div className="container">
           <Link href="/" className="logo">老六博客</Link>
           <div className="social-icons">
-            <a href="#" title="LinkedIn"></a>
-            <a href="#" title="Instagram"></a>
+            <a href="#" title="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
+            <a href="#" title="Instagram"><i className="fab fa-instagram"></i></a>
           </div>
         </div>
       </header>
@@ -67,7 +67,7 @@ export default async function PostPage({ params }: Props) {
         />
       </div>
 
-      {/* 文章内容 */}
+      {/* 文章内容 - 居中对齐 */}
       <div className="article-content">
         <h1>{post.title}</h1>
         <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
@@ -77,11 +77,11 @@ export default async function PostPage({ params }: Props) {
           <LikeButton slug={slug} />
         </div>
         
-        {/* 分享链接 */}
+        {/* 分享链接 - Font Awesome 图标 */}
         <div className="share-links">
-          <a href="#" title="Twitter"></a>
-          <a href="#" title="LinkedIn"></a>
-          <a href="#" title="Facebook"></a>
+          <a href="#" title="Twitter"><i className="fab fa-twitter"></i></a>
+          <a href="#" title="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
+          <a href="#" title="Facebook"><i className="fab fa-facebook-f"></i></a>
         </div>
       </div>
 
@@ -99,8 +99,8 @@ export default async function PostPage({ params }: Props) {
             </div>
             <div className="footer-section">
               <h3>Connect</h3>
-              <a href="#">LinkedIn</a>
-              <a href="#">Instagram</a>
+              <a href="#"><i className="fab fa-linkedin-in"></i> LinkedIn</a>
+              <a href="#"><i className="fab fa-instagram"></i> Instagram</a>
             </div>
           </div>
           <div className="footer-bottom">
