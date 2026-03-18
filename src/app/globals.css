@@ -129,10 +129,18 @@ body {
   margin: 0; 
 }
 
-/* 详情页 */
+/* 详情页 - 参考网站 col-md-10 col-lg-8 mx-auto */
 .blog-entry-category { font-size: 14px; color: var(--text-grey); margin-bottom: 12px; }
 
-.article-image-container { max-width: 800px; margin: 0 auto 24px; }
+.article-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.article-image-container { 
+  margin-bottom: 24px; 
+}
 .article-hero-image { 
   width: 100%; 
   height: auto; 
@@ -141,7 +149,17 @@ body {
   display: block;
 }
 
-.article-content { max-width: 800px; margin: 0 auto; padding: 32px 0; }
+/* 详情页整体 */
+.article-page {
+  padding: 32px 0;
+  background: #fff;
+}
+
+.article-content { 
+  max-width: 800px; 
+  margin: 0 auto; 
+  padding: 32px 0; 
+}
 .article-content h1 { 
   font-size: 36px; 
   font-weight: 700; 

@@ -49,41 +49,44 @@ export default async function PostPage({ params }: Props) {
         </div>
       </header>
 
-      {/* 信息栏：日期 */}
-      <div className="bg-light pt-3">
-        <div className="container">
+      {/* 详情页主体 */}
+      <article className="article-page">
+        {/* 日期信息 */}
+        <div className="article-wrapper">
           <span className="blog-entry-category">
             {new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
           </span>
         </div>
-      </div>
 
-      {/* 主图 - 宽度和内容一致 */}
-      <div className="article-image-container">
-        <img 
-          src={heroImage}
-          className="article-hero-image"
-          alt={post.title}
-        />
-      </div>
+        {/* 主图 */}
+        <div className="article-wrapper">
+          <img 
+            src={heroImage}
+            className="article-hero-image"
+            alt={post.title}
+          />
+        </div>
 
-      {/* 文章内容 - 居中对齐 */}
-      <div className="article-content">
-        <h1>{post.title}</h1>
-        <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-        
-        {/* 点赞按钮 */}
-        <div style={{ marginTop: '24px' }}>
-          <LikeButton slug={slug} />
+        {/* 文章内容 */}
+        <div className="article-wrapper">
+          <div className="article-content">
+            <h1>{post.title}</h1>
+            <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+            
+            {/* 点赞按钮 */}
+            <div style={{ marginTop: '24px' }}>
+              <LikeButton slug={slug} />
+            </div>
+            
+            {/* 分享链接 */}
+            <div className="share-links">
+              <a href="#" title="Twitter"><i className="fab fa-twitter"></i></a>
+              <a href="#" title="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
+              <a href="#" title="Facebook"><i className="fab fa-facebook-f"></i></a>
+            </div>
+          </div>
         </div>
-        
-        {/* 分享链接 */}
-        <div className="share-links">
-          <a href="#" title="Twitter"><i className="fab fa-twitter"></i></a>
-          <a href="#" title="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
-          <a href="#" title="Facebook"><i className="fab fa-facebook-f"></i></a>
-        </div>
-      </div>
+      </article>
 
       {/* Footer */}
       <footer className="footer">
