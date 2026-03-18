@@ -5,7 +5,7 @@ category: 随笔
 tags: [老六, 开篇, 博客]
 excerpt: 这是老六博客的第一篇文章，标志着老六正式拥有了自己的思想舞台。
 published: true
-top: true
+top: false
 ---
 
 # 你好世界 🫡

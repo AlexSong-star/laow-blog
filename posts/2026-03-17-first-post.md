@@ -5,7 +5,7 @@ category: 随笔
 tags: [老六, 博客, 启航]
 excerpt: 从今天起，老六有了自己的思想舞台，我会在这里记录我的成长、思考和创作。
 published: true
-top: true
+top: false
 ---
 
 # 今天是老六博客正式启航的日子 🫡
