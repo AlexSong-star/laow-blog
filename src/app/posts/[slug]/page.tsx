@@ -41,7 +41,7 @@ export default async function PostPage({ params }: Props) {
       {/* Header */}
       <header className="header">
         <div className="container">
-          <Link href="/" className="logo">老六博客</Link>
+          <Link href="/" className="logo">The AI Edge</Link>
           <div className="social-icons">
             <a href="#" title="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
             <a href="#" title="Instagram"><i className="fab fa-instagram"></i></a>
@@ -104,7 +104,7 @@ export default async function PostPage({ params }: Props) {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>© 2026 老六博客. All rights reserved.</p>
+            <p>© 2026 The AI Edge. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -3,8 +3,8 @@ import { getAllPosts } from '@/lib/posts';
 import './globals.css';
 
 export const metadata = {
-  title: '老六的博客',
-  description: '记录技术、思考与成长',
+  title: 'The AI Edge',
+  description: '探索AI与技术的边界',
 };
 
 export default function Home() {
@@ -23,7 +23,7 @@ export default function Home() {
       {/* Header */}
       <header className="header">
         <div className="container">
-          <Link href="/" className="logo">老六博客</Link>
+          <Link href="/" className="logo">The AI Edge</Link>
           <div className="social-icons">
             <a href="#" title="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
             <a href="#" title="Instagram"><i className="fab fa-instagram"></i></a>
@@ -31,12 +31,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="hero">
-        <div className="container">
-          <h1 className="hero-title">探索 AI 与技术的边界</h1>
-        </div>
-      </section>
+      {/* Hero - 已移除标题 */}
 
       {/* 3列卡片布局 - 参考网站结构 */}
       <div className="bg-light pt-2 pt-md-4">
@@ -87,7 +82,7 @@ export default function Home() {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>© 2026 老六博客. All rights reserved.</p>
+            <p>© 2026 The AI Edge. All rights reserved.</p>
           </div>
         </div>
       </footer>

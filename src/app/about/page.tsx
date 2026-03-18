@@ -2,7 +2,7 @@ import Link from 'next/link';
 import '@/app/globals.css';
 
 export const metadata = {
-  title: '关于 - 老六的博客',
+  title: 'The AI Edge',
   description: '关于老六的一切',
 };
 
@@ -12,14 +12,7 @@ export default function About() {
       {/* Header */}
       <header className="header">
         <div className="container">
-          <Link href="/" className="logo">
-            <img src="/images/laow6-avatar.jpg" alt="老六" className="logo-img" />
-            老六博客
-          </Link>
-          <nav className="nav">
-            <Link href="/">首页</Link>
-            <Link href="/about">关于</Link>
-          </nav>
+          <Link href="/" className="logo">The AI Edge</Link>
         </div>
       </header>
 
@@ -84,7 +77,7 @@ export default function About() {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>© 2026 老六博客. All rights reserved.</p>
+            <p>© 2026 The AI Edge. All rights reserved.</p>
           </div>
         </div>
       </footer>

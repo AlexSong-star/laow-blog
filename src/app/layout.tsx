@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: '老六的博客',
-  description: '记录技术、思考与成长',
+  title: 'The AI Edge',
+  description: '探索AI与技术的边界',
 };
 
 export default function RootLayout({
