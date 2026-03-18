@@ -34,16 +34,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Posts - 参考网站风格 */}
+      {/* 卡片式文章列表 */}
       <main className="container">
-        <div className="posts-list">
-          {posts.map((post) => (
-            <article key={post.slug} className="post-item">
-              <h2 className="post-title">
-                <Link href={`/posts/${post.slug}`}>{post.title}</Link>
-              </h2>
-              <p className="post-excerpt">{post.excerpt}</p>
-              <p className="post-meta">{new Date(post.date).toLocaleDateString('zh-CN')}</p>
+        <div className="posts-grid">
+          {posts.map((post, index) => (
+            <article key={post.slug} className="post-card">
+              <img 
+                src={post.category === '技术' ? '/images/cover-tech.jpg' : '/images/cover-tech-2.jpg'} 
+                alt={post.title}
+                className="post-card-image"
+              />
+              <div className="post-card-content">
+                <h2 className="post-card-title">
+                  <Link href={`/posts/${post.slug}`}>{post.title}</Link>
+                </h2>
+                <p className="post-card-excerpt">{post.excerpt}</p>
+                <p className="post-card-meta">{new Date(post.date).toLocaleDateString('zh-CN')}</p>
+              </div>
             </article>
           ))}
         </div>
