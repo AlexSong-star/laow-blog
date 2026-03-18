@@ -10,13 +10,13 @@ export const metadata = {
 export default function Home() {
   const posts = getAllPosts();
 
-  // 为每篇文章分配图片
-  const images = [
-    '/images/cover-tech.jpg',
-    '/images/cover-tech-2.jpg',
-    '/images/cover-tech.jpg',
-    '/images/cover-tech-2.jpg',
-  ];
+  // 每篇文章对应的图片
+  const articleImages: Record<string, string> = {
+    '2026-03-17-ai-workflow': '/images/articles/ai-workflow.jpg',
+    '2026-03-17-how-i-work': '/images/articles/how-i-work.jpg',
+    '2026-03-17-first-post': '/images/articles/blog-launch.jpg',
+    '2026-03-17-hello-world': '/images/articles/hello-world.jpg',
+  };
 
   return (
     <div>
@@ -34,17 +34,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3列卡片布局 - 复刻参考网站 */}
+      {/* 3列卡片布局 */}
       <div className="bg-light pt-2 pt-md-4">
         <div className="container">
           <div className="posts-grid">
-            {posts.map((post, index) => (
+            {posts.map((post) => (
               <div key={post.slug} className="blog-item">
                 <div className="card h-100">
                   <Link href={`/posts/${post.slug}`}>
                     <div className="position-relative">
                       <img 
-                        src={images[index % images.length]} 
+                        src={articleImages[post.slug] || '/images/articles/blog-launch.jpg'} 
                         className="blog-image" 
                         alt={post.title}
                       />
