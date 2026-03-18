@@ -1,9 +1,8 @@
-// 文章详情页 - 带点赞、阅读量、评论
+// 文章详情页 - 复刻参考网站样式
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getPostContentHtml, getAllPosts } from '@/lib/posts';
 import LikeButton from '@/components/LikeButton';
-import CommentSection from '@/components/CommentSection';
 
 export const revalidate = 60;
 
@@ -29,87 +28,109 @@ export default async function PostPage({ params }: Props) {
   const contentHtml = await getPostContentHtml(slug);
 
   return (
-    <article className="max-w-4xl mx-auto px-4 py-12">
-      {/* 返回链接 */}
-      <Link 
-        href="/blog" 
-        className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 mb-8 transition-colors"
-      >
-        ← 返回文章列表
-      </Link>
-
-      {/* 文章头部 */}
-      <header className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="text-sm text-gray-500">{String(post.date)}</span>
-          <Link 
-            href={`/category/${post.category}`}
-            className="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-sm rounded hover:bg-emerald-500/30 transition-colors"
-          >
-            {post.category}
-          </Link>
-          {post.top && (
-            <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-sm rounded">
-              置顶
-            </span>
-          )}
-        </div>
-        
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
-          {post.title}
-        </h1>
-        
-        <div className="flex items-center gap-4 mb-4">
-          <LikeButton slug={slug} />
-          <span className="text-gray-500 text-sm">阅读量统计中...</span>
-        </div>
-        
-        <div className="flex flex-wrap gap-2">
-          {post.tags.map(tag => (
-            <Link
-              key={tag}
-              href={`/tag/${tag}`}
-              className="text-sm text-gray-500 hover:text-emerald-400 transition-colors"
-            >
-              #{tag}
-            </Link>
-          ))}
+    <>
+      {/* Header */}
+      <header className="header">
+        <div className="container">
+          <Link href="/" className="logo">老六博客</Link>
         </div>
       </header>
 
+      {/* 信息栏：日期 */}
+      <div className="bg-light pt-3">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-10 col-lg-8 mx-auto">
+              <div className="row">
+                <div className="col-xl-6">
+                  <span className="blog-entry-category text-grey mb-1 d-inline-block">
+                    {new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 主图 */}
+      <div className="bg-light">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-10 col-lg-8 mx-auto">
+              <img 
+                src="/images/articles/blog-launch.jpg" 
+                className="w-100 d-sm-none" 
+                style={{ objectPosition: '50% 50%' }} 
+                alt={post.title}
+              />
+              <img 
+                src="/images/articles/blog-launch.jpg" 
+                className="w-100 d-none d-sm-block" 
+                style={{ objectPosition: '50% 50%' }} 
+                alt={post.title}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* 文章内容 */}
-      <div 
-        className="prose prose-invert prose-emerald max-w-none
-          prose-headings:text-white
-          prose-p:text-gray-300
-          prose-a:text-emerald-400
-          prose-strong:text-white
-          prose-code:text-emerald-300 prose-code:bg-slate-800 prose-code:px-1 prose-code:rounded
-          prose-pre:bg-slate-800 prose-pre:border prose-pre:border-slate-700
-          prose-blockquote:border-l-emerald-500 prose-blockquote:text-gray-400
-          prose-li:text-gray-300
-          prose-img:rounded-lg"
-        dangerouslySetInnerHTML={{ __html: contentHtml }}
-      />
+      <div className="block-text bg-light">
+        <div className="container py-4">
+          <div className="row">
+            <div className="col-md-10 col-lg-8 mx-auto article-content">
+              <h1>{post.title}</h1>
+              <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+              
+              {/* 点赞 */}
+              <div className="pt-3">
+                <LikeButton slug={slug} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      {/* 评论区域 */}
-      <CommentSection slug={slug} />
+      {/* 分享链接 */}
+      <div className="bg-light">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-10 col-lg-8 mx-auto">
+              <hr />
+              <p className="share-links text-right">
+                <a href="#" className="mr-1">Twitter</a>
+                <a href="#" className="mr-1">LinkedIn</a>
+                <a href="#" className="mr-1">Facebook</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      {/* 底部 */}
-      <footer className="mt-12 pt-8 border-t border-slate-800">
-        <div className="flex justify-between items-center">
-          <Link 
-            href="/blog" 
-            className="text-emerald-400 hover:text-emerald-300 transition-colors"
-          >
-            ← 返回文章列表
-          </Link>
-          
-          <p className="text-sm text-gray-500">
-            老六出品 🫡
-          </p>
+      {/* Footer */}
+      <footer className="footer">
+        <div className="container">
+          <div className="footer-content">
+            <div className="footer-section">
+              <h3>Email</h3>
+              <a href="mailto:hello@laow6.com">hello@laow6.com</a>
+            </div>
+            <div className="footer-section">
+              <h3>Newsletter</h3>
+              <Link href="/subscribe">Stay in touch</Link>
+            </div>
+            <div className="footer-section">
+              <h3>Connect</h3>
+              <a href="#">LinkedIn</a>
+              <a href="#">Instagram</a>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p>© 2026 老六博客. All rights reserved.</p>
+          </div>
         </div>
       </footer>
-    </article>
+    </>
   );
 }
