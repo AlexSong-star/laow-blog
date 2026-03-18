@@ -54,7 +54,7 @@ export default async function PostPage({ params }: Props) {
         {/* 日期信息 */}
         <div className="article-wrapper">
           <span className="blog-entry-category">
-            {new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+            Posted by 宋强, {new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
           </span>
         </div>
 

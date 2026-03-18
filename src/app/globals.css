@@ -13,7 +13,7 @@
 * { box-sizing: border-box; }
 
 body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Ringside Compressed A', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background: var(--bg-light);
   color: var(--text-primary);
   margin: 0;
@@ -41,7 +41,7 @@ body {
   align-items: center; 
 }
 .logo { 
-  font-size: 22px; 
+  font-size: 28px; 
   font-weight: 700; 
   color: var(--text-primary); 
   text-decoration: none; 
