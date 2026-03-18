@@ -31,7 +31,7 @@ body {
 .header .container { display: flex; justify-content: space-between; align-items: center; }
 .logo { font-size: 1.2rem; font-weight: 600; color: var(--text-primary); text-decoration: none; }
 
-/* 社交图标 - Font Awesome */
+/* 社交图标 */
 .social-icons { display: flex; gap: var(--space-md); font-size: 1.1rem; }
 .social-icons a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
 .social-icons a:hover { color: var(--text-primary); }
@@ -40,7 +40,7 @@ body {
 .hero { padding: var(--space-xl) 0; background: #fff; }
 .hero-title { font-size: 1.8rem; font-weight: 700; margin: 0; }
 
-/* 3列网格卡片布局 */
+/* 3列网格卡片布局 - 和参考网站一致 */
 .posts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -50,30 +50,64 @@ body {
 @media (max-width: 992px) { .posts-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 576px) { .posts-grid { grid-template-columns: 1fr; } }
 
-/* 卡片 */
-.card { background: #fff; border: 1px solid var(--border-color); overflow: hidden; height: 100%; }
-.card a { text-decoration: none; color: inherit; display: block; }
-/* 卡片图片 - 16:9 比例 */
-.blog-image { width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
-.card-body { padding: var(--space-md); }
-.card-title { font-size: 1.1rem; font-weight: 600; margin: 0 0 var(--space-sm); color: var(--text-primary); line-height: 1.4; }
-.card-text { font-size: 0.9rem; color: var(--text-secondary); margin: 0 0 var(--space-md); line-height: 1.5; }
+/* 卡片 - 参考网站样式，更高更竖向 */
+.card { 
+  background: #fff; 
+  border: 1px solid var(--border-color); 
+  overflow: hidden; 
+  height: 100%; 
+  display: flex;
+  flex-direction: column;
+}
+.card a { text-decoration: none; color: inherit; display: flex; flex-direction: column; flex: 1; }
+
+/* 卡片图片 - 3:2 比例，更高 */
+.blog-image { 
+  width: 100%; 
+  height: auto; 
+  aspect-ratio: 3/2; 
+  object-fit: cover; 
+}
+
+/* 卡片内容 */
+.card-body { 
+  padding: var(--space-md); 
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.card-title { 
+  font-size: 1.1rem; 
+  font-weight: 600; 
+  margin: 0 0 var(--space-sm); 
+  color: var(--text-primary); 
+  line-height: 1.4; 
+}
+.card-text { 
+  font-size: 0.9rem; 
+  color: var(--text-secondary); 
+  margin: 0 0 var(--space-md); 
+  line-height: 1.5; 
+  flex: 1;
+}
 .blog-length { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
 
 /* 文章详情页 */
 .blog-entry-category { font-size: 0.85rem; color: var(--text-grey); margin-bottom: var(--space-sm); display: inline-block; }
-.w-100 { width: 100%; }
 
-/* 详情页主图 - 16:9 */
+/* 详情页主图 - 宽度和内容一致 */
+.article-image-container {
+  max-width: 800px;
+  margin: 0 auto var(--space-lg);
+}
 .article-hero-image {
   width: 100%;
   height: auto;
   aspect-ratio: 16/9;
   object-fit: cover;
-  margin: var(--space-lg) 0;
 }
 
-/* 文章内容 - 居中对齐，和参考网站一致 */
+/* 文章内容 - 居中，宽度一致 */
 .article-content { 
   max-width: 800px; 
   margin: 0 auto; 
@@ -106,7 +140,6 @@ body {
   color: var(--text-primary); 
   text-decoration: none; 
   font-size: 0.9rem;
-  transition: all 0.2s;
 }
 .btn:hover { background: var(--text-primary); color: #fff; }
 

@@ -58,8 +58,8 @@ export default async function PostPage({ params }: Props) {
         </div>
       </div>
 
-      {/* 主图 - 16:9 */}
-      <div className="container">
+      {/* 主图 - 宽度和内容一致 */}
+      <div className="article-image-container">
         <img 
           src={heroImage}
           className="article-hero-image"
@@ -77,7 +77,7 @@ export default async function PostPage({ params }: Props) {
           <LikeButton slug={slug} />
         </div>
         
-        {/* 分享链接 - Font Awesome 图标 */}
+        {/* 分享链接 */}
         <div className="share-links">
           <a href="#" title="Twitter"><i className="fab fa-twitter"></i></a>
           <a href="#" title="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
