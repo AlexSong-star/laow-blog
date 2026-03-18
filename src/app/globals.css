@@ -31,7 +31,7 @@ body {
 
 /* Header - 增加30px高度 */
 .header { 
-  padding: 49px 0;  /* 原24px + 15px = 39px */
+  padding: 40px 0;  /* 原24px + 15px = 39px */
   background: #fff; 
   border-bottom: 1px solid var(--border-color); 
 }
