@@ -17,6 +17,14 @@ export async function generateStaticParams() {
   }));
 }
 
+// 每篇文章对应的图片
+const articleImages: Record<string, string> = {
+  '2026-03-17-ai-workflow': '/images/articles/ai-workflow.jpg',
+  '2026-03-17-how-i-work': '/images/articles/how-i-work.jpg',
+  '2026-03-17-first-post': '/images/articles/blog-launch.jpg',
+  '2026-03-17-hello-world': '/images/articles/hello-world.jpg',
+};
+
 export default async function PostPage({ params }: Props) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
@@ -26,6 +34,7 @@ export default async function PostPage({ params }: Props) {
   }
 
   const contentHtml = await getPostContentHtml(slug);
+  const heroImage = articleImages[slug] || '/images/articles/blog-launch.jpg';
 
   return (
     <>
@@ -33,78 +42,46 @@ export default async function PostPage({ params }: Props) {
       <header className="header">
         <div className="container">
           <Link href="/" className="logo">老六博客</Link>
+          <div className="social-icons">
+            <a href="#" title="LinkedIn"></a>
+            <a href="#" title="Instagram"></a>
+          </div>
         </div>
       </header>
 
       {/* 信息栏：日期 */}
       <div className="bg-light pt-3">
         <div className="container">
-          <div className="row">
-            <div className="col-md-10 col-lg-8 mx-auto">
-              <div className="row">
-                <div className="col-xl-6">
-                  <span className="blog-entry-category text-grey mb-1 d-inline-block">
-                    {new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <span className="blog-entry-category">
+            {new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+          </span>
         </div>
       </div>
 
-      {/* 主图 */}
-      <div className="bg-light">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-10 col-lg-8 mx-auto">
-              <img 
-                src="/images/articles/blog-launch.jpg" 
-                className="w-100 d-sm-none" 
-                style={{ objectPosition: '50% 50%' }} 
-                alt={post.title}
-              />
-              <img 
-                src="/images/articles/blog-launch.jpg" 
-                className="w-100 d-none d-sm-block" 
-                style={{ objectPosition: '50% 50%' }} 
-                alt={post.title}
-              />
-            </div>
-          </div>
-        </div>
+      {/* 主图 - 16:9 */}
+      <div className="container">
+        <img 
+          src={heroImage}
+          className="article-hero-image"
+          alt={post.title}
+        />
       </div>
 
       {/* 文章内容 */}
-      <div className="block-text bg-light">
-        <div className="container py-4">
-          <div className="row">
-            <div className="col-md-10 col-lg-8 mx-auto article-content">
-              <h1>{post.title}</h1>
-              <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-              
-              {/* 点赞 */}
-              <div className="pt-3">
-                <LikeButton slug={slug} />
-              </div>
-            </div>
-          </div>
+      <div className="article-content">
+        <h1>{post.title}</h1>
+        <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+        
+        {/* 点赞按钮 */}
+        <div style={{ marginTop: '24px' }}>
+          <LikeButton slug={slug} />
         </div>
-      </div>
-
-      {/* 分享链接 */}
-      <div className="bg-light">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-10 col-lg-8 mx-auto">
-              <hr />
-              <p className="share-links text-right">
-                <a href="#" className="mr-1">Twitter</a>
-                <a href="#" className="mr-1">LinkedIn</a>
-                <a href="#" className="mr-1">Facebook</a>
-              </p>
-            </div>
-          </div>
+        
+        {/* 分享链接 */}
+        <div className="share-links">
+          <a href="#" title="Twitter"></a>
+          <a href="#" title="LinkedIn"></a>
+          <a href="#" title="Facebook"></a>
         </div>
       </div>
 

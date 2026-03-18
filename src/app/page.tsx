@@ -24,6 +24,10 @@ export default function Home() {
       <header className="header">
         <div className="container">
           <Link href="/" className="logo">老六博客</Link>
+          <div className="social-icons">
+            <a href="#" title="LinkedIn"></a>
+            <a href="#" title="Instagram"></a>
+          </div>
         </div>
       </header>
 
@@ -42,16 +46,14 @@ export default function Home() {
               <div key={post.slug} className="blog-item">
                 <div className="card h-100">
                   <Link href={`/posts/${post.slug}`}>
-                    <div className="position-relative">
-                      <img 
-                        src={articleImages[post.slug] || '/images/articles/blog-launch.jpg'} 
-                        className="blog-image" 
-                        alt={post.title}
-                      />
-                    </div>
+                    <img 
+                      src={articleImages[post.slug] || '/images/articles/blog-launch.jpg'} 
+                      className="blog-image" 
+                      alt={post.title}
+                    />
                     <div className="card-body">
                       <h3 className="card-title">{post.title}</h3>
-                      <p className="card-text mb-4">{post.excerpt}</p>
+                      <p className="card-text">{post.excerpt}</p>
                       <p className="blog-length">
                         {new Date(post.date).toLocaleDateString('zh-CN')} · 3 分钟阅读
                       </p>
