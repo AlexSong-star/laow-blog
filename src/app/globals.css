@@ -2,7 +2,7 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
 :root {
-  --bg-light: #f8f9fa;
+  --bg-light: #EFEFEF;
   --text-primary: #000000;
   --text-secondary: #333333;
   --text-muted: #666666;
@@ -52,7 +52,7 @@ body {
 .social-icons a:hover { color: var(--text-primary); }
 
 /* Hero - 灰色背景 */
-.hero { padding: 48px 0; background: #f8f9fa; }
+.hero { padding: 48px 0; background: #EFEFEF; }
 .hero-title { font-size: 32px; font-weight: 700; margin: 0; letter-spacing: -0.03em; }
 
 /* 3列网格 */
@@ -61,7 +61,7 @@ body {
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   padding: 24px 0;
-  background: #f8f9fa;
+  background: #EFEFEF;
 }
 
 /* 卡片 - 精细调整 */
@@ -153,7 +153,7 @@ body {
 /* 详情页整体 */
 .article-page {
   padding: 32px 0;
-  background: #f8f9fa;
+  background: #EFEFEF;
 }
 
 .article-content { 
