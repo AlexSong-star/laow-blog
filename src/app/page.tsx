@@ -10,6 +10,14 @@ export const metadata = {
 export default function Home() {
   const posts = getAllPosts();
 
+  // 为每篇文章分配图片
+  const images = [
+    '/images/cover-tech.jpg',
+    '/images/cover-tech-2.jpg',
+    '/images/cover-tech.jpg',
+    '/images/cover-tech-2.jpg',
+  ];
+
   return (
     <div>
       {/* Header */}
@@ -26,18 +34,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Posts - 完全复刻参考网站 */}
-      <main className="container">
-        <div className="posts-list">
-          {posts.map((post) => (
-            <Link key={post.slug} href={`/posts/${post.slug}`} className="post-item">
-              <h3>{post.title}</h3>
-              <p>{post.excerpt}</p>
-              <p>{new Date(post.date).toLocaleDateString('zh-CN')} · 3 分钟阅读</p>
-            </Link>
-          ))}
+      {/* 3列卡片布局 - 复刻参考网站 */}
+      <div className="bg-light pt-2 pt-md-4">
+        <div className="container">
+          <div className="posts-grid">
+            {posts.map((post, index) => (
+              <div key={post.slug} className="blog-item">
+                <div className="card h-100">
+                  <Link href={`/posts/${post.slug}`}>
+                    <div className="position-relative">
+                      <img 
+                        src={images[index % images.length]} 
+                        className="blog-image" 
+                        alt={post.title}
+                      />
+                    </div>
+                    <div className="card-body">
+                      <h3 className="card-title">{post.title}</h3>
+                      <p className="card-text mb-4">{post.excerpt}</p>
+                      <p className="blog-length">
+                        {new Date(post.date).toLocaleDateString('zh-CN')} · 3 分钟阅读
+                      </p>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
+      </div>
 
       {/* Footer */}
       <footer className="footer">
