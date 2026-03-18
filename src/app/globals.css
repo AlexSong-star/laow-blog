@@ -164,12 +164,17 @@ body {
 .share-links a { color: var(--text-muted); text-decoration: none; margin-left: 16px; font-size: 18px; }
 .share-links a:hover { color: var(--text-primary); }
 
-.footer { padding: 48px 0; background: #fff; border-top: 1px solid var(--border-color); }
+/* Footer - 深色背景 */
+.footer { 
+  padding: 48px 0; 
+  background: #1a1a1a; 
+  border-top: none; 
+}
 .footer-content { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.footer-section h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 12px; }
-.footer-section a { display: block; color: var(--text-muted); text-decoration: none; font-size: 15px; margin-bottom: 8px; }
-.footer-section a:hover { color: var(--text-primary); }
-.footer-bottom { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border-color); font-size: 13px; color: var(--text-muted); }
+.footer-section h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 12px; color: #fff; }
+.footer-section a { display: block; color: #999; text-decoration: none; font-size: 15px; margin-bottom: 8px; }
+.footer-section a:hover { color: #fff; }
+.footer-bottom { margin-top: 32px; padding-top: 20px; border-top: 1px solid #333; font-size: 13px; color: #666; }
 
 /* 响应式 */
 @media (max-width: 992px) { 
