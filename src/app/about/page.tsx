@@ -12,7 +12,7 @@ export default function About() {
       {/* Header */}
       <header className="header">
         <div className="container">
-          <Link href="/" className="logo">The AI Edge</Link>
+          <Link href="/" className="logo">AI Edge</Link>
         </div>
       </header>
 
@@ -77,7 +77,7 @@ export default function About() {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>© 2026 The AI Edge. All rights reserved.</p>
+            <p>© 2026 AI Edge. All rights reserved.</p>
           </div>
         </div>
       </footer>

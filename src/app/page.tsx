@@ -23,7 +23,7 @@ export default function Home() {
       {/* Header */}
       <header className="header">
         <div className="container">
-          <Link href="/" className="logo">The AI Edge</Link>
+          <Link href="/" className="logo">AI Edge</Link>
           <div className="social-icons">
             <a href="#" title="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
             <a href="#" title="Instagram"><i className="fab fa-instagram"></i></a>
@@ -82,7 +82,7 @@ export default function Home() {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>© 2026 The AI Edge. All rights reserved.</p>
+            <p>© 2026 AI Edge. All rights reserved.</p>
           </div>
         </div>
       </footer>

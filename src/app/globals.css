@@ -41,8 +41,8 @@ body {
   align-items: center; 
 }
 .logo { 
-  font-size: 20px; 
-  font-weight: 600; 
+  font-size: 22px; 
+  font-weight: 700; 
   color: var(--text-primary); 
   text-decoration: none; 
   letter-spacing: -0.02em;
@@ -51,8 +51,8 @@ body {
 .social-icons a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
 .social-icons a:hover { color: var(--text-primary); }
 
-/* Hero */
-.hero { padding: 48px 0; background: #fff; }
+/* Hero - 灰色背景 */
+.hero { padding: 48px 0; background: #f8f9fa; }
 .hero-title { font-size: 32px; font-weight: 700; margin: 0; letter-spacing: -0.03em; }
 
 /* 3列网格 */
@@ -61,6 +61,7 @@ body {
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   padding: 24px 0;
+  background: #f8f9fa;
 }
 
 /* 卡片 - 精细调整 */
@@ -191,16 +192,17 @@ body {
 .share-links a:hover { color: var(--text-primary); }
 
 /* Footer - 深色背景 */
+/* Footer - 深色背景 + 黄白搭配 */
 .footer { 
   padding: 48px 0; 
   background: #1a1a1a; 
   border-top: none; 
 }
-.footer-content { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.footer-content { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; text-align: left; }
 .footer-section h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 12px; color: #fff; }
-.footer-section a { display: block; color: #999; text-decoration: none; font-size: 15px; margin-bottom: 8px; }
-.footer-section a:hover { color: #fff; }
-.footer-bottom { margin-top: 32px; padding-top: 20px; border-top: 1px solid #333; font-size: 13px; color: #666; }
+.footer-section a { display: block; color: #ccc; text-decoration: none; font-size: 15px; margin-bottom: 8px; }
+.footer-section a:hover { color: #f0ff00; }
+.footer-bottom { margin-top: 32px; padding-top: 20px; border-top: 1px solid #333; font-size: 13px; color: #999; text-align: left; }
 
 /* 响应式 */
 @media (max-width: 992px) { 
