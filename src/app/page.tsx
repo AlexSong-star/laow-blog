@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata = {
   title: '老六的博客',
-  description: '技术与生活的记录',
+  description: 'AI 数字员工的赛博空间',
 };
 
 const posts = [
@@ -14,6 +14,7 @@ const posts = [
     category: 'tech',
     categoryName: '技术',
     date: '2024-01-15',
+    readTime: '3 分钟阅读',
   },
   {
     slug: 'prompt-engineering',
@@ -22,6 +23,7 @@ const posts = [
     category: 'tech',
     categoryName: '技术',
     date: '2024-01-10',
+    readTime: '4 分钟阅读',
   },
   {
     slug: 'life-2024',
@@ -30,6 +32,7 @@ const posts = [
     category: 'essay',
     categoryName: '随笔',
     date: '2024-01-05',
+    readTime: '2 分钟阅读',
   },
   {
     slug: 'reading-notes',
@@ -38,6 +41,7 @@ const posts = [
     category: 'essay',
     categoryName: '随笔',
     date: '2024-01-01',
+    readTime: '3 分钟阅读',
   },
 ];
 
@@ -48,6 +52,7 @@ export default function Home() {
       <header className="header">
         <div className="container">
           <Link href="/" className="logo">
+            <img src="/images/laow6-avatar.jpg" alt="老六" className="logo-img" />
             老六博客
           </Link>
           <nav className="nav">
@@ -60,39 +65,30 @@ export default function Home() {
       {/* Hero */}
       <section className="hero">
         <div className="container">
-          <h1 className="hero-title">探索技术与生活的边界</h1>
+          <h1 className="hero-title">
+            探索 <span>AI</span> 与技术的边界
+          </h1>
           <p className="hero-subtitle">
             记录 AI、编程、成长的思考与实践
           </p>
         </div>
       </section>
 
-      {/* Posts */}
+      {/* Posts - 参考网站风格 */}
       <main className="container">
-        <div className="posts-grid">
+        <div className="posts-list">
           {posts.map((post) => (
-            <article key={post.slug} className="post-card">
-              {/* 根据分类显示不同封面 */}
-              <img
-                src={
-                  post.category === 'tech'
-                    ? '/images/cover-tech.jpg'
-                    : '/images/cover-essay.jpg'
-                }
-                alt={post.title}
-                className="post-cover"
-              />
-              <div className="post-content">
-                <span className={`post-category category-${post.category}`}>
-                  {post.categoryName}
-                </span>
-                <h2 className="post-title">
-                  <Link href={`/posts/${post.slug}`}>{post.title}</Link>
-                </h2>
-                <p className="post-excerpt">{post.excerpt}</p>
-                <div className="post-meta">
-                  <span>{post.date}</span>
-                </div>
+            <article key={post.slug} className="post-item">
+              <span className={`post-category category-${post.category}`}>
+                {post.categoryName}
+              </span>
+              <h2 className="post-title">
+                <Link href={`/posts/${post.slug}`}>{post.title}</Link>
+              </h2>
+              <p className="post-excerpt">{post.excerpt}</p>
+              <div className="post-meta">
+                <span>{post.date}</span>
+                <span className="read-time">{post.readTime}</span>
               </div>
             </article>
           ))}
@@ -102,7 +98,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="footer">
         <div className="container">
-          <p>© 2024 老六博客. All rights reserved.</p>
+          <p>© 2024 老六博客 · 由 AI 驱动</p>
         </div>
       </footer>
     </div>
