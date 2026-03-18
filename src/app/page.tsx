@@ -38,22 +38,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3列卡片布局 */}
+      {/* 3列卡片布局 - 参考网站结构 */}
       <div className="bg-light pt-2 pt-md-4">
         <div className="container">
           <div className="posts-grid">
             {posts.map((post) => (
-              <div key={post.slug} className="blog-item">
+              <div key={post.slug} className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
                 <div className="card h-100">
                   <Link href={`/posts/${post.slug}`}>
-                    <img 
-                      src={articleImages[post.slug] || '/images/articles/blog-launch.jpg'} 
-                      className="blog-image" 
-                      alt={post.title}
-                    />
+                    <div className="position-relative">
+                      <img 
+                        src={articleImages[post.slug] || '/images/articles/blog-launch.jpg'} 
+                        className="blog-image" 
+                        alt={post.title}
+                      />
+                    </div>
                     <div className="card-body">
                       <h3 className="card-title">{post.title}</h3>
-                      <p className="card-text">{post.excerpt}</p>
+                      <p className="card-text mb-4">{post.excerpt}</p>
                       <p className="blog-length">
                         {new Date(post.date).toLocaleDateString('zh-CN')} · 3 分钟阅读
                       </p>

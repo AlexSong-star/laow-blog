@@ -40,7 +40,7 @@ body {
 .hero { padding: var(--space-xl) 0; background: #fff; }
 .hero-title { font-size: 1.8rem; font-weight: 700; margin: 0; }
 
-/* 3列网格卡片布局 - 和参考网站一致 */
+/* 3列网格 - 参考网站 col-lg-4 */
 .posts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -50,7 +50,7 @@ body {
 @media (max-width: 992px) { .posts-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 576px) { .posts-grid { grid-template-columns: 1fr; } }
 
-/* 卡片 - 参考网站样式，更高更竖向 */
+/* 卡片 - h-100 让高度一致 */
 .card { 
   background: #fff; 
   border: 1px solid var(--border-color); 
@@ -59,13 +59,22 @@ body {
   display: flex;
   flex-direction: column;
 }
-.card a { text-decoration: none; color: inherit; display: flex; flex-direction: column; flex: 1; }
+.card a { 
+  text-decoration: none; 
+  color: inherit; 
+  display: flex; 
+  flex-direction: column; 
+  flex: 1; 
+}
 
-/* 卡片图片 - 3:2 比例，更高 */
+/* 图片容器 */
+.position-relative { position: relative; }
+
+/* 卡片图片 */
 .blog-image { 
   width: 100%; 
-  height: auto; 
-  aspect-ratio: 3/2; 
+  height: auto;
+  aspect-ratio: 1220/745;  /* 参考网站比例 */
   object-fit: cover; 
 }
 
@@ -76,6 +85,8 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+/* 标题 */
 .card-title { 
   font-size: 1.1rem; 
   font-weight: 600; 
@@ -83,19 +94,34 @@ body {
   color: var(--text-primary); 
   line-height: 1.4; 
 }
+
+/* 摘要 - mb-4 参考网站 */
 .card-text { 
   font-size: 0.9rem; 
   color: var(--text-secondary); 
-  margin: 0 0 var(--space-md); 
+  margin: 0 0 var(--space-lg);  /* mb-4 = 1.5rem */
   line-height: 1.5; 
   flex: 1;
 }
-.blog-length { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+
+/* 阅读时间 */
+.blog-length { 
+  font-size: 0.8rem; 
+  color: var(--text-muted); 
+  margin: 0; 
+}
+
+/* 小图标 */
+.blog-icon {
+  width: 35px;
+  height: 35px;
+  margin-top: var(--space-sm);
+}
 
 /* 文章详情页 */
 .blog-entry-category { font-size: 0.85rem; color: var(--text-grey); margin-bottom: var(--space-sm); display: inline-block; }
 
-/* 详情页主图 - 宽度和内容一致 */
+/* 详情页主图 */
 .article-image-container {
   max-width: 800px;
   margin: 0 auto var(--space-lg);
@@ -107,7 +133,7 @@ body {
   object-fit: cover;
 }
 
-/* 文章内容 - 居中，宽度一致 */
+/* 文章内容 */
 .article-content { 
   max-width: 800px; 
   margin: 0 auto; 
