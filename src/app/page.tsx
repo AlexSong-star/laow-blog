@@ -26,14 +26,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Posts - 完全复刻参考网站垂直列表 */}
+      {/* Posts - 完全复刻参考网站 */}
       <main className="container">
         <div className="posts-list">
           {posts.map((post) => (
             <Link key={post.slug} href={`/posts/${post.slug}`} className="post-item">
-              <h2 className="post-title">{post.title}</h2>
-              <p className="post-excerpt">{post.excerpt}</p>
-              <p className="post-meta">{new Date(post.date).toLocaleDateString('zh-CN')} · 3 分钟阅读</p>
+              <h3>{post.title}</h3>
+              <p>{post.excerpt}</p>
+              <p>{new Date(post.date).toLocaleDateString('zh-CN')} · 3 分钟阅读</p>
             </Link>
           ))}
         </div>
