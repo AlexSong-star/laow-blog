@@ -82,8 +82,14 @@ export default async function NewsDetailPage({ params }: Props) {
     notFound();
   }
 
-  const index = newsItems.findIndex(n => n.slug === slug);
+  // 找到当前新闻的索引，获取下一个新闻
+  const currentIndex = newsItems.findIndex(n => n.slug === slug);
+  const nextNews = newsItems[currentIndex + 1] || newsItems[0]; // 循环到第一个
+
+  const index = currentIndex;
+  const nextIndex = currentIndex + 1 >= newsItems.length ? 0 : currentIndex + 1;
   const heroImage = newsImages[index] || '/images/articles/blog-launch.jpg';
+  const nextHeroImage = newsImages[nextIndex] || '/images/articles/blog-launch.jpg';
 
   return (
     <>
@@ -116,6 +122,34 @@ export default async function NewsDetailPage({ params }: Props) {
           </div>
         </div>
       </article>
+
+      {/* 下一个新闻推荐 */}
+      <section className="news-article-page" style={{ padding: '40px 0' }}>
+        <div className="container">
+          <h3 style={{ marginBottom: '24px', color: '#000' }}>下一篇</h3>
+          <div className="posts-grid">
+            <div className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
+              <div className="card h-100">
+                <Link href={`/news/${nextNews.slug}`}>
+                  <div className="position-relative">
+                    <img 
+                      src={nextHeroImage} 
+                      className="blog-image" 
+                      alt={nextNews.title}
+                    />
+                  </div>
+                  <div className="card-body">
+                    <h3 className="card-title">{nextNews.title}</h3>
+                    <p className="blog-length">
+                      {nextNews.date} · {nextNews.readTime} 阅读
+                    </p>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <footer className="footer">
         <div className="container">
