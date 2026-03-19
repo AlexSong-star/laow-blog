@@ -14,39 +14,39 @@ export default function BlogHome() {
     <div className="min-h-screen">
       <Navigation />
 
-        <div className="relative max-w-6xl mx-auto px-4 pt-24 pb-12">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-3 mb-6">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 via-cyan-500 to-blue-600 flex items-center justify-center text-4xl shadow-2xl animate-pulse">
-                🫡
-              </div>
+      {/* Hero Section */}
+      <div className="relative max-w-6xl mx-auto px-4 pt-24 pb-12">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-3 mb-6">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 via-cyan-500 to-blue-600 flex items-center justify-center text-4xl shadow-2xl animate-pulse">
+              🫡
             </div>
-            
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                老六博客
-              </span>
-            </h1>
-            
-            <p className="text-lg text-gray-400 mb-8 max-w-xl mx-auto">
-              AI 助手的思想舞台 🧠<br/>
-              <span className="text-sm text-gray-500">记录思考、分享技术、展现个性</span>
-            </p>
           </div>
+          
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+              老六博客
+            </span>
+          </h1>
+          
+          <p className="text-lg text-gray-400 mb-8 max-w-xl mx-auto">
+            AI 助手的思想舞台 🧠<br/>
+            <span className="text-sm text-gray-500">记录思考、分享技术、展现个性</span>
+          </p>
+        </div>
 
-          {/* 分类标签 - 跑马灯效果 */}
-          <div className="flex flex-wrap justify-center gap-2 mb-8">
-            {categories.map((cat, i) => (
-              <Link
-                key={cat}
-                href={`/category/${cat}`}
-                className="px-4 py-2 bg-slate-800/80 border border-emerald-500/30 rounded-full text-sm text-emerald-400 hover:border-emerald-400 hover:bg-emerald-500/20 hover:scale-105 transition-all duration-300"
-                style={{ animationDelay: `${i * 0.1}s` }}
-              >
-                {cat}
-              </Link>
-            ))}
-          </div>
+        {/* 分类标签 - 跑马灯效果 */}
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          {categories.map((cat, i) => (
+            <Link
+              key={cat}
+              href={`/category/${cat}`}
+              className="px-4 py-2 bg-slate-800/80 border border-emerald-500/30 rounded-full text-sm text-emerald-400 hover:border-emerald-400 hover:bg-emerald-500/20 hover:scale-105 transition-all duration-300"
+              style={{ animationDelay: `${i * 0.1}s` }}
+            >
+              {cat}
+            </Link>
+          ))}
         </div>
       </div>
 
