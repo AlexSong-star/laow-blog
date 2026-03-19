@@ -15,7 +15,6 @@
 body {
   font-family: 'Ringside Compressed A', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background: var(--bg-light);
-  color: #fff;
   margin: 0;
   padding: 0;
   font-size: 16px;
@@ -43,13 +42,13 @@ body {
 .logo { 
   font-size: 36px; 
   font-weight: 700; 
-  color: #fff; 
+  color: #000; 
   text-decoration: none; 
   letter-spacing: -0.02em;
 }
 .social-icons { display: flex; gap: 16px; font-size: 18px; }
 .social-icons a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-.social-icons a:hover { color: #fff; }
+.social-icons a:hover { color: #000; }
 
 /* Hero - 灰色背景 */
 .hero { padding: 48px 0; background: #EFEFEF; }
@@ -109,7 +108,7 @@ body {
   font-size: 18px; 
   font-weight: 600; 
   margin: 0 0 8px; 
-  color: #fff; 
+  color: #000; 
   line-height: 1.35;
   letter-spacing: -0.01em;
 }
@@ -167,7 +166,6 @@ body {
   margin: 0 0 20px; 
   line-height: 1.25;
   letter-spacing: -0.02em;
-  color: #000;
 }
 .article-content p { 
   font-size: 17px; 
@@ -184,12 +182,11 @@ body {
   font-weight: 600; 
   margin: 32px 0 16px; 
   letter-spacing: -0.01em; 
-  color: #000;
 }
 
 .share-links { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-color); text-align: right; }
 .share-links a { color: var(--text-muted); text-decoration: none; margin-left: 16px; font-size: 18px; }
-.share-links a:hover { color: #fff; }
+.share-links a:hover { color: #000; }
 
 /* Footer - 深色背景 */
 /* Footer - 深色背景 + 黄白搭配 */
@@ -200,9 +197,9 @@ body {
 }
 .footer-content { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; text-align: left; }
 .footer-section h3 { font-size: 26px; font-weight: 700; margin: 0 0 16px; color: #E6B123; text-align: left; }
-.footer-section a { display: block; color: #fff; text-decoration: none; font-size: 15px; margin-bottom: 10px; text-align: left; }
-.footer-section a:hover { color: #fff; }
-.footer-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid #333; font-size: 13px; color: #E6B123; text-align: left; }
+.footer-section a { display: block; color: #000; text-decoration: none; font-size: 15px; margin-bottom: 10px; text-align: left; }
+.footer-section a:hover { color: #000; }
+.footer-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid #333; font-size: 13px; color: #fff; text-align: left; }
 
 /* 响应式 */
 @media (max-width: 992px) { 
@@ -228,7 +225,6 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #fff;
   text-decoration: none;
   transition: color 0.2s;
 }
@@ -256,7 +252,6 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #fff;
     cursor: pointer;
     padding: 8px 16px;
   }
@@ -302,7 +297,6 @@ body {
   border: none;
   font-size: 32px;
   cursor: pointer;
-  color: #fff;
   padding: 8px 16px;
 }
 
@@ -314,10 +308,10 @@ body {
 }
 
 .nav-overlay-link {
+  color: #fff;
   font-family: 'Ringside Compressed A', sans-serif;
   font-size: 42px;
   font-weight: 700;
-  color: #fff;
   text-decoration: none;
   letter-spacing: -0.02em;
   transition: color 0.2s;
@@ -337,7 +331,6 @@ body {
 
 .nav-overlay-footer .social-icon {
   font-size: 20px;
-  color: #fff;
   transition: color 0.2s;
 }
 
