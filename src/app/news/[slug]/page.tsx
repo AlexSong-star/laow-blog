@@ -13,59 +13,29 @@ const newsItems = [
     slug: "openclaw-3-0",
     title: "OpenClaw 3.0 发布：AI 助手新纪元",
     excerpt: "全新版本的 OpenClaw 带来了更强大的自动化能力和更好的开发体验",
-    date: "2026-03-18",
+    date: "2026-03-19",
     readTime: "3 min",
-    content: "<p>全新版本的 OpenClaw 带来了更强大的自动化能力和更好的开发体验。</p><p>这是一个值得关注的重大更新。</p>"
+    content: "<p>全新版本的 OpenClaw 带来了更强大的自动化能力和更好的开发体验。</p><p>这是一个值得关注的重大更新，包含了众多新功能和改进。</p><p>主要更新包括：</p><ul><li>更智能的任务自动化</li><li>更好的插件生态系统</li><li>增强的协作能力</li><li>性能优化和bug修复</li></ul>",
+    image: "/images/articles/news-ai-robot.jpg"
   },
   {
     slug: "ai-agent-workflow",
     title: "AI Agent 工作流最佳实践",
     excerpt: "探讨如何构建高效的 AI Agent 协作系统",
-    date: "2026-03-17",
+    date: "2026-03-19",
     readTime: "5 min",
-    content: "<p>探讨如何构建高效的 AI Agent 协作系统。</p><p>本文介绍了一些最佳实践。</p>"
-  },
-  {
-    slug: "feishu-api",
-    title: "飞书多维表格 API 深度解析",
-    excerpt: "详细讲解飞书多维表格的各种 API 使用方法",
-    date: "2026-03-16",
-    readTime: "8 min",
-    content: "<p>详细讲解飞书多维表格的各种 API 使用方法。</p>"
+    content: "<p>探讨如何构建高效的 AI Agent 协作系统。</p><p>本文介绍了一些最佳实践：</p><ul><li>合理分配任务给不同的Agent</li><li>建立清晰的通信协议</li><li>实现错误处理和恢复机制</li><li>监控和日志记录</li></ul><p>通过这些实践，可以构建更加可靠和高效的AI系统。</p>",
+    image: "/images/articles/ai-workflow.jpg"
   },
   {
     slug: "digital-employee-era",
     title: "数字员工时代的到来",
-    excerpt: "AI 正在改变我们的工作方式",
-    date: "2026-03-15",
+    excerpt: "AI 正在改变我们的工作方式，企业数字化转型进入新阶段",
+    date: "2026-03-19",
     readTime: "4 min",
-    content: "<p>AI 正在改变我们的工作方式。</p><p>数字员工时代已经到来。</p>"
-  },
-  {
-    slug: "nextjs-16",
-    title: "Next.js 16 新特性一览",
-    excerpt: "探索 Next.js 16带来的新功能和改进",
-    date: "2026-03-14",
-    readTime: "6 min",
-    content: "<p>探索 Next.js 16带来的新功能和改进。</p>"
-  },
-  {
-    slug: "vercel-deploy",
-    title: "Vercel 部署优化技巧",
-    excerpt: "让你的 Next.js 应用部署更快、更高效",
-    date: "2026-03-13",
-    readTime: "4 min",
-    content: "<p>让你的 Next.js 应用部署更快、更高效。</p>"
+    content: "<p>AI 正在改变我们的工作方式，企业数字化转型进入新阶段。</p><p>数字员工不再是概念，而是正在成为现实。</p><ul><li>24/7 工作能力</li><li>处理重复性任务</li><li>降低人为错误</li><li>提升工作效率</li></ul><p>未来，每个企业都将拥有自己的数字员工团队。</p>",
+    image: "/images/articles/blog-upgrade.jpg"
   }
-];
-
-const newsImages = [
-  '/images/articles/ai-workflow.jpg',
-  '/images/articles/blog-launch.jpg',
-  '/images/articles/hello-world.jpg',
-  '/images/articles/how-i-work.jpg',
-  '/images/articles/ai-workflow.jpg',
-  '/images/articles/blog-launch.jpg',
 ];
 
 export async function generateStaticParams() {
@@ -86,10 +56,7 @@ export default async function NewsDetailPage({ params }: Props) {
   const currentIndex = newsItems.findIndex(n => n.slug === slug);
   const nextNews = newsItems[currentIndex + 1] || newsItems[0]; // 循环到第一个
 
-  const index = currentIndex;
   const nextIndex = currentIndex + 1 >= newsItems.length ? 0 : currentIndex + 1;
-  const heroImage = newsImages[index] || '/images/articles/blog-launch.jpg';
-  const nextHeroImage = newsImages[nextIndex] || '/images/articles/blog-launch.jpg';
 
   return (
     <>
@@ -97,7 +64,7 @@ export default async function NewsDetailPage({ params }: Props) {
 
       <article className="article-page news-article-page" style={{ padding: 0 }}>
         <img 
-          src={heroImage}
+          src={news.image}
           className="article-hero-image"
           alt={news.title}
           style={{ borderRadius: 0, aspectRatio: '1/1', height: 'auto', width: '100%' }}
@@ -122,6 +89,7 @@ export default async function NewsDetailPage({ params }: Props) {
         </div>
       </article>
 
+      {/* 下一个新闻推荐 */}
       <section className="news-article-page">
         <div className="container" style={{ maxWidth: '100%', padding: '0' }}>
           <div className="posts-grid" style={{ margin: 0, width: '100%' }}>
@@ -130,7 +98,7 @@ export default async function NewsDetailPage({ params }: Props) {
                 <Link href={`/news/${nextNews.slug}`}>
                   <div className="position-relative">
                     <img 
-                      src={nextHeroImage} 
+                      src={nextNews.image} 
                       className="blog-image" 
                       alt={nextNews.title}
                     />
