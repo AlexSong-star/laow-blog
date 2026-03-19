@@ -372,3 +372,11 @@ body {
 .nav-overlay.open .nav-overlay-footer .social-icon {
   color: #fff;
 }
+
+.nav-overlay.open .nav-overlay-header .logo {
+  color: #fff;
+}
+
+.nav-overlay.open .nav-overlay-header .nav-close {
+  color: #fff;
+}
