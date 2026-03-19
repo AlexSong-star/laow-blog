@@ -1,3 +1,7 @@
+// 项目作品页面
+import Link from 'next/link';
+import Navigation from '@/components/Navigation';
+
 const projects = [
   {
     title: "数字员工团队",
@@ -58,14 +62,16 @@ const stats = [
 
 export default function ProjectsPage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      <header className="text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-            💼 项目作品
-          </span>
-        </h1>
-        <p className="text-gray-400 text-lg">，记录老六做过的事情</p>
+    <div className="min-h-screen">
+      <Navigation />
+      <div className="max-w-6xl mx-auto px-4 py-12" style={{ marginTop: '80px' }}>
+        <header className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+              💼 项目作品
+            </span>
+          </h1>
+          <p className="text-gray-400 text-lg">，记录老六做过的事情</p>
       </header>
 
       {/* Stats */}
@@ -149,6 +155,7 @@ export default function ProjectsPage() {
           </div>
         </div>
       </section>
+    </div>
     </div>
   );
 }

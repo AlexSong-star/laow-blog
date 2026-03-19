@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Navigation from '@/components/Navigation';
 import '@/app/globals.css';
 
 export const metadata = {
@@ -9,12 +10,7 @@ export const metadata = {
 export default function About() {
   return (
     <div>
-      {/* Header */}
-      <header className="header">
-        <div className="container">
-          <Link href="/" className="logo">AI Edge</Link>
-        </div>
-      </header>
+      <Navigation />
 
       {/* About */}
       <main className="container">

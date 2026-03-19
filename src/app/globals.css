@@ -215,3 +215,132 @@ body {
   .footer-content { grid-template-columns: 1fr; text-align: center; }
   .social-icons { display: none; }
 }
+
+/* 桌面端导航 */
+.desktop-nav {
+  display: flex;
+  gap: 32px;
+}
+
+.desktop-nav-link {
+  font-family: 'Ringside Compressed A', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.desktop-nav-link:hover,
+.desktop-nav-link.active {
+  color: #E6B123;
+}
+
+/* 移动端菜单按钮 */
+.nav-toggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none;
+  }
+  .nav-toggle {
+    display: block;
+    background: none;
+    border: none;
+    font-family: 'Ringside Compressed A', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 8px 16px;
+  }
+}
+
+/* 全屏导航遮罩 */
+.nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.nav-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nav-overlay-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+.nav-close {
+  background: none;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  color: var(--text-primary);
+  padding: 8px 16px;
+}
+
+.nav-overlay-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+}
+
+.nav-overlay-link {
+  font-family: 'Ringside Compressed A', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  transition: color 0.2s;
+}
+
+.nav-overlay-link:hover,
+.nav-overlay-link.active {
+  color: #666;
+}
+
+.nav-overlay-footer {
+  display: flex;
+  gap: 20px;
+  padding-top: 40px;
+  border-top: 1px solid #eee;
+}
+
+.nav-overlay-footer .social-icon {
+  font-size: 20px;
+  color: var(--text-primary);
+  transition: color 0.2s;
+}
+
+.nav-overlay-footer .social-icon:hover {
+  color: #666;
+}

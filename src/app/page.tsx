@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Navigation from '@/components/Navigation';
 import { getAllPosts } from '@/lib/posts';
 import './globals.css';
 
@@ -20,21 +21,10 @@ export default function Home() {
 
   return (
     <div>
-      {/* Header */}
-      <header className="header">
-        <div className="container">
-          <Link href="/" className="logo">AI Edge</Link>
-          <div className="social-icons">
-            <a href="#" title="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
-            <a href="#" title="Instagram"><i className="fab fa-instagram"></i></a>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero - 已移除标题 */}
+      <Navigation />
 
       {/* 3列卡片布局 - 参考网站结构 */}
-      <div className="bg-light pt-2 pt-md-4">
+      <div className="bg-light pt-2 pt-md-4" style={{ marginTop: '80px' }}>
         <div className="container">
           <div className="posts-grid">
             {posts.map((post) => (

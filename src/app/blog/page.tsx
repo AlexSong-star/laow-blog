@@ -1,5 +1,6 @@
-// 博客首页 - 炫酷设计
+// 博客首页
 import Link from 'next/link';
+import Navigation from '@/components/Navigation';
 import { getAllPosts } from '@/lib/posts';
 
 export const revalidate = 60;
@@ -11,13 +12,7 @@ export default function BlogHome() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-b from-emerald-900/20 via-slate-900 to-slate-900 pb-16">
-        {/* 背景装饰 */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl"></div>
-        </div>
+      <Navigation />
 
         <div className="relative max-w-6xl mx-auto px-4 pt-24 pb-12">
           <div className="text-center mb-12">
