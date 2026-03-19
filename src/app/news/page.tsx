@@ -1,7 +1,6 @@
 // 新闻页面 - 与首页相同的图文卡片布局
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
-import './globals.css';
 
 const newsItems = [
   {
