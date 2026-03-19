@@ -251,9 +251,8 @@ body {
     background: none;
     border: none;
     font-family: 'Ringside Compressed A', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
+    font-size: 32px;
+    font-weight: 700;
     letter-spacing: 0.08em;
     cursor: pointer;
     padding: 8px 16px;
