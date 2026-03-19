@@ -65,7 +65,7 @@ const newsItems = [
     
     <h3>总结</h3>
     <p>构建高效的 AI Agent 系统需要综合考虑多个方面，包括架构设计、通信协议、错误处理和监控等。希望这些最佳实践对你有所帮助。</p>`,
-    image: "/images/articles/ai-workflow.jpg"
+    image: "/images/articles/news-ai-workflow.jpg"
   },
   {
     slug: "digital-employee-era",
@@ -99,7 +99,7 @@ const newsItems = [
     <p>预计到 2028 年，超过 50% 的大型企业将部署数字员工。随着技术的不断进步，数字员工将能够处理越来越复杂的任务，成为企业数字化转型的重要推动力。</p>
     
     <p>对于企业来说，现在是时候开始规划数字员工战略了。越早布局，就能越早享受AI带来的红利。</p>`,
-    image: "/images/articles/blog-upgrade.jpg"
+    image: "/images/articles/news-digital-era.jpg"
   }
 ];
 

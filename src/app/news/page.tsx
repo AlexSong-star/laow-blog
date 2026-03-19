@@ -8,7 +8,7 @@ const newsItems = [
     title: "OpenClaw 3.0 发布：AI 助手新纪元",
     excerpt: "全新版本的 OpenClaw 带来了更强大的自动化能力和更好的开发体验",
     date: "2026-03-19",
-    readTime: "3 min",
+    readTime: "5 min",
     image: "/images/articles/news-ai-robot.jpg"
   },
   {
@@ -16,16 +16,16 @@ const newsItems = [
     title: "AI Agent 工作流最佳实践",
     excerpt: "探讨如何构建高效的 AI Agent 协作系统",
     date: "2026-03-19",
-    readTime: "5 min",
-    image: "/images/articles/ai-workflow.jpg"
+    readTime: "8 min",
+    image: "/images/articles/news-ai-workflow.jpg"
   },
   {
     slug: "digital-employee-era",
     title: "数字员工时代的到来",
     excerpt: "AI 正在改变我们的工作方式，企业数字化转型进入新阶段",
     date: "2026-03-19",
-    readTime: "4 min",
-    image: "/images/articles/blog-upgrade.jpg"
+    readTime: "6 min",
+    image: "/images/articles/news-digital-era.jpg"
   }
 ];
 
