@@ -15,7 +15,7 @@
 body {
   font-family: 'Ringside Compressed A', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background: var(--bg-light);
-  color: var(--text-primary);
+  color: #fff;
   margin: 0;
   padding: 0;
   font-size: 16px;
@@ -32,7 +32,7 @@ body {
 /* Header - 增加30px高度 */
 .header { 
   padding: 40px 0;  /* 原24px + 15px = 39px */
-  background: #fff; 
+  background: #000; 
   border-bottom: 1px solid var(--border-color); 
 }
 .header .container { 
@@ -43,13 +43,13 @@ body {
 .logo { 
   font-size: 36px; 
   font-weight: 700; 
-  color: var(--text-primary); 
+  color: #fff; 
   text-decoration: none; 
   letter-spacing: -0.02em;
 }
 .social-icons { display: flex; gap: 16px; font-size: 18px; }
 .social-icons a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-.social-icons a:hover { color: var(--text-primary); }
+.social-icons a:hover { color: #fff; }
 
 /* Hero - 灰色背景 */
 .hero { padding: 48px 0; background: #EFEFEF; }
@@ -66,7 +66,7 @@ body {
 
 /* 卡片 - 精细调整 */
 .card { 
-  background: #fff; 
+  background: #000; 
   border: 1px solid var(--border-color); 
   overflow: hidden; 
   height: 100%; 
@@ -109,7 +109,7 @@ body {
   font-size: 18px; 
   font-weight: 600; 
   margin: 0 0 8px; 
-  color: var(--text-primary); 
+  color: #fff; 
   line-height: 1.35;
   letter-spacing: -0.01em;
 }
@@ -189,7 +189,7 @@ body {
 
 .share-links { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-color); text-align: right; }
 .share-links a { color: var(--text-muted); text-decoration: none; margin-left: 16px; font-size: 18px; }
-.share-links a:hover { color: var(--text-primary); }
+.share-links a:hover { color: #fff; }
 
 /* Footer - 深色背景 */
 /* Footer - 深色背景 + 黄白搭配 */
@@ -228,7 +228,7 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-primary);
+  color: #fff;
   text-decoration: none;
   transition: color 0.2s;
 }
@@ -256,7 +256,7 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--text-primary);
+    color: #fff;
     cursor: pointer;
     padding: 8px 16px;
   }
@@ -269,7 +269,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #fff;
+  background: #000;
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
@@ -302,7 +302,7 @@ body {
   border: none;
   font-size: 32px;
   cursor: pointer;
-  color: var(--text-primary);
+  color: #fff;
   padding: 8px 16px;
 }
 
@@ -317,7 +317,7 @@ body {
   font-family: 'Ringside Compressed A', sans-serif;
   font-size: 42px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #fff;
   text-decoration: none;
   letter-spacing: -0.02em;
   transition: color 0.2s;
@@ -337,7 +337,7 @@ body {
 
 .nav-overlay-footer .social-icon {
   font-size: 20px;
-  color: var(--text-primary);
+  color: #fff;
   transition: color 0.2s;
 }
 
