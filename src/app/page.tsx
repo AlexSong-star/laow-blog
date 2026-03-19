@@ -24,7 +24,7 @@ export default function Home() {
       <Navigation />
 
       {/* 3列卡片布局 - 参考网站结构 */}
-      <div className="bg-light pt-2 pt-md-4" style={{ marginTop: '80px' }}>
+      <div className="bg-light pt-2 pt-md-4">
         <div className="container">
           <div className="posts-grid">
             {posts.map((post) => (
