@@ -100,7 +100,7 @@ export default async function NewsDetailPage({ params }: Props) {
           src={heroImage}
           className="article-hero-image"
           alt={news.title}
-          style={{ borderRadius: 0 }}
+          style={{ borderRadius: 0, aspectRatio: '1/1', height: 'auto', width: '100%' }}
         />
         
         <div className="article-wrapper" style={{ padding: '0 24px' }}>
@@ -122,7 +122,7 @@ export default async function NewsDetailPage({ params }: Props) {
         </div>
       </article>
 
-      <section className="news-article-page" style={{ padding: '40px 0' }}>
+      <section className="news-article-page">
         <div className="container" style={{ maxWidth: '100%', padding: '0' }}>
           <div className="posts-grid" style={{ margin: 0, width: '100%' }}>
             <div className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
