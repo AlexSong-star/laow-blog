@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getPostContentHtml, getAllPosts } from '@/lib/posts';
 import LikeButton from '@/components/LikeButton';
+import Navigation from '@/components/Navigation';
 
 export const revalidate = 60;
 
@@ -38,19 +39,10 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <>
-      {/* Header */}
-      <header className="header">
-        <div className="container">
-          <Link href="/" className="logo">AI Edge</Link>
-          <div className="social-icons">
-            <a href="#" title="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
-            <a href="#" title="Instagram"><i className="fab fa-instagram"></i></a>
-          </div>
-        </div>
-      </header>
+      <Navigation />
 
       {/* 详情页主体 */}
-      <article className="article-page">
+      <article className="article-page" style={{ marginTop: '80px' }}>
         {/* 日期信息 */}
         <div className="article-wrapper">
           <span className="blog-entry-category">

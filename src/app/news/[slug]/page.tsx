@@ -1,6 +1,7 @@
 // 新闻详情页
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import Navigation from '@/components/Navigation';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -86,17 +87,9 @@ export default async function NewsDetailPage({ params }: Props) {
 
   return (
     <>
-      <header className="header">
-        <div className="container">
-          <Link href="/news" className="logo">AI Edge</Link>
-          <div className="social-icons">
-            <a href="#" title="LinkedIn"><i className="fab fa-linkedin-in"></i></a>
-            <a href="#" title="Instagram"><i className="fab fa-instagram"></i></a>
-          </div>
-        </div>
-      </header>
+      <Navigation />
 
-      <article className="article-page">
+      <article className="article-page" style={{ marginTop: '80px' }}>
         <div className="article-wrapper">
           <span className="blog-entry-category">
             {new Date(news.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
