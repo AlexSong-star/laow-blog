@@ -32,7 +32,7 @@ body {
 /* Header - 增加30px高度 */
 .header { 
   padding: 40px 0;  /* 原24px + 15px = 39px */
-  background: #000; 
+  background: #fff; 
   border-bottom: 1px solid var(--border-color); 
 }
 .header .container { 
@@ -66,7 +66,7 @@ body {
 
 /* 卡片 - 精细调整 */
 .card { 
-  background: #000; 
+  background: #fff; 
   border: 1px solid var(--border-color); 
   overflow: hidden; 
   height: 100%; 
@@ -269,7 +269,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #000;
+  background: #fff;
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
