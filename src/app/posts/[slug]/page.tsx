@@ -42,7 +42,7 @@ export default async function PostPage({ params }: Props) {
       <Navigation />
 
       {/* 详情页主体 */}
-      <article className="article-page" style={{ marginTop: '80px' }}>
+      <article className="article-page">
         {/* 日期信息 */}
         <div className="article-wrapper">
           <span className="blog-entry-category">
