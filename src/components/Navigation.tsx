@@ -40,7 +40,7 @@ export default function Navigation() {
             onClick={() => setMenuOpen(true)}
             aria-label="Open Navigation"
           >
-            Menu
+            ☰
           </button>
         </div>
       </header>
