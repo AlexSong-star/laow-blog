@@ -1,4 +1,4 @@
-// 新闻页面 - 实时热点新闻
+// 新闻页面 - 与 blog 相同布局
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 
@@ -8,6 +8,7 @@ const newsItems = [
     excerpt: "全新版本的 OpenClaw 带来了更强大的自动化能力和更好的开发体验",
     date: "2026-03-18",
     category: "技术",
+    tags: ["AI", "OpenClaw"],
     readTime: "3 min"
   },
   {
@@ -15,6 +16,7 @@ const newsItems = [
     excerpt: "探讨如何构建高效的 AI Agent 协作系统",
     date: "2026-03-17",
     category: "技术",
+    tags: ["Agent", "工作流"],
     readTime: "5 min"
   },
   {
@@ -22,6 +24,7 @@ const newsItems = [
     excerpt: "详细讲解飞书多维表格的各种 API 使用方法",
     date: "2026-03-16",
     category: "教程",
+    tags: ["飞书", "API"],
     readTime: "8 min"
   },
   {
@@ -29,6 +32,7 @@ const newsItems = [
     excerpt: "AI 正在改变我们的工作方式",
     date: "2026-03-15",
     category: "观点",
+    tags: ["数字员工", "趋势"],
     readTime: "4 min"
   },
   {
@@ -36,6 +40,7 @@ const newsItems = [
     excerpt: "探索 Next.js 16带来的新功能和改进",
     date: "2026-03-14",
     category: "技术",
+    tags: ["Next.js", "前端"],
     readTime: "6 min"
   },
   {
@@ -43,45 +48,39 @@ const newsItems = [
     excerpt: "让你的 Next.js 应用部署更快、更高效",
     date: "2026-03-13",
     category: "教程",
+    tags: ["Vercel", "部署"],
     readTime: "4 min"
   }
 ];
 
 export default function NewsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen">
       <Navigation />
-      <div style={{ marginTop: '80px' }}>
-      {/* Hero */}
-      <div className="relative overflow-hidden bg-gradient-to-b from-emerald-900/20 via-slate-900 to-slate-900 pb-16">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl"></div>
-        </div>
 
-        <div className="relative max-w-6xl mx-auto px-4 pt-24 pb-12">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-3 mb-6">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-red-400 via-orange-500 to-yellow-500 flex items-center justify-center text-4xl shadow-2xl animate-pulse">
-                📰
-              </div>
+      {/* Hero Section */}
+      <div className="relative max-w-6xl mx-auto px-4 pt-24 pb-12">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-3 mb-6">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-red-400 via-orange-500 to-yellow-500 flex items-center justify-center text-4xl shadow-2xl animate-pulse">
+              📰
             </div>
-            
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-red-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">
-                实时热点
-              </span>
-            </h1>
-            
-            <p className="text-lg text-gray-400 mb-8 max-w-xl mx-auto">
-              追踪最新技术动态 📡<br/>
-              <span className="text-sm text-gray-500">分享 AI、科技、互联网热点资讯</span>
-            </p>
           </div>
+          
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-red-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">
+              实时热点
+            </span>
+          </h1>
+          
+          <p className="text-lg text-gray-400 mb-8 max-w-xl mx-auto">
+            追踪最新技术动态 📡<br/>
+            <span className="text-sm text-gray-500">分享 AI，科技、互联网热点资讯</span>
+          </p>
         </div>
       </div>
 
-      {/* News Grid */}
+      {/* News List */}
       <div className="max-w-6xl mx-auto px-4 py-8">
         <section className="grid gap-6">
           {newsItems.map((news, index) => (
@@ -109,7 +108,13 @@ export default function NewsPage() {
                     {news.excerpt}
                   </p>
                   
-                  <span className="text-xs text-gray-500">{news.readTime} read</span>
+                  <div className="flex flex-wrap gap-2">
+                    {news.tags.map(tag => (
+                      <span key={tag} className="text-xs text-gray-500">
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
                 {/* 右侧箭头 */}
@@ -120,7 +125,6 @@ export default function NewsPage() {
             </article>
           ))}
         </section>
-      </div>
       </div>
     </div>
   );
