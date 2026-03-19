@@ -89,7 +89,7 @@ export default async function NewsDetailPage({ params }: Props) {
     <>
       <Navigation />
 
-      <article className="article-page">
+      <article className="article-page news-article-page">
         <div className="article-wrapper">
           <span className="blog-entry-category">
             {new Date(news.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
