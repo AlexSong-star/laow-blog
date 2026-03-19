@@ -73,7 +73,6 @@ export default function NewsPage() {
                     </div>
                     <div className="card-body">
                       <h3 className="card-title">{news.title}</h3>
-                      <p className="card-text mb-4">{news.excerpt}</p>
                       <p className="blog-length">
                         {news.date} · {news.readTime} 阅读
                       </p>
