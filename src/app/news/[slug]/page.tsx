@@ -95,19 +95,18 @@ export default async function NewsDetailPage({ params }: Props) {
     <>
       <Navigation />
 
-      <article className="article-page news-article-page">
-        <div className="article-wrapper">
+      <article className="article-page news-article-page" style={{ padding: 0 }}>
+        <img 
+          src={heroImage}
+          className="article-hero-image"
+          alt={news.title}
+          style={{ borderRadius: 0 }}
+        />
+        
+        <div className="article-wrapper" style={{ padding: '0 24px' }}>
           <span className="blog-entry-category">
             {new Date(news.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
           </span>
-        </div>
-
-        <div className="article-wrapper">
-          <img 
-            src={heroImage}
-            className="article-hero-image"
-            alt={news.title}
-          />
         </div>
 
         <div className="article-wrapper">
@@ -123,11 +122,9 @@ export default async function NewsDetailPage({ params }: Props) {
         </div>
       </article>
 
-      {/* 下一个新闻推荐 */}
       <section className="news-article-page" style={{ padding: '40px 0' }}>
-        <div className="container">
-          <h3 style={{ marginBottom: '24px', color: '#000' }}>下一篇</h3>
-          <div className="posts-grid">
+        <div className="container" style={{ maxWidth: '100%', padding: '0' }}>
+          <div className="posts-grid" style={{ margin: 0, width: '100%' }}>
             <div className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
               <div className="card h-100">
                 <Link href={`/news/${nextNews.slug}`}>
