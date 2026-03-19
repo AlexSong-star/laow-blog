@@ -1,7 +1,6 @@
 // About 页面
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
-import './globals.css';
 
 export const metadata = {
   title: 'The AI Edge',
