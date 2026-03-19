@@ -275,8 +275,21 @@ body {
 }
 
 .nav-overlay.open {
+  background: #000;
   opacity: 1;
   visibility: visible;
+}
+
+.nav-overlay.open .nav-overlay-link {
+  color: #fff;
+}
+
+.nav-overlay.open .nav-overlay-footer {
+  border-top-color: #333;
+}
+
+.nav-overlay.open .nav-overlay-footer .social-icon {
+  color: #fff;
 }
 
 .nav-overlay-content {
