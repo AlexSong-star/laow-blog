@@ -62,12 +62,6 @@ export default function NewsPage() {
     <>
       <Navigation />
       <main className="main-content">
-        <section className="hero">
-          <div className="container">
-            <h1 className="hero-title">News</h1>
-          </div>
-        </section>
-        
         <section className="posts-section">
           <div className="container">
             <div className="posts-grid">

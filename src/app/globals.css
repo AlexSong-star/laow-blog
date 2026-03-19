@@ -201,8 +201,7 @@ body {
 }
 .footer-content { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; text-align: left; }
 .footer-section h3 { font-size: 26px; font-weight: 700; margin: 0 0 16px; color: #E6B123; text-align: left; }
-.footer-section a { display: block; color: #fff; text-decoration: none;
-  color: #000; font-size: 15px; margin-bottom: 10px; text-align: left; }
+.footer-section a { display: block; color: #fff; text-decoration: none; font-size: 15px; margin-bottom: 10px; text-align: left; }
 .footer-section a:hover { color: #fff; }
 .footer-bottom { margin-top: 40px; padding-top: 24px; border-top: 1px solid #333; font-size: 13px; color: #fff; text-align: left; }
 
@@ -231,7 +230,6 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   text-decoration: none;
-  color: #000;
   transition: color 0.2s;
 }
 
@@ -314,12 +312,10 @@ body {
 }
 
 .nav-overlay-link {
-  color: #000;
   font-family: 'Ringside Compressed A', sans-serif;
   font-size: 42px;
   font-weight: 700;
   text-decoration: none;
-  color: #000;
   letter-spacing: -0.02em;
   transition: color 0.2s;
 }
@@ -338,7 +334,6 @@ body {
 
 .nav-overlay-footer .social-icon {
   font-size: 20px;
-  color: #000;
   transition: color 0.2s;
 }
 
