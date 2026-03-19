@@ -354,3 +354,21 @@ body {
 }
 .news-article-page { background: #fff; }
 .posts-grid { margin: 0; width: 100%; }
+
+.nav-overlay.open {
+  background: #000;
+  opacity: 1;
+  visibility: visible;
+}
+
+.nav-overlay.open .nav-overlay-link {
+  color: #fff;
+}
+
+.nav-overlay.open .nav-overlay-footer {
+  border-top-color: #333;
+}
+
+.nav-overlay.open .nav-overlay-footer .social-icon {
+  color: #fff;
+}
