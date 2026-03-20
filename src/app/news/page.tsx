@@ -4,6 +4,30 @@ import Navigation from '@/components/Navigation';
 
 const newsItems = [
   {
+    slug: "astral-join-openai",
+    title: "Astral 团队加入 OpenAI：Python 工具作者的下一站",
+    excerpt: "Ruff 和 uv 的作者团队 Astral 宣布加入 OpenAI，继续推进 Python 开发者工具革新",
+    date: "2026-03-20",
+    readTime: "4 min",
+    image: "/images/articles/news-ai-robot.jpg"
+  },
+  {
+    slug: "google-android-sideload",
+    title: "Google 发布 Android 侧载应用新政策",
+    excerpt: "Google 公布新流程，第三方应用侧载需经更严格的验证机制",
+    date: "2026-03-20",
+    readTime: "3 min",
+    image: "/images/articles/news-ai-workflow.jpg"
+  },
+  {
+    slug: "markdown-generative-ui",
+    title: "Markdown 变身生成式 UI 协议",
+    excerpt: "开发者将 Markdown 转化为生成式 UI 的协议，开启前端开发新范式",
+    date: "2026-03-20",
+    readTime: "4 min",
+    image: "/images/articles/news-digital-era.jpg"
+  },
+  {
     slug: "2026-03-20-ai-news",
     title: "AI日报：全球算力告急涨价，腾讯AI投入翻倍",
     excerpt: "全球算力告急引发涨价潮，阿里云百度云同日官宣；腾讯2026财年AI投入翻倍",
