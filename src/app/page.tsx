@@ -19,6 +19,7 @@ export default function Home() {
     '2026-03-17-first-post': '/images/articles/blog-launch.jpg',
     '2026-03-17-hello-world': '/images/articles/hello-world.jpg',
     '2026-03-20-ai-news': '/images/articles/cloud-computing-price.png',
+    '2026-03-20-agent-era': '/images/articles/agent-era.jpg',
   };
 
   return (
