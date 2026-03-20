@@ -4,6 +4,14 @@ import Navigation from '@/components/Navigation';
 
 const newsItems = [
   {
+    slug: "2026-03-20-ai-news",
+    title: "AI日报：全球算力告急涨价，腾讯AI投入翻倍",
+    excerpt: "全球算力告急引发涨价潮，阿里云百度云同日官宣；腾讯2026财年AI投入翻倍",
+    date: "2026-03-20",
+    readTime: "3 min",
+    image: "/images/articles/cloud-computing-price.png"
+  },
+  {
     slug: "openclaw-3-0",
     title: "OpenClaw 3.0 发布：AI 助手新纪元",
     excerpt: "全新版本的 OpenClaw 带来了更强大的自动化能力和更好的开发体验",

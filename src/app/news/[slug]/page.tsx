@@ -10,6 +10,41 @@ interface Props {
 // 新闻数据
 const newsItems = [
   {
+    slug: "2026-03-20-ai-news",
+    title: "AI日报：全球算力告急涨价，腾讯AI投入翻倍",
+    excerpt: "全球算力告急引发涨价潮，阿里云百度云同日官宣；腾讯2026财年AI投入翻倍；英伟达新功能遭游戏圈抵制",
+    date: "2026-03-20",
+    readTime: "3 min",
+    content: `<h3>1. 全球算力告急引发"涨价潮"</h3>
+<p>AWS和腾讯云之后，阿里云与百度云于3月19日同日官宣涨价，最高涨幅达34%。这意味着云计算十年"价格战"正式终结。</p>
+<p><strong>影响分析：</strong></p>
+<ul>
+<li>中小企业成本压力增加</li>
+<li>AI算力需求持续旺盛</li>
+<li>云计算厂商盈利能力有望改善</li>
+</ul>
+
+<h3>2. 腾讯2026财年AI投入翻倍</h3>
+<p>稳扎稳打的腾讯也要为AI花大钱了。2026财年，腾讯将减少股票回购，AI投入翻倍。</p>
+<p><strong>关键点：</strong></p>
+<ul>
+<li>AI投入大幅增加</li>
+<li>股票回购力度减少</li>
+<li>市场期待微信Agent和姚顺雨两张底牌</li>
+</ul>
+
+<h3>3. 英伟达新AI功能遭全网抵制</h3>
+<p>老黄怒怼玩家"根本不懂AI"，英伟达新AI功能遭全网抵制，游戏圈炸锅了。</p>
+
+<h3>行业观察</h3>
+<ul>
+<li><strong>算力紧缺</strong>：AI爆发式增长导致全球算力供不应求</li>
+<li><strong>投资加码</strong>：科技巨头纷纷加大AI投入</li>
+<li><strong>争议显现</strong>：AI新技术应用面临用户接受度挑战</li>
+</ul>`,
+    image: "/images/articles/cloud-computing-price.png"
+  },
+  {
     slug: "openclaw-3-0",
     title: "OpenClaw 3.0 发布：AI 助手新纪元",
     excerpt: "全新版本的 OpenClaw 带来了更强大的自动化能力和更好的开发体验",
