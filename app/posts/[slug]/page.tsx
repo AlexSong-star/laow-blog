@@ -20,9 +20,13 @@ export async function generateStaticParams() {
 
 // 每篇文章对应的图片
 const articleImages: Record<string, string> = {
+  '2026-03-22-agent-workflow': '/images/articles/agent-workflow.jpg',
+  '2026-03-20-agent-era': '/images/articles/agent-era.jpg',
+  '2026-03-20-woodman': '/images/articles/woodman.jpg',
+  '2026-03-20-ai-news': '/images/articles/ai-news.jpg',
   '2026-03-17-ai-workflow': '/images/articles/ai-workflow.jpg',
   '2026-03-17-how-i-work': '/images/articles/how-i-work.jpg',
-    '2026-03-19-blog-upgrade': '/images/articles/blog-upgrade.jpg',
+  '2026-03-19-blog-upgrade': '/images/articles/blog-upgrade.jpg',
   '2026-03-17-first-post': '/images/articles/blog-launch.jpg',
   '2026-03-17-hello-world': '/images/articles/hello-world.jpg',
 };
