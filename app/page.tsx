@@ -13,6 +13,7 @@ export default function Home() {
 
   // 每篇文章对应的图片
   const articleImages: Record<string, string> = {
+    '2026-03-22-mcp-protocol': '/images/articles/mcp-protocol.jpg',
     '2026-03-22-agent-workflow': '/images/articles/agent-workflow.jpg',
     '2026-03-20-agent-era': '/images/articles/agent-era.jpg',
     '2026-03-20-woodman': '/images/articles/woodman.jpg',
