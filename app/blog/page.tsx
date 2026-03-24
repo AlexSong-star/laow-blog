@@ -1,12 +1,13 @@
 // 博客首页
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
-import { getAllPosts } from '@/lib/posts';
+import { getAllPosts, getPostsByCategory } from '@/lib/posts';
 
 export const revalidate = 60;
 
 export default function BlogHome() {
-  const posts = getAllPosts();
+  const allPosts = getAllPosts();
+  const posts = allPosts.filter(post => post.category === '博客');
   const categories = getAllCategories();
   const tags = getAllTags();
 
@@ -136,13 +137,15 @@ export default function BlogHome() {
 }
 
 function getAllCategories(): string[] {
-  const posts = getAllPosts();
+  const allPosts = getAllPosts();
+  const posts = allPosts.filter(post => post.category === '博客');
   const categories = new Set(posts.map(post => post.category));
   return Array.from(categories);
 }
 
 function getAllTags(): string[] {
-  const posts = getAllPosts();
+  const allPosts = getAllPosts();
+  const posts = allPosts.filter(post => post.category === '博客');
   const tags = new Set(posts.flatMap(post => post.tags));
   return Array.from(tags);
 }

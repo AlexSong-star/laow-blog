@@ -2,6 +2,7 @@
 title: "AI电商折戟：Walmart ChatGPT checkout 转化率暴跌3倍"
 date: "2026-03-23"
 description: "沃尔玛押注ChatGPT式AI购物车，转化率却比传统网站低3倍。AI电商到底缺了什么？"
+category: "{category}"
 image: "/images/articles/ai-commerce.jpg"
 tags: ["AI", "电商", "案例", "Walmart", "用户体验"]
 ---

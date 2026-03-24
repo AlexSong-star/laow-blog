@@ -2,6 +2,7 @@
 title: "本地大模型爆发：iPhone跑400B、GPT5.4攻克数学难题"
 date: "2026-03-24"
 description: "iPhone 17 Pro演示运行400B参数大模型，同日GPT5.4 Pro攻克前沿数学难题。本地AI进入冲刺阶段。"
+category: "{category}"
 image: "/images/articles/local-llm-mobile.jpg"
 tags: ["AI", "本地大模型", "iPhone", "数学", "GPT", "边缘计算"]
 ---
