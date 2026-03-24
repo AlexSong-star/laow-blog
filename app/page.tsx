@@ -22,6 +22,7 @@ export default function Home() {
     '2026-03-24-iphone-400b-llm': '/images/articles/iphone-400b-llm.jpg',
     '2026-03-24-local-llm-mobile': '/images/articles/local-llm-mobile.jpg',
     '2026-03-24-openclaw-v2026-3-23': '/images/articles/openclaw-v2026-3-23.jpg',
+    '2026-03-24-ai-research-agent': '/images/articles/ai-research-agent.svg',
   };
 
   return (
