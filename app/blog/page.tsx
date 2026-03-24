@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import { getAllPosts } from '@/lib/posts';
-import './globals.css';
+import '../globals.css';
 
 export const metadata = {
   title: 'The AI Edge',
