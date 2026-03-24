@@ -14,6 +14,7 @@ export interface Post {
   category: string;
   tags: string[];
   excerpt: string;
+  image: string;
   published: boolean;
   top: boolean;
   contentHtml?: string;
@@ -41,6 +42,7 @@ export function getAllPosts(): Post[] {
         category: data.category || '未分类',
         tags: data.tags || [],
         excerpt: data.excerpt || data.description || '',
+        image: data.image || '',
         published: data.published !== false,
         top: data.top || false,
       };
@@ -73,6 +75,7 @@ export function getPostBySlug(slug: string): Post | null {
     category: data.category || '未分类',
     tags: data.tags || [],
     excerpt: data.excerpt || data.description || '',
+        image: data.image || '',
     published: data.published !== false,
     top: data.top || false,
     contentHtml: content,

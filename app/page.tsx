@@ -18,11 +18,10 @@ export default function Home() {
     '2026-03-20-agent-era': '/images/articles/agent-era.jpg',
     '2026-03-20-woodman': '/images/articles/woodman.jpg',
     '2026-03-20-ai-news': '/images/articles/ai-news.jpg',
-    '2026-03-17-ai-workflow': '/images/articles/ai-workflow.jpg',
-    '2026-03-17-how-i-work': '/images/articles/how-i-work.jpg',
-    '2026-03-19-blog-upgrade': '/images/articles/blog-upgrade.jpg',
-    '2026-03-17-first-post': '/images/articles/blog-launch.jpg',
-    '2026-03-17-hello-world': '/images/articles/hello-world.jpg',
+    '2026-03-23-ai-commerce': '/images/articles/ai-commerce.jpg',
+    '2026-03-24-iphone-400b-llm': '/images/articles/iphone-400b-llm.jpg',
+    '2026-03-24-local-llm-mobile': '/images/articles/local-llm-mobile.jpg',
+    '2026-03-24-openclaw-v2026-3-23': '/images/articles/openclaw-v2026-3-23.jpg',
   };
 
   return (
@@ -39,7 +38,7 @@ export default function Home() {
                   <Link href={`/posts/${post.slug}`}>
                     <div className="position-relative">
                       <img 
-                        src={articleImages[post.slug] || '/images/articles/blog-launch.jpg'} 
+                        src={post.image || articleImages[post.slug] || '/images/articles/blog-launch.jpg'} 
                         className="blog-image" 
                         alt={post.title}
                       />
