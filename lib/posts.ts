@@ -40,7 +40,7 @@ export function getAllPosts(): Post[] {
         date: data.date || '2026-01-01',
         category: data.category || '未分类',
         tags: data.tags || [],
-        excerpt: data.excerpt || '',
+        excerpt: data.excerpt || data.description || '',
         published: data.published !== false,
         top: data.top || false,
       };
@@ -72,7 +72,7 @@ export function getPostBySlug(slug: string): Post | null {
     date: data.date || '2026-01-01',
     category: data.category || '未分类',
     tags: data.tags || [],
-    excerpt: data.excerpt || '',
+    excerpt: data.excerpt || data.description || '',
     published: data.published !== false,
     top: data.top || false,
     contentHtml: content,
