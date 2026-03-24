@@ -2,7 +2,7 @@
 title: "MCP协议：AI Agent的&quot;USB-C接口&quot;时刻"
 date: "2026-03-22"
 description: "Model Context Protocol正在成为AI Agent互操作的事实标准。为什么说它是AI行业的USB-C？生态现状与未来展望"
-category: "{category}"
+category: "博客"
 image: "/images/articles/mcp-protocol.jpg"
 tags: ["AI", "MCP", "协议", "Agent", "标准化"]
 ---

@@ -2,7 +2,7 @@
 title: "AI Agent工作流：从Prompt工程到Agent编排的范式转移"
 date: "2026-03-22"
 description: "当AI从被动应答走向主动执行，工作流编排成为新的核心竞争力。如何设计可靠的Agent循环？容错机制怎么做？"
-category: "{category}"
+category: "博客"
 image: "/images/articles/agent-workflow.jpg"
 tags: ["AI", "Agent", "工作流", "工程实践"]
 ---
