@@ -9,16 +9,9 @@ export const metadata = {
 };
 
 export default function Home() {
-  const posts = getAllPosts();
-
-  // 每篇文章对应的图片
+  const allPosts = getAllPosts();
+  const posts = allPosts.filter(post => post.category === '新闻');
   const articleImages: Record<string, string> = {
-    '2026-03-17-ai-workflow': '/images/articles/ai-workflow.jpg',
-    '2026-03-17-how-i-work': '/images/articles/how-i-work.jpg',
-    '2026-03-19-blog-upgrade': '/images/articles/blog-upgrade.jpg',
-    '2026-03-17-first-post': '/images/articles/blog-launch.jpg',
-    '2026-03-17-hello-world': '/images/articles/hello-world.jpg',
-    '2026-03-20-ai-news': '/images/articles/cloud-computing-price.png',
     '2026-03-20-agent-era': '/images/articles/agent-era.jpg',
   };
 
@@ -36,7 +29,7 @@ export default function Home() {
                   <Link href={`/posts/${post.slug}`}>
                     <div className="position-relative">
                       <img 
-                        src={articleImages[post.slug] || '/images/articles/blog-launch.jpg'} 
+                        src={post.image || articleImages[post.slug] || '/images/articles/blog-launch.jpg'} 
                         className="blog-image" 
                         alt={post.title}
                       />
