@@ -41,14 +41,14 @@ export default async function PostPage({ params }: Props) {
   }
 
   const contentHtml = await getPostContentHtml(slug);
-  const heroImage = articleImages[slug] || '/images/articles/blog-launch.jpg';
+  const heroImage = post.image || articleImages[slug] || '/images/articles/blog-launch.jpg';
 
   return (
     <>
       <Navigation />
 
       {/* 详情页主体 */}
-      <article className="article-page">
+      <article className={"article-page " + (post.category === '新闻' ? 'news-article-page' : '')}>
         {/* 日期信息 */}
         <div className="article-wrapper">
           <span className="blog-entry-category">
