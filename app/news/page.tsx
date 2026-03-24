@@ -13,6 +13,7 @@ export default function Home() {
   const posts = allPosts.filter(post => post.category === '新闻');
   const articleImages: Record<string, string> = {
     '2026-03-20-agent-era': '/images/articles/agent-era.jpg',
+    '2026-03-24-ai-research-agent': '/images/articles/ai-research-agent.svg',
   };
 
   return (
