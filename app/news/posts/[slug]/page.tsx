@@ -38,9 +38,12 @@ export default async function PostPage({ params }: Props) {
   const contentHtml = await getPostContentHtml(slug);
   const heroImage = articleImages[slug] || '/images/articles/blog-launch.jpg';
 
+  // 如果文章正文已经以图片开头（markdown第一行就是图片），就不需要header背景图
+  const bodyStartsWithImage = contentHtml.trim().startsWith('<img');
+
   return (
     <>
-      <Navigation headerBgImage={post.image} />
+      <Navigation headerBgImage={bodyStartsWithImage ? undefined : post.image} />
 
       {/* 详情页主体 */}
       <article className="article-page">
