@@ -230,6 +230,7 @@ body {
   letter-spacing: 0.08em;
   text-decoration: none;
   transition: color 0.2s;
+  color: #000;
 }
 
 .desktop-nav-link:hover,
