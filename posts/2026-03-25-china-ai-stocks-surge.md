@@ -3,7 +3,7 @@ title: "黄仁勋一句话，中概 AI 股集体飙涨：MiniMax 盘中涨幅达
 date: "2026-03-25"
 description: "Nvidia CEO 黄仁勋公开力挺 OpenClaw，称其为「下一个 ChatGPT」，中概 AI 相关股票应声大涨，MiniMax、智谱等涨幅创纪录"
 category: "新闻"
-image: "/images/articles/openclaw-viral-surge.jpg"
+image: "/images/articles/china-ai-stocks-surge.jpg"
 tags: ["AI 股票", "MiniMax", "智谱AI", "Zhipu", "Nvidia", "黄仁勋", "中概股"]
 ---
 

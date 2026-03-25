@@ -3,7 +3,7 @@ title: "Meta 推出 Manus 桌面版 AI Agent：让你的电脑自己干活"
 date: "2026-03-25"
 description: "Meta 收购的 AI 创业公司推出 Manus 桌面版 AI Agent，直接对标 OpenClaw，主打本地运行、隐私保护、离线能力，野心勃勃"
 category: "新闻"
-image: "/images/articles/openclaw-viral-surge.jpg"
+image: "/images/articles/meta-manus-desktop.jpg"
 tags: ["Meta", "Manus", "AI Agent", "OpenClaw", "本地运行", "桌面AI", "隐私计算"]
 ---
 
