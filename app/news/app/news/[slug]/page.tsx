@@ -252,29 +252,35 @@ export default async function NewsDetailPage({ params }: Props) {
         </div>
       </article>
 
-      {/* 下一个新闻推荐 */}
-      <section className="news-article-page">
-        <div className="container" style={{ maxWidth: '100%', padding: '0' }}>
-          <div className="posts-grid" style={{ margin: 0, width: '100%' }}>
-            <div className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
-              <div className="card h-100">
-                <Link href={`/news/${nextNews.slug}`}>
-                  <div className="position-relative">
-                    <img 
-                      src={nextNews.image} 
-                      className="blog-image" 
-                      alt={nextNews.title}
-                    />
+      {/* 其他新闻推荐 */}
+      <section className="bg-light pt-4 pb-4">
+        <div className="container">
+          <h3 style={{ marginBottom: '24px', fontSize: '18px', fontWeight: 700 }}>其他新闻</h3>
+          <div className="posts-grid">
+            {newsItems
+              .filter(n => n.slug !== slug)
+              .slice(0, 3)
+              .map(item => (
+                <div key={item.slug} className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
+                  <div className="card h-100">
+                    <Link href={`/news/${item.slug}`}>
+                      <div className="position-relative">
+                        <img
+                          src={item.image}
+                          className="blog-image"
+                          alt={item.title}
+                        />
+                      </div>
+                      <div className="card-body">
+                        <h3 className="card-title">{item.title}</h3>
+                        <p className="blog-length">
+                          {item.date} · {item.readTime} 阅读
+                        </p>
+                      </div>
+                    </Link>
                   </div>
-                  <div className="card-body">
-                    <h3 className="card-title">{nextNews.title}</h3>
-                    <p className="blog-length">
-                      {nextNews.date} · {nextNews.readTime} 阅读
-                    </p>
-                  </div>
-                </Link>
-              </div>
-            </div>
+                </div>
+              ))}
           </div>
         </div>
       </section>

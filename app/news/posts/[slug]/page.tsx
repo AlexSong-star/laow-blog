@@ -75,6 +75,39 @@ export default async function PostPage({ params }: Props) {
         </div>
       </article>
 
+      {/* 其他新闻推荐 */}
+      <section className="bg-light pt-4 pb-4">
+        <div className="container">
+          <h3 style={{ marginBottom: '24px', fontSize: '18px', fontWeight: 700 }}>其他新闻</h3>
+          <div className="posts-grid">
+            {getAllPosts()
+              .filter(p => p.category === '新闻' && p.slug !== slug)
+              .slice(0, 3)
+              .map(post => (
+                <div key={post.slug} className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
+                  <div className="card h-100">
+                    <Link href={`/news/${post.slug}`}>
+                      <div className="position-relative">
+                        <img
+                          src={post.image}
+                          className="blog-image"
+                          alt={post.title}
+                        />
+                      </div>
+                      <div className="card-body">
+                        <h3 className="card-title">{post.title}</h3>
+                        <p className="blog-length">
+                          {new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="footer">
         <div className="container">
