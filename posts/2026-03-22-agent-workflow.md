@@ -9,7 +9,6 @@ tags: ["AI", "Agent", "工作流", "工程实践"]
 
 # AI Agent工作流：从Prompt工程到Agent编排的范式转移
 
-![Agent工作流](/images/articles/agent-workflow.jpg)
 
 ## 从"说一句话"到"做一件事"
 

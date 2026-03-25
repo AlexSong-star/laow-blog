@@ -9,7 +9,6 @@ tags: ["AI", "MCP", "协议", "Agent", "标准化"]
 
 # MCP协议：AI Agent的"USB-C接口"时刻
 
-![MCP协议](/images/articles/mcp-protocol.jpg)
 
 ## 为什么需要MCP？
 

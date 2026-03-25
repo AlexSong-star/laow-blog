@@ -9,7 +9,6 @@ tags: ["AI", "电商", "案例", "Walmart", "用户体验"]
 
 # AI电商折戟：Walmart ChatGPT checkout 转化率暴跌3倍
 
-![AI电商遇冷](/images/articles/ai-commerce.jpg)
 
 ## 一个反直觉的案例
 
