@@ -48,12 +48,12 @@ const projects = [
 ];
 
 const projectImages = [
-  '/images/articles/ai-research-agent.jpg',
-  '/images/articles/mcp-protocol.jpg',
-  '/images/articles/agent-workflow.jpg',
-  '/images/articles/openclaw-viral-surge.jpg',
-  '/images/articles/openclaw-v2026-3-23.jpg',
-  '/images/articles/meta-manus-desktop.jpg',
+  '/images/articles/digital-employee-team.jpg',
+  '/images/articles/russia-trade.jpg',
+  '/images/articles/daily-checkin.jpg',
+  '/images/articles/ai-recruiting.jpg',
+  '/images/articles/blog-system.jpg',
+  '/images/articles/feishu-bot.jpg',
 ];
 
 export default function ProjectsPage() {
