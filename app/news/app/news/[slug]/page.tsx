@@ -263,7 +263,7 @@ export default async function NewsDetailPage({ params }: Props) {
               .map(item => (
                 <div key={item.slug} className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
                   <div className="card h-100">
-                    <Link href={`/news/${item.slug}`}>
+                    <Link href={`/posts/${item.slug}`}>
                       <div className="position-relative">
                         <img
                           src={item.image}

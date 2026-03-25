@@ -1,4 +1,4 @@
-// 文章详情页 - 复刻参考网站样式
+// 文章详情页 - 统一入口 /posts/[slug]
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getPostContentHtml, getAllPosts } from '@/lib/posts';
@@ -18,20 +18,6 @@ export async function generateStaticParams() {
   }));
 }
 
-// 每篇文章对应的图片
-const articleImages: Record<string, string> = {
-  '2026-03-22-mcp-protocol': '/images/articles/mcp-protocol.jpg',
-  '2026-03-22-agent-workflow': '/images/articles/agent-workflow.jpg',
-  '2026-03-20-agent-era': '/images/articles/agent-era.jpg',
-  '2026-03-20-woodman': '/images/articles/woodman.jpg',
-  '2026-03-20-ai-news': '/images/articles/ai-news.jpg',
-  '2026-03-17-ai-workflow': '/images/articles/ai-workflow.jpg',
-  '2026-03-17-how-i-work': '/images/articles/how-i-work.jpg',
-  '2026-03-19-blog-upgrade': '/images/articles/blog-upgrade.jpg',
-  '2026-03-17-first-post': '/images/articles/blog-launch.jpg',
-  '2026-03-17-hello-world': '/images/articles/hello-world.jpg',
-};
-
 export default async function PostPage({ params }: Props) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
@@ -41,28 +27,28 @@ export default async function PostPage({ params }: Props) {
   }
 
   const contentHtml = await getPostContentHtml(slug);
-  const heroImage = post.image || articleImages[slug] || '/images/articles/blog-launch.jpg';
+  const heroImage = post.image || '/images/articles/blog-launch.jpg';
+
+  // 如果文章正文已经以图片开头（markdown第一行就是图片），就不需要header背景图
+  const bodyStartsWithImage = contentHtml.trim().startsWith('<img');
+
+  // 获取其他文章（排除当前篇）
+  const otherPosts = getAllPosts()
+    .filter(p => p.slug !== slug)
+    .slice(0, 3);
 
   return (
     <>
-      <Navigation />
+      <Navigation headerBgImage={bodyStartsWithImage ? undefined : heroImage} />
 
       {/* 详情页主体 */}
-      <article className={"article-page " + (post.category === '新闻' ? 'news-article-page' : '')}>
+      <article className={`article-page ${post.category === '新闻' ? 'news-article-page' : ''}`} style={{ padding: 0 }}>
+
         {/* 日期信息 */}
         <div className="article-wrapper">
           <span className="blog-entry-category">
             Posted by 老六, {new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
           </span>
-        </div>
-
-        {/* 主图 */}
-        <div className="article-wrapper">
-          <img 
-            src={heroImage}
-            className="article-hero-image"
-            alt={post.title}
-          />
         </div>
 
         {/* 文章内容 */}
@@ -85,6 +71,36 @@ export default async function PostPage({ params }: Props) {
           </div>
         </div>
       </article>
+
+      {/* 其他文章推荐 */}
+      <section className="bg-light pt-4 pb-4">
+        <div className="container">
+          <h3 style={{ marginBottom: '24px', fontSize: '18px', fontWeight: 700 }}>其他文章</h3>
+          <div className="posts-grid">
+            {otherPosts.map(item => (
+              <div key={item.slug} className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
+                <div className="card h-100">
+                  <Link href={`/posts/${item.slug}`}>
+                    <div className="position-relative">
+                      <img
+                        src={item.image}
+                        className="blog-image"
+                        alt={item.title}
+                      />
+                    </div>
+                    <div className="card-body">
+                      <h3 className="card-title">{item.title}</h3>
+                      <p className="blog-length">
+                        {new Date(item.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                      </p>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
       <footer className="footer">

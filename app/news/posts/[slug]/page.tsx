@@ -86,7 +86,7 @@ export default async function PostPage({ params }: Props) {
               .map(post => (
                 <div key={post.slug} className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
                   <div className="card h-100">
-                    <Link href={`/news/${post.slug}`}>
+                    <Link href={`/posts/${post.slug}`}>
                       <div className="position-relative">
                         <img
                           src={post.image}
