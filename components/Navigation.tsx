@@ -11,13 +11,26 @@ const navItems = [
   { href: "/about", label: "About" },
 ];
 
-export default function Navigation() {
+interface Props {
+  headerBgImage?: string;
+}
+
+export default function Navigation({ headerBgImage }: Props) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const isNewsDetail = !!headerBgImage;
+
   return (
     <>
-      <header className="header">
+      <header
+        className={`header${isNewsDetail ? ' news-detail-header' : ''}`}
+        style={headerBgImage ? {
+          backgroundImage: `url(${headerBgImage})`,
+          backgroundSize: 'cover',
+          height: '300px',
+        } : undefined}
+      >
         <div className="container">
           <Link href="/" className="logo">AI Edge</Link>
           

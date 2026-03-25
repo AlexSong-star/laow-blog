@@ -379,3 +379,13 @@ body {
 .nav-overlay.open .nav-overlay-header .nav-close {
   color: #fff;
 }
+
+/* ========== 新闻详情页专用样式 ========== */
+/* 只影响带背景图的 header，不影响其他页面 */
+.news-detail-header .logo {
+  color: #fff;
+}
+
+.news-detail-header .nav-toggle {
+  color: #fff;
+}
