@@ -229,15 +229,9 @@ export default async function NewsDetailPage({ params }: Props) {
 
   return (
     <>
-      <Navigation />
+      <Navigation headerBgImage={news.image} />
 
       <article className="article-page news-article-page" style={{ padding: 0 }}>
-        <img 
-          src={news.image}
-          className="article-hero-image"
-          alt={news.title}
-          style={{ borderRadius: 0, height: '400px', width: '100%', objectFit: 'cover' }}
-        />
         
         <div className="article-wrapper" style={{ padding: '0 24px' }}>
           <span className="blog-entry-category">

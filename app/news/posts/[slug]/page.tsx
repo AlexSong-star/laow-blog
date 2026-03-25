@@ -40,7 +40,7 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <>
-      <Navigation />
+      <Navigation headerBgImage={post.image} />
 
       {/* 详情页主体 */}
       <article className="article-page">
@@ -49,15 +49,6 @@ export default async function PostPage({ params }: Props) {
           <span className="blog-entry-category">
             Posted by 老六, {new Date(post.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
           </span>
-        </div>
-
-        {/* 主图 */}
-        <div className="article-wrapper">
-          <img 
-            src={heroImage}
-            className="article-hero-image"
-            alt={post.title}
-          />
         </div>
 
         {/* 文章内容 */}
