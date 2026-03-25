@@ -73,7 +73,7 @@ export default function NewsPage() {
             {newsItems.map((news, index) => (
               <div key={index} className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
                 <div className="card h-100">
-                  <Link href={`/news/${news.slug}`}>
+                  <Link href={`/news/news/${news.slug}`}>
                     <div className="position-relative">
                       <img 
                         src={news.image} 
