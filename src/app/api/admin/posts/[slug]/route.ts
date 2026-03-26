@@ -1,84 +1,70 @@
-// 单篇文章 API
-import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
+import { NextResponse } from 'next/server'
+import { supabase } from '@/lib/supabase'
 
-const postsDirectory = path.join(process.cwd(), 'posts');
-
+// GET /api/admin/posts/[slug] - 获取单篇文章
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const { slug } = await params;
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
+  const { slug } = await params
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('slug', slug)
+    .single()
 
-  if (!fs.existsSync(fullPath)) {
-    return NextResponse.json({ error: '文章不存在' }, { status: 404 });
+  if (error || !data) {
+    return NextResponse.json({ error: '文章不存在' }, { status: 404 })
   }
 
-  const fileContents = fs.readFileSync(fullPath, 'utf8');
-  const { data, content } = matter(fileContents);
-
-  return NextResponse.json({
-    post: {
-      slug,
-      title: data.title || '无标题',
-      date: data.date || '2026-01-01',
-      category: data.category || '未分类',
-      tags: data.tags || [],
-      excerpt: data.excerpt || '',
-      content,
-      published: data.published !== false,
-      top: data.top || false,
-    },
-  });
+  return NextResponse.json({ post: data })
 }
 
+// PUT /api/admin/posts/[slug] - 更新文章
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const { slug } = await params;
-  const body = await request.json();
-  const { title, date, category, tags, excerpt, content, published, top } = body;
+  const { slug } = await params
+  const body = await request.json()
+  const { title, date, category, tags, excerpt, content, published, top, image } = body
 
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
+  const { error } = await supabase
+    .from('posts')
+    .update({
+      title,
+      date,
+      category: category || '博客',
+      tags: tags || [],
+      excerpt: excerpt || '',
+      content: content || '',
+      image: image || '',
+      published: published !== false,
+      top: top || false,
+    })
+    .eq('slug', slug)
 
-  if (!fs.existsSync(fullPath)) {
-    return NextResponse.json({ error: '文章不存在' }, { status: 404 });
+  if (error) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 })
   }
 
-  const markdown = `---
-title: ${title}
-date: ${date}
-category: ${category}
-tags: [${tags.join(', ')}]
-excerpt: ${excerpt}
-published: ${published}
-top: ${top}
----
-
-${content}
-`;
-
-  fs.writeFileSync(fullPath, markdown);
-
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true })
 }
 
+// DELETE /api/admin/posts/[slug] - 删除文章
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const { slug } = await params;
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
+  const { slug } = await params
+  const { error } = await supabase
+    .from('posts')
+    .delete()
+    .eq('slug', slug)
 
-  if (!fs.existsSync(fullPath)) {
-    return NextResponse.json({ error: '文章不存在' }, { status: 404 });
+  if (error) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 })
   }
 
-  fs.unlinkSync(fullPath);
-
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true })
 }
