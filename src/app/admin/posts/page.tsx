@@ -1,89 +1,67 @@
-// 文章管理列表
+// 文章管理列表 - 直接调用 Supabase（绕过 Vercel Serverless）
 "use client";
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { getAllPosts, deletePost } from '@/lib/supabase-client'
 
 interface Post {
-  slug: string;
-  title: string;
-  date: string;
-  category: string;
-  published: boolean;
-  top: boolean;
+  slug: string
+  title: string
+  date: string
+  category: string
+  published: boolean
+  top: boolean
 }
 
 export default function AdminPostsPage() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const router = useRouter();
+  const [posts, setPosts] = useState<Post[]>([])
+  const router = useRouter()
 
   useEffect(() => {
-    // 检查登录
-    const auth = localStorage.getItem('admin_auth');
+    const auth = localStorage.getItem('admin_auth')
     if (!auth) {
-      router.push('/admin');
-      return;
+      router.push('/admin')
+      return
     }
-
-    // 获取文章列表
-    fetch('/api/admin/posts')
-      .then(res => res.json())
-      .then(data => setPosts(data.posts || []))
-      .catch(() => {});
-  }, [router]);
+    getAllPosts().then(data => {
+      const published = (data || []).filter((p: Record<string, unknown>) => p.published !== false && p.slug !== undefined)
+      setPosts(published as Post[])
+    }).catch(() => {})
+  }, [router])
 
   const handleDelete = async (slug: string) => {
-    if (!confirm('确定要删除这篇文章吗？')) return;
-    
-    const res = await fetch(`/api/admin/posts/${slug}`, {
-      method: 'DELETE',
-    });
-    
-    if (res.ok) {
-      setPosts(posts.filter(p => p.slug !== slug));
-    } else {
-      alert('删除失败');
+    if (!confirm('确定要删除这篇文章吗？')) return
+    try {
+      await deletePost(slug)
+      setPosts(posts.filter(p => p.slug !== slug))
+    } catch {
+      alert('删除失败')
     }
-  };
+  }
 
   const togglePublish = async (slug: string, published: boolean) => {
-    const res = await fetch(`/api/admin/posts/${slug}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ published: !published }),
-    });
-    
-    if (res.ok) {
-      setPosts(posts.map(p => p.slug === slug ? { ...p, published: !published } : p));
+    try {
+      const { updatePost } = await import('@/lib/supabase-client')
+      await updatePost(slug, { published: !published })
+      setPosts(posts.map(p => p.slug === slug ? { ...p, published: !published } : p))
+    } catch {
+      alert('操作失败')
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-slate-900 p-8">
       <div className="max-w-6xl mx-auto">
-        {/* 头部 */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Link
-              href="/admin"
-              className="text-emerald-400 hover:text-emerald-300 transition-colors"
-            >
-              ← 返回
-            </Link>
-            <h1 className="text-2xl font-bold text-white">
-              📝 文章管理
-            </h1>
+            <Link href="/admin" className="text-emerald-400 hover:text-emerald-300 transition-colors">← 返回</Link>
+            <h1 className="text-2xl font-bold text-white">📝 文章管理</h1>
           </div>
-          <Link
-            href="/admin/posts/new"
-            className="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-400 transition-colors"
-          >
-            + 新建文章
-          </Link>
+          <Link href="/admin/posts/new" className="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-400 transition-colors">+ 新建文章</Link>
         </div>
 
-        {/* 文章列表 */}
         <div className="bg-slate-800 rounded-xl border border-emerald-500/20 overflow-hidden">
           <table className="w-full">
             <thead className="bg-slate-900/50">
@@ -113,38 +91,20 @@ export default function AdminPostsPage() {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => togglePublish(post.slug, post.published)}
-                        className="px-3 py-1 text-sm text-gray-400 hover:text-emerald-400 transition-colors"
-                      >
+                      <button onClick={() => togglePublish(post.slug, post.published)} className="px-3 py-1 text-sm text-gray-400 hover:text-emerald-400 transition-colors">
                         {post.published ? '下架' : '发布'}
                       </button>
-                      <Link
-                        href={`/admin/posts/${post.slug}`}
-                        className="px-3 py-1 text-sm text-gray-400 hover:text-white transition-colors"
-                      >
-                        编辑
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(post.slug)}
-                        className="px-3 py-1 text-sm text-gray-400 hover:text-red-400 transition-colors"
-                      >
-                        删除
-                      </button>
+                      <Link href={`/admin/posts/${post.slug}`} className="px-3 py-1 text-sm text-gray-400 hover:text-white transition-colors">编辑</Link>
+                      <button onClick={() => handleDelete(post.slug)} className="px-3 py-1 text-sm text-gray-400 hover:text-red-400 transition-colors">删除</button>
                     </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-
-          {posts.length === 0 && (
-            <div className="p-12 text-center text-gray-500">
-              暂无文章
-            </div>
-          )}
+          {posts.length === 0 && <div className="p-12 text-center text-gray-500">暂无文章</div>}
         </div>
       </div>
     </div>
-  );
+  )
 }
