@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { supabaseFetch } from '@/lib/supabase-client'
 
 interface Stats {
   totalPosts: number;
@@ -33,9 +34,9 @@ export default function AdminPage() {
     }
 
     // 获取统计数据
-    fetch('/api/admin/stats')
+    supabaseFetch('/posts?select=id')
       .then(res => res.json())
-      .then(data => setStats(data))
+      .then(data => setStats({ totalPosts: Array.isArray(data) ? data.length : 0, totalViews: 0, totalLikes: 0 }))
       .catch(() => {});
   }, []);
 

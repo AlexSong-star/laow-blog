@@ -1,9 +1,10 @@
 // 分类/标签管理页面
 "use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { supabaseFetch } from '@/lib/supabase-client'
 
 export default function AdminCategoriesPage() {
   const router = useRouter();
@@ -21,13 +22,19 @@ export default function AdminCategoriesPage() {
     }
 
     // 获取分类和标签
-    fetch('/api/admin/categories')
+    supabaseFetch('/posts?select=category,tags')
       .then(res => res.json())
-      .then(data => {
-        setCategories(data.categories || []);
-        setTags(data.tags || []);
+      .then((data: Array<{category?: string; tags?: string[]}>) => {
+        const cats = new Set<string>()
+        const tgs = new Set<string>()
+        data.forEach(p => {
+          if (p.category) cats.add(p.category)
+          if (p.tags && Array.isArray(p.tags)) p.tags.forEach((t: string) => tgs.add(t))
+        })
+        setCategories(Array.from(cats))
+        setTags(Array.from(tgs))
       })
-      .catch(() => {});
+      .catch(() => {})
   }, [router]);
 
   const addCategory = async () => {
