@@ -1,0 +1,12 @@
+"use strict";(()=>{var e={};e.id=5424,e.ids=[5424],e.modules={399:e=>{e.exports=require("next/dist/compiled/next-server/app-page.runtime.prod.js")},517:e=>{e.exports=require("next/dist/compiled/next-server/app-route.runtime.prod.js")},4300:e=>{e.exports=require("buffer")},7147:e=>{e.exports=require("fs")},1017:e=>{e.exports=require("path")},2421:(e,t,r)=>{r.r(t),r.d(t,{originalPathname:()=>$,patchFetch:()=>v,requestAsyncStorage:()=>h,routeModule:()=>f,serverHooks:()=>y,staticGenerationAsyncStorage:()=>j});var s={};r.r(s),r.d(s,{GET:()=>x,POST:()=>w});var a=r(9303),n=r(8716),o=r(670),i=r(7070),p=r(7147),u=r.n(p),d=r(1017),c=r.n(d),l=r(3673),m=r.n(l);let g=c().join(process.cwd(),"posts");async function x(){if(!u().existsSync(g))return i.NextResponse.json({posts:[]});let e=u().readdirSync(g).filter(e=>e.endsWith(".md")).map(e=>{let t=e.replace(/\.md$/,""),r=c().join(g,e),s=u().readFileSync(r,"utf8"),{data:a}=m()(s);return{slug:t,title:a.title||"无标题",date:a.date||"2026-01-01",category:a.category||"未分类",tags:a.tags||[],excerpt:a.excerpt||"",published:!1!==a.published,top:a.top||!1}});return e.sort((e,t)=>new Date(t.date).getTime()-new Date(e.date).getTime()),i.NextResponse.json({posts:e})}async function w(e){let{title:t,date:r,category:s,tags:a,excerpt:n,content:o,published:p,top:d}=await e.json(),l=t.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]/g,"-").replace(/-+/g,"-").replace(/^-|-$/g,"")+"-"+r,m=`---
+title: ${t}
+date: ${r}
+category: ${s}
+tags: [${a.join(", ")}]
+excerpt: ${n}
+published: ${p}
+top: ${d}
+---
+
+${o}
+`,x=c().join(g,`${l}.md`);return u().writeFileSync(x,m),i.NextResponse.json({success:!0,slug:l})}let f=new a.AppRouteRouteModule({definition:{kind:n.x.APP_ROUTE,page:"/news/api/admin/posts/route",pathname:"/news/api/admin/posts",filename:"route",bundlePath:"app/news/api/admin/posts/route"},resolvedPagePath:"/private/tmp/laow-blog-git/app/news/api/admin/posts/route.ts",nextConfigOutput:"",userland:s}),{requestAsyncStorage:h,staticGenerationAsyncStorage:j,serverHooks:y}=f,$="/news/api/admin/posts/route";function v(){return(0,o.patchFetch)({serverHooks:y,staticGenerationAsyncStorage:j})}}};var t=require("../../../../../webpack-runtime.js");t.C(e);var r=e=>t(t.s=e),s=t.X(0,[8948,3673,5972],()=>r(2421));module.exports=s})();

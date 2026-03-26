@@ -1,0 +1,12 @@
+"use strict";(()=>{var e={};e.id=5246,e.ids=[5246],e.modules={399:e=>{e.exports=require("next/dist/compiled/next-server/app-page.runtime.prod.js")},517:e=>{e.exports=require("next/dist/compiled/next-server/app-route.runtime.prod.js")},4300:e=>{e.exports=require("buffer")},7147:e=>{e.exports=require("fs")},1017:e=>{e.exports=require("path")},4297:(e,t,s)=>{s.r(t),s.d(t,{originalPathname:()=>w,patchFetch:()=>R,requestAsyncStorage:()=>h,routeModule:()=>f,serverHooks:()=>v,staticGenerationAsyncStorage:()=>$});var r={};s.r(r),s.d(r,{DELETE:()=>y,GET:()=>m,PUT:()=>j});var n=s(9303),o=s(8716),i=s(670),a=s(7070),p=s(7147),u=s.n(p),c=s(1017),d=s.n(c),l=s(3673),x=s.n(l);let g=d().join(process.cwd(),"posts");async function m(e,{params:t}){let{slug:s}=await t,r=d().join(g,`${s}.md`);if(!u().existsSync(r))return a.NextResponse.json({error:"文章不存在"},{status:404});let n=u().readFileSync(r,"utf8"),{data:o,content:i}=x()(n);return a.NextResponse.json({post:{slug:s,title:o.title||"无标题",date:o.date||"2026-01-01",category:o.category||"未分类",tags:o.tags||[],excerpt:o.excerpt||"",content:i,published:!1!==o.published,top:o.top||!1}})}async function j(e,{params:t}){let{slug:s}=await t,{title:r,date:n,category:o,tags:i,excerpt:p,content:c,published:l,top:x}=await e.json(),m=d().join(g,`${s}.md`);if(!u().existsSync(m))return a.NextResponse.json({error:"文章不存在"},{status:404});let j=`---
+title: ${r}
+date: ${n}
+category: ${o}
+tags: [${i.join(", ")}]
+excerpt: ${p}
+published: ${l}
+top: ${x}
+---
+
+${c}
+`;return u().writeFileSync(m,j),a.NextResponse.json({success:!0})}async function y(e,{params:t}){let{slug:s}=await t,r=d().join(g,`${s}.md`);return u().existsSync(r)?(u().unlinkSync(r),a.NextResponse.json({success:!0})):a.NextResponse.json({error:"文章不存在"},{status:404})}let f=new n.AppRouteRouteModule({definition:{kind:o.x.APP_ROUTE,page:"/api/admin/posts/[slug]/route",pathname:"/api/admin/posts/[slug]",filename:"route",bundlePath:"app/api/admin/posts/[slug]/route"},resolvedPagePath:"/private/tmp/laow-blog-git/app/api/admin/posts/[slug]/route.ts",nextConfigOutput:"",userland:r}),{requestAsyncStorage:h,staticGenerationAsyncStorage:$,serverHooks:v}=f,w="/api/admin/posts/[slug]/route";function R(){return(0,i.patchFetch)({serverHooks:v,staticGenerationAsyncStorage:$})}}};var t=require("../../../../../webpack-runtime.js");t.C(e);var s=e=>t(t.s=e),r=t.X(0,[8948,3673,5972],()=>s(4297));module.exports=r})();

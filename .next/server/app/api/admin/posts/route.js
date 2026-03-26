@@ -1,0 +1,12 @@
+"use strict";(()=>{var e={};e.id=5449,e.ids=[5449],e.modules={399:e=>{e.exports=require("next/dist/compiled/next-server/app-page.runtime.prod.js")},517:e=>{e.exports=require("next/dist/compiled/next-server/app-route.runtime.prod.js")},4300:e=>{e.exports=require("buffer")},7147:e=>{e.exports=require("fs")},1017:e=>{e.exports=require("path")},5018:(e,t,r)=>{r.r(t),r.d(t,{originalPathname:()=>v,patchFetch:()=>w,requestAsyncStorage:()=>j,routeModule:()=>h,serverHooks:()=>$,staticGenerationAsyncStorage:()=>y});var s={};r.r(s),r.d(s,{GET:()=>x,POST:()=>f});var a=r(9303),o=r(8716),i=r(670),n=r(7070),p=r(7147),u=r.n(p),d=r(1017),c=r.n(d),l=r(3673),m=r.n(l);let g=c().join(process.cwd(),"posts");async function x(){if(!u().existsSync(g))return n.NextResponse.json({posts:[]});let e=u().readdirSync(g).filter(e=>e.endsWith(".md")).map(e=>{let t=e.replace(/\.md$/,""),r=c().join(g,e),s=u().readFileSync(r,"utf8"),{data:a}=m()(s);return{slug:t,title:a.title||"无标题",date:a.date||"2026-01-01",category:a.category||"未分类",tags:a.tags||[],excerpt:a.excerpt||"",published:!1!==a.published,top:a.top||!1}});return e.sort((e,t)=>new Date(t.date).getTime()-new Date(e.date).getTime()),n.NextResponse.json({posts:e})}async function f(e){let{title:t,date:r,category:s,tags:a,excerpt:o,content:i,published:p,top:d}=await e.json(),l=t.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]/g,"-").replace(/-+/g,"-").replace(/^-|-$/g,"")+"-"+r,m=`---
+title: ${t}
+date: ${r}
+category: ${s}
+tags: [${a.join(", ")}]
+excerpt: ${o}
+published: ${p}
+top: ${d}
+---
+
+${i}
+`,x=c().join(g,`${l}.md`);return u().writeFileSync(x,m),n.NextResponse.json({success:!0,slug:l})}let h=new a.AppRouteRouteModule({definition:{kind:o.x.APP_ROUTE,page:"/api/admin/posts/route",pathname:"/api/admin/posts",filename:"route",bundlePath:"app/api/admin/posts/route"},resolvedPagePath:"/private/tmp/laow-blog-git/app/api/admin/posts/route.ts",nextConfigOutput:"",userland:s}),{requestAsyncStorage:j,staticGenerationAsyncStorage:y,serverHooks:$}=h,v="/api/admin/posts/route";function w(){return(0,i.patchFetch)({serverHooks:$,staticGenerationAsyncStorage:y})}}};var t=require("../../../../webpack-runtime.js");t.C(e);var r=e=>t(t.s=e),s=t.X(0,[8948,3673,5972],()=>r(5018));module.exports=s})();
