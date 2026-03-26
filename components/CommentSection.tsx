@@ -1,14 +1,12 @@
-// 评论区域组件
 "use client";
-
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 interface Comment {
   id: string;
-  slug: string;
-  author: string;
+  author_name: string;
   content: string;
-  date: string;
+  created_at: string;
 }
 
 interface Props {
@@ -17,98 +15,94 @@ interface Props {
 
 export default function CommentSection({ slug }: Props) {
   const [comments, setComments] = useState<Comment[]>([]);
-  const [author, setAuthor] = useState('');
+  const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [msg, setMsg] = useState('');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch(`/api/comments?slug=${slug}`)
-      .then(res => res.json())
-      .then(data => {
-        setComments(data.comments || []);
-        setLoading(false);
-      })
+  const fetchComments = () => {
+    fetch(`/api/comments/${slug}`)
+      .then(r => r.json())
+      .then(d => { setComments(d.comments || []); setLoading(false); })
       .catch(() => setLoading(false));
-  }, [slug]);
+  };
+
+  useEffect(() => { fetchComments(); }, [slug]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!author.trim() || !content.trim()) return;
-
+    if (!name.trim() || !content.trim()) { setMsg('请填写昵称和评论内容'); return; }
     setSubmitting(true);
-
-    const res = await fetch('/api/comments', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug, author, content }),
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      setComments([...comments, data.comment]);
-      setAuthor('');
-      setContent('');
-    }
-
+    try {
+      const r = await fetch(`/api/comments/${slug}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ author_name: name.trim(), content: content.trim() }),
+      });
+      const d = await r.json();
+      if (!r.ok) { setMsg(d.error || '发布失败'); }
+      else {
+        setMsg('评论发布成功！');
+        setContent('');
+        fetchComments();
+        setTimeout(() => setMsg(''), 3000);
+      }
+    } catch { setMsg('网络错误'); }
     setSubmitting(false);
   };
 
   return (
-    <section className="mt-12 pt-8 border-t border-slate-800">
-      <h3 className="text-xl font-bold text-white mb-6">
-        💬 评论 ({comments.length})
-      </h3>
-
-      {/* 评论表单 */}
-      <form onSubmit={handleSubmit} className="mb-8">
-        <div className="grid gap-4 mb-4">
-          <input
-            type="text"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            placeholder="你的昵称"
-            className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
-            required
-          />
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="写下你的评论..."
-            rows={3}
-            className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          disabled={submitting}
-          className="px-6 py-2 bg-emerald-500 text-white rounded-lg font-semibold hover:bg-emerald-400 transition-colors disabled:opacity-50"
-        >
-          {submitting ? '提交中...' : '发表评论'}
-        </button>
-      </form>
+    <div className="mt-8 border-t border-slate-700 pt-6">
+      <h3 className="text-xl font-bold text-white mb-4">💬 评论 ({comments.length})</h3>
 
       {/* 评论列表 */}
-      <div className="space-y-6">
-        {loading ? (
-          <p className="text-gray-500">加载中...</p>
-        ) : comments.length === 0 ? (
-          <p className="text-gray-500">还没有评论，快来抢沙发吧！</p>
-        ) : (
-          comments.map((comment) => (
-            <div key={comment.id} className="p-4 bg-slate-800/50 rounded-lg">
-              <div className="flex items-center gap-3 mb-2">
-                <span className="font-medium text-emerald-400">{comment.author}</span>
-                <span className="text-xs text-gray-500">
-                  {new Date(comment.date).toLocaleDateString('zh-CN')}
-                </span>
+      {loading ? <p className="text-slate-400">加载中...</p> : comments.length === 0 ? (
+        <p className="text-slate-500">暂无评论，来抢沙发！</p>
+      ) : (
+        <div className="space-y-4 mb-6">
+          {comments.map(c => (
+            <div key={c.id} className="bg-slate-800 rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-emerald-400 font-medium">{c.author_name}</span>
+                <span className="text-slate-500 text-sm">{new Date(c.created_at).toLocaleString('zh-CN')}</span>
               </div>
-              <p className="text-gray-300">{comment.content}</p>
+              <p className="text-slate-300 whitespace-pre-wrap">{c.content}</p>
             </div>
-          ))
-        )}
-      </div>
-    </section>
+          ))}
+        </div>
+      )}
+
+      {/* 发布表单 */}
+      <form onSubmit={handleSubmit} className="bg-slate-800 rounded-lg p-4 space-y-3">
+        <h4 className="text-white font-medium">发表评论</h4>
+        <input
+          value={name}
+          onChange={e => setName(e.target.value)}
+          placeholder="你的昵称"
+          maxLength={30}
+          className="w-full bg-slate-700 text-white rounded px-3 py-2 outline-none focus:ring-1 ring-emerald-500"
+        />
+        <textarea
+          value={content}
+          onChange={e => setContent(e.target.value)}
+          placeholder="写下你的评论..."
+          rows={3}
+          maxLength={500}
+          className="w-full bg-slate-700 text-white rounded px-3 py-2 outline-none focus:ring-1 ring-emerald-500 resize-none"
+        />
+        <div className="flex items-center justify-between">
+          <span className="text-slate-500 text-sm">{content.length}/500</span>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="px-4 py-2 bg-emerald-500 text-white rounded hover:bg-emerald-400 disabled:opacity-50 transition-colors text-sm"
+          >
+            {submitting ? '发布中...' : '发布评论'}
+          </button>
+        </div>
+        {msg && <p className={`text-sm ${msg.includes('成功') ? 'text-emerald-400' : 'text-red-400'}`}>{msg}</p>}
+      </form>
+    </div>
   );
 }

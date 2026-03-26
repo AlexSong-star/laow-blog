@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getPostContentHtml, getAllPosts } from '@/lib/posts';
 import LikeButton from '@/components/LikeButton';
+import CommentSection from '@/components/CommentSection';
 import Navigation from '@/components/Navigation';
 
 export const revalidate = 60;
@@ -109,6 +110,7 @@ export default async function PostPage({ params }: Props) {
       </section>
 
       {/* Footer */}
+      <CommentSection slug={slug} />
       <footer className="footer">
         <div className="container">
           <div className="footer-content">

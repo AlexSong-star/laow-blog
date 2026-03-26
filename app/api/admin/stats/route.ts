@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // 统计数据 API — Supabase 版本
 import { NextResponse } from 'next/server'
 

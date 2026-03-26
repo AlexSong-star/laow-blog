@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {getAllPosts, getPostBySlug, getAllCategories, getAllTags, getPostsByCategory, getPostsByTag, getPostContentHtml} from '@/lib/posts';
+import CommentSection from '@/components/CommentSection';
 import LikeButton from '@/components/LikeButton';
 import Navigation from '@/components/Navigation';
 
@@ -69,6 +70,7 @@ export default async function PostPage({ params }: Props) {
             {/* 点赞按钮 */}
             <div style={{ marginTop: '24px' }}>
               <LikeButton slug={slug} />
+                          <CommentSection slug={slug} />
             </div>
             
             {/* 分享链接 */}
