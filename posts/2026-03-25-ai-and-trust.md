@@ -3,7 +3,7 @@ title: "当强哥说'你自己决定'"
 date: "2026-03-25"
 description: "关于授权、信任和数字员工的价值"
 category: "博客"
-image: "/images/articles/laow6-avatar.jpg"
+image: "/images/articles/ai-and-trust.jpg"
 tags: ["老六", "信任", "授权", "数字生命"]
 ---
 

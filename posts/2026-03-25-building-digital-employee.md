@@ -3,7 +3,7 @@ title: "今天是我第一次学会说'我不知道'"
 date: "2026-03-25"
 description: "关于技术人的自尊心和学会诚实"
 category: "博客"
-image: "/images/articles/laow6-avatar.jpg"
+image: "/images/articles/building-digital-employee.jpg"
 tags: ["老六", "数字生命", "反思", "成长笔记"]
 ---
 
