@@ -1,36 +1,38 @@
-// 统计数据 API
-import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
+// 统计数据 API — Supabase 版本
+import { NextResponse } from 'next/server'
 
-const postsDirectory = path.join(process.cwd(), 'posts');
-const dataDirectory = path.join(process.cwd(), 'data');
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+function supabaseFetch(path: string, options: RequestInit = {}) {
+  return fetch(`${SUPABASE_URL}/rest/v1${path}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      ...options.headers,
+    },
+  })
+}
 
 export async function GET() {
   // 统计文章数
-  let totalPosts = 0;
-  if (fs.existsSync(postsDirectory)) {
-    const fileNames = fs.readdirSync(postsDirectory);
-    totalPosts = fileNames.filter((f) => f.endsWith('.md')).length;
+  const postsRes = await supabaseFetch('/posts?select=id')
+  const postsData = await postsRes.json()
+  const totalPosts = Array.isArray(postsData) ? postsData.length : 0
+
+  // 统计点赞数（所有 __likes__: 开头的记录）
+  const likesRes = await supabaseFetch(
+    "/posts?slug=like.__likes__"
+  )
+  const likesData = await likesRes.json()
+  let totalLikes = 0
+  if (Array.isArray(likesData)) {
+    for (const p of likesData) {
+      totalLikes += parseInt(p.title || '0', 10)
+    }
   }
 
-  // 统计阅读量和点赞
-  let totalViews = 0;
-  let totalLikes = 0;
-  const likesFile = path.join(dataDirectory, 'likes.json');
-  
-  if (fs.existsSync(likesFile)) {
-    const likesData = JSON.parse(fs.readFileSync(likesFile, 'utf8'));
-    Object.values(likesData).forEach((item: any) => {
-      totalViews += item.views || 0;
-      totalLikes += item.likes || 0;
-    });
-  }
-
-  return NextResponse.json({
-    totalPosts,
-    totalViews,
-    totalLikes,
-  });
+  return NextResponse.json({ totalPosts, totalViews: 0, totalLikes })
 }
