@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 // 分类/标签 API
 import { NextResponse } from 'next/server';
 import fs from 'fs';

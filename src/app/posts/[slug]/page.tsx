@@ -1,7 +1,7 @@
 // 文章详情页 - 复刻参考网站样式
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getPostBySlug, getPostContentHtml, getAllPosts } from '@/lib/posts';
+import {getAllPosts, getPostBySlug, getAllCategories, getAllTags, getPostsByCategory, getPostsByTag, getPostContentHtml} from '@/lib/posts';
 import LikeButton from '@/components/LikeButton';
 import Navigation from '@/components/Navigation';
 
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -29,7 +29,7 @@ const articleImages: Record<string, string> = {
 
 export default async function PostPage({ params }: Props) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   
   if (!post) {
     notFound();

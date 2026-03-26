@@ -12,7 +12,7 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -29,7 +29,7 @@ const articleImages: Record<string, string> = {
 
 export default async function PostPage({ params }: Props) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   
   if (!post) {
     notFound();
@@ -80,7 +80,7 @@ export default async function PostPage({ params }: Props) {
         <div className="container">
           <h3 style={{ marginBottom: '24px', fontSize: '18px', fontWeight: 700 }}>其他新闻</h3>
           <div className="posts-grid">
-            {getAllPosts()
+            {((await getAllPosts()))
               .filter(p => p.category === '新闻' && p.slug !== slug)
               .slice(0, 3)
               .map(post => (

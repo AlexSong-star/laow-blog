@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
-import { getAllPosts } from '@/lib/posts';
+import {getAllPosts, getPostBySlug, getAllCategories, getAllTags, getPostsByCategory, getPostsByTag} from '@/lib/posts';
 import '../globals.css';
 
 export const metadata = {
@@ -8,8 +8,8 @@ export const metadata = {
   description: '探索AI与技术的边界',
 };
 
-export default function Home() {
-  const allPosts = getAllPosts();
+export default async function Home() {
+  const allPosts = await getAllPosts();
   const posts = allPosts.filter(post => post.category === '博客');
 
   // 每篇文章对应的图片

@@ -1,7 +1,7 @@
 // 搜索页面 - 带搜索框
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { getAllPosts } from '@/lib/posts';
+import {getAllPosts, getPostBySlug, getAllCategories, getAllTags, getPostsByCategory, getPostsByTag} from '@/lib/posts';
 
 export const revalidate = 60;
 
@@ -13,7 +13,7 @@ export default async function SearchPage({ searchParams }: Props) {
   const { q } = await searchParams;
   const query = q?.toLowerCase() || '';
   
-  const allPosts = getAllPosts();
+  const allPosts = await getAllPosts();
   const results = query 
     ? allPosts.filter(post => 
         post.title.toLowerCase().includes(query) ||

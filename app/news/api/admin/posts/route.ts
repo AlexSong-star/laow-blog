@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 // 文章列表 API
 import { NextResponse } from 'next/server';
 import fs from 'fs';

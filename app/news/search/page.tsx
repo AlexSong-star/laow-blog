@@ -13,7 +13,7 @@ export default async function SearchPage({ searchParams }: Props) {
   const { q } = await searchParams;
   const query = q?.toLowerCase() || '';
   
-  const allPosts = getAllPosts();
+  const allPosts = await getAllPosts();
   const results = query 
     ? allPosts.filter(post => 
         post.title.toLowerCase().includes(query) ||

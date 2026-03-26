@@ -1,7 +1,7 @@
 // 分类页面
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getPostsByCategory, getAllCategories } from '@/lib/posts';
+import {getAllPosts, getPostBySlug, getAllCategories, getAllTags, getPostsByCategory, getPostsByTag} from '@/lib/posts';
 
 export const revalidate = 60;
 
@@ -10,13 +10,13 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const categories = getAllCategories();
+  const categories = await getAllCategories();
   return categories.map((name) => ({ name }));
 }
 
 export default async function CategoryPage({ params }: Props) {
   const { name } = await params;
-  const posts = getPostsByCategory(name);
+  const posts = await getPostsByCategory(name);
 
   if (posts.length === 0) {
     notFound();

@@ -6,7 +6,7 @@ import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { getPost, createPost, updatePost } from '@/lib/supabase-client'
 
-export default function EditPostPage() {
+export default async function EditPostPage() {
   const router = useRouter()
   const params = useParams()
   const slug = params.slug as string

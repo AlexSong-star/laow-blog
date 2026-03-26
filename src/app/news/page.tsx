@@ -29,7 +29,7 @@ const newsItems = [
   }
 ];
 
-export default function NewsPage() {
+export default async function NewsPage() {
   return (
     <div>
       <Navigation />

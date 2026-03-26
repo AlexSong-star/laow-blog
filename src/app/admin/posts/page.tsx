@@ -15,7 +15,7 @@ interface Post {
   top: boolean
 }
 
-export default function AdminPostsPage() {
+export default async function AdminPostsPage() {
   const [posts, setPosts] = useState<Post[]>([])
   const router = useRouter()
 

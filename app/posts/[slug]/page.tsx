@@ -1,7 +1,7 @@
 // 文章详情页 - 统一入口 /posts/[slug]
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getPostBySlug, getPostContentHtml, getAllPosts } from '@/lib/posts';
+import {getAllPosts, getPostBySlug, getAllCategories, getAllTags, getPostsByCategory, getPostsByTag, getPostContentHtml} from '@/lib/posts';
 import LikeButton from '@/components/LikeButton';
 import Navigation from '@/components/Navigation';
 
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -20,7 +20,7 @@ export async function generateStaticParams() {
 
 export default async function PostPage({ params }: Props) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   
   if (!post) {
     notFound();
@@ -33,7 +33,7 @@ export default async function PostPage({ params }: Props) {
   const bodyStartsWithImage = contentHtml.trim().startsWith('<img');
 
   // 获取其他文章（排除当前篇）
-  const otherPosts = getAllPosts()
+  const otherPosts = (await getAllPosts())
     .filter(p => p.slug !== slug)
     .slice(0, 3);
 

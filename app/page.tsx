@@ -8,8 +8,8 @@ export const metadata = {
   description: '探索AI与技术的边界',
 };
 
-export default function Home() {
-  const posts = getAllPosts();
+export default async function Home() {
+  const posts = await getAllPosts();
 
   // 每篇文章对应的图片
   const articleImages: Record<string, string> = {

@@ -5,10 +5,10 @@ import { getAllPosts } from '@/lib/posts';
 
 export const revalidate = 60;
 
-export default function BlogHome() {
-  const posts = getAllPosts();
-  const categories = getAllCategories();
-  const tags = getAllTags();
+export default async function BlogHome() {
+  const posts = await getAllPosts();
+  const categories = await getAllCategories();
+  const tags = await getAllTags();
 
   return (
     <div className="min-h-screen">
@@ -135,14 +135,14 @@ export default function BlogHome() {
   );
 }
 
-function getAllCategories(): string[] {
-  const posts = getAllPosts();
+async function getAllCategories(): Promise<string[]> {
+  const posts = await getAllPosts();
   const categories = new Set(posts.map(post => post.category));
   return Array.from(categories);
 }
 
-function getAllTags(): string[] {
-  const posts = getAllPosts();
+async function getAllTags(): Promise<string[]> {
+  const posts = await getAllPosts();
   const tags = new Set(posts.flatMap(post => post.tags));
   return Array.from(tags);
 }

@@ -1,7 +1,7 @@
 // 标签页面
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getPostsByTag, getAllTags } from '@/lib/posts';
+import {getAllPosts, getPostBySlug, getAllCategories, getAllTags, getPostsByCategory, getPostsByTag} from '@/lib/posts';
 
 export const revalidate = 60;
 
@@ -10,13 +10,13 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const tags = getAllTags();
+  const tags = await getAllTags();
   return tags.map((name) => ({ name }));
 }
 
 export default async function TagPage({ params }: Props) {
   const { name } = await params;
-  const posts = getPostsByTag(name);
+  const posts = await getPostsByTag(name);
 
   if (posts.length === 0) {
     notFound();

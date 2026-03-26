@@ -8,8 +8,8 @@ export const metadata = {
   description: '探索AI与技术的边界',
 };
 
-export default function Home() {
-  const posts = getAllPosts();
+export default async function Home() {
+  const allPosts = await getAllPosts();
 
   // 每篇文章对应的图片
   const articleImages: Record<string, string> = {
@@ -31,7 +31,7 @@ export default function Home() {
       <div className="bg-light pt-2 pt-md-4">
         <div className="container">
           <div className="posts-grid">
-            {posts.map((post) => (
+            {allPosts.map((post) => (
               <div key={post.slug} className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
                 <div className="card h-100">
                   <Link href={`/posts/${post.slug}`}>
