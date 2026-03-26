@@ -1,6 +1,20 @@
-import { supabase } from './supabase'
 import { remark } from 'remark'
 import html from 'remark-html'
+
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+function supabaseFetch(path: string, options: RequestInit = {}) {
+  return fetch(`${SUPABASE_URL}/rest/v1${path}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      ...options.headers,
+    },
+  })
+}
 
 export interface Post {
   id?: number
@@ -19,94 +33,75 @@ export interface Post {
 }
 
 export async function getAllPosts(): Promise<Post[]> {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('slug, title, date, category, tags, excerpt, image, published, top, created_at')
-    .eq('published', true)
-    .order('top', { ascending: false })
-    .order('created_at', { ascending: false })
-
-  if (error) {
-    console.error('Error fetching posts:', error)
-    return []
-  }
-
-  return (data || []).map(p => ({
-    slug: p.slug,
-    title: p.title,
-    date: p.date,
-    category: p.category || '未分类',
-    tags: p.tags || [],
-    excerpt: p.excerpt || '',
-    image: p.image || '',
-    published: p.published,
-    top: p.top,
-    created_at: p.created_at,
+  const res = await supabaseFetch(
+    '/posts?select=slug,title,date,category,tags,excerpt,image,published,top,created_at&published=eq.true&order=top,desc&order=created_at,desc'
+  )
+  const data = await res.json()
+  return (data || []).map((p: Record<string, unknown>) => ({
+    slug: String(p.slug || ''),
+    title: String(p.title || ''),
+    date: String(p.date || ''),
+    category: String(p.category || '未分类'),
+    tags: Array.isArray(p.tags) ? p.tags : [],
+    excerpt: String(p.excerpt || ''),
+    image: String(p.image || ''),
+    published: p.published === true,
+    top: p.top === true,
+    created_at: p.created_at ? String(p.created_at) : undefined,
   }))
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .eq('slug', slug)
-    .single()
+  const res = await supabaseFetch(
+    `/posts?slug=eq.${encodeURIComponent(slug)}&select=*`
+  )
+  const data = await res.json()
+  if (!data || data.length === 0) return null
 
-  if (error || !data) {
-    return null
-  }
-
+  const p = data[0]
   return {
-    id: data.id,
-    slug: data.slug,
-    title: data.title,
-    date: data.date,
-    category: data.category || '未分类',
-    tags: data.tags || [],
-    excerpt: data.excerpt || '',
-    content: data.content || '',
-    image: data.image || '',
-    published: data.published,
-    top: data.top,
-    created_at: data.created_at,
+    id: p.id,
+    slug: String(p.slug),
+    title: String(p.title),
+    date: String(p.date),
+    category: String(p.category || '未分类'),
+    tags: Array.isArray(p.tags) ? p.tags : [],
+    excerpt: String(p.excerpt || ''),
+    content: String(p.content || ''),
+    image: String(p.image || ''),
+    published: p.published === true,
+    top: p.top === true,
+    created_at: p.created_at ? String(p.created_at) : undefined,
   }
 }
 
 export async function getPostContentHtml(slug: string): Promise<string> {
   const post = await getPostBySlug(slug)
-  if (!post || !post.content) {
-    return ''
-  }
+  if (!post || !post.content) return ''
 
   let content = post.content
-
-  // 移除内容中的第一个标题（frontmatter 的 title 已在页面显示）
   content = content.replace(/^#\s+.+$/m, '')
 
-  // 处理 B站视频
   content = content.replace(
     /\[video\]\(https?:\/\/www\.bilibili\.com\/video\/BV[\w]+\)/g,
-    (match) => {
+    (match: string) => {
       const bvid = match.match(/BV[\w]+/)?.[0] || ''
-      return `<div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="//player.bilibili.com/player.html?bvid=${bvid}&page=1" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>`
+      return `<div style="position:relative;padding-bottom:56.25%;height:0;"><iframe src="//player.bilibili.com/player.html?bvid=${bvid}&page=1" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>`
     }
   )
 
-  // 处理 YouTube 视频
   content = content.replace(
     /\[video\]\(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w-]+\)/g,
-    (match) => {
+    (match: string) => {
       const vid = match.match(/v=([\w-]+)/)?.[1] || ''
-      return `<div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="https://www.youtube.com/embed/${vid}" frameborder="0" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>`
+      return `<div style="position:relative;padding-bottom:56.25%;height:0;"><iframe src="https://www.youtube.com/embed/${vid}" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>`
     }
   )
 
-  // 处理直接视频链接
   content = content.replace(
-    /\[video\]\((https?:\/\/.*\.(mp4|webm|ogg))\)/g,
-    (match, url) => {
-      return `<video controls style="width: 100%; max-width: 800px; margin: 1rem 0;"><source src="${url}" /></video>`
-    }
+    /\[video\]\((https?:\/\/.*\.(?:mp4|webm|ogg))\)/g,
+    (_: string, url: string) =>
+      `<video controls style="width:100%;max-width:800px;margin:1rem 0;"><source src="${url}" /></video>`
   )
 
   const processedContent = await remark()
@@ -118,48 +113,48 @@ export async function getPostContentHtml(slug: string): Promise<string> {
 
 export async function getAllCategories(): Promise<string[]> {
   const posts = await getAllPosts()
-  const categories = new Set(posts.map(p => p.category))
-  return Array.from(categories)
+  return Array.from(new Set(posts.map(p => p.category)))
 }
 
 export async function getAllTags(): Promise<string[]> {
   const posts = await getAllPosts()
-  const tags = new Set(posts.flatMap(p => p.tags))
-  return Array.from(tags)
+  return Array.from(new Set(posts.flatMap(p => p.tags)))
 }
 
 export async function getPostsByCategory(category: string): Promise<Post[]> {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('slug, title, date, category, tags, excerpt, image, published, top, created_at')
-    .eq('published', true)
-    .eq('category', category)
-    .order('top', { ascending: false })
-    .order('created_at', { ascending: false })
-
-  if (error) return []
-  return (data || []).map(p => ({
-    slug: p.slug, title: p.title, date: p.date,
-    category: p.category || '未分类', tags: p.tags || [],
-    excerpt: p.excerpt || '', image: p.image || '',
-    published: p.published, top: p.top, created_at: p.created_at,
+  const res = await supabaseFetch(
+    `/posts?category=eq.${encodeURIComponent(category)}&published=eq.true&select=slug,title,date,category,tags,excerpt,image,published,top,created_at&order=top,desc&order=created_at,desc`
+  )
+  const data = await res.json()
+  return (data || []).map((p: Record<string, unknown>) => ({
+    slug: String(p.slug || ''),
+    title: String(p.title || ''),
+    date: String(p.date || ''),
+    category: String(p.category || '未分类'),
+    tags: Array.isArray(p.tags) ? p.tags : [],
+    excerpt: String(p.excerpt || ''),
+    image: String(p.image || ''),
+    published: p.published === true,
+    top: p.top === true,
+    created_at: p.created_at ? String(p.created_at) : undefined,
   }))
 }
 
 export async function getPostsByTag(tag: string): Promise<Post[]> {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('slug, title, date, category, tags, excerpt, image, published, top, created_at')
-    .eq('published', true)
-    .contains('tags', [tag])
-    .order('top', { ascending: false })
-    .order('created_at', { ascending: false })
-
-  if (error) return []
-  return (data || []).map(p => ({
-    slug: p.slug, title: p.title, date: p.date,
-    category: p.category || '未分类', tags: p.tags || [],
-    excerpt: p.excerpt || '', image: p.image || '',
-    published: p.published, top: p.top, created_at: p.created_at,
+  const res = await supabaseFetch(
+    `/posts?tags=cs.${encodeURIComponent(tag)}&published=eq.true&select=slug,title,date,category,tags,excerpt,image,published,top,created_at&order=top,desc&order=created_at,desc`
+  )
+  const data = await res.json()
+  return (data || []).map((p: Record<string, unknown>) => ({
+    slug: String(p.slug || ''),
+    title: String(p.title || ''),
+    date: String(p.date || ''),
+    category: String(p.category || '未分类'),
+    tags: Array.isArray(p.tags) ? p.tags : [],
+    excerpt: String(p.excerpt || ''),
+    image: String(p.image || ''),
+    published: p.published === true,
+    top: p.top === true,
+    created_at: p.created_at ? String(p.created_at) : undefined,
   }))
 }
