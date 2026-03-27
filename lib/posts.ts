@@ -70,6 +70,11 @@ export async function getPostContentHtml(slug: string): Promise<string> {
 
   let content = post.content
 
+  // 如果内容已经是 HTML（以 < 开头），直接返回，跳过 remark 处理
+  if (content.trim().startsWith('<')) {
+    return content
+  }
+
   // 移除 Markdown 内容中的第一个标题（# title），因为 frontmatter 的 title 已在页面显示
   content = content.replace(/^#\s+.+$/m, '')
 
