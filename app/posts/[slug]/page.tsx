@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import {getAllPosts, getPostBySlug, getAllCategories, getAllTags, getPostsByCategory, getPostsByTag, getPostContentHtml} from '@/lib/posts';
 import LikeButton from '@/components/LikeButton';
 import CommentSection from '@/components/CommentSection';
-import Comments from '@/components/Comments';
 import Navigation from '@/components/Navigation';
 
 export const revalidate = 60;
