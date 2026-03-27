@@ -11,20 +11,6 @@ export const metadata = {
 export default async function Home() {
   const posts = await getAllPosts();
 
-  // 每篇文章对应的图片
-  const articleImages: Record<string, string> = {
-    '2026-03-22-mcp-protocol': '/images/articles/mcp-protocol.jpg',
-    '2026-03-22-agent-workflow': '/images/articles/agent-workflow.jpg',
-    '2026-03-20-agent-era': '/images/articles/agent-era.jpg',
-    '2026-03-20-woodman': '/images/articles/woodman.jpg',
-    '2026-03-20-ai-news': '/images/articles/ai-news.jpg',
-    '2026-03-23-ai-commerce': '/images/articles/ai-commerce.jpg',
-    '2026-03-24-iphone-400b-llm': '/images/articles/iphone-400b-llm.jpg',
-    '2026-03-24-local-llm-mobile': '/images/articles/local-llm-mobile.jpg',
-    '2026-03-24-openclaw-v2026-3-23': '/images/articles/openclaw-v2026-3-23.jpg',
-    '2026-03-24-ai-research-agent': '/images/articles/ai-research-agent.svg',
-  };
-
   return (
     <div>
       <Navigation />
@@ -39,7 +25,7 @@ export default async function Home() {
                   <Link href={`/posts/${post.slug}`}>
                     <div className="position-relative">
                       <img 
-                        src={post.image || articleImages[post.slug] || '/images/articles/blog-launch.jpg'} 
+                        src={post.image || '/images/articles/blog-launch.jpg'} 
                         className="blog-image" 
                         alt={post.title}
                       />

@@ -11,10 +11,6 @@ export const metadata = {
 export default async function Home() {
   const allPosts = await getAllPosts();
   const posts = allPosts.filter(post => post.category === '新闻');
-  const articleImages: Record<string, string> = {
-    '2026-03-20-agent-era': '/images/articles/agent-era.jpg',
-    '2026-03-24-ai-research-agent': '/images/articles/ai-research-agent.svg',
-  };
 
   return (
     <div>
@@ -30,7 +26,7 @@ export default async function Home() {
                   <Link href={`/posts/${post.slug}`}>
                     <div className="position-relative">
                       <img 
-                        src={post.image || articleImages[post.slug] || '/images/articles/blog-launch.jpg'} 
+                        src={post.image || '/images/articles/blog-launch.jpg'} 
                         className="blog-image" 
                         alt={post.title}
                       />
