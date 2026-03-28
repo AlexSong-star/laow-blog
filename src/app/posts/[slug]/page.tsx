@@ -37,7 +37,7 @@ export default async function PostPage({ params }: Props) {
   }
 
   const contentHtml = await getPostContentHtml(slug);
-  const heroImage = articleImages[slug] || '/images/articles/blog-launch.jpg';
+  const heroImage = post.image || articleImages[slug] || '/images/articles/blog-launch.jpg';
 
   return (
     <>
