@@ -34,15 +34,22 @@ export interface Post {
 
 export async function getAllPosts(): Promise<Post[]> {
   try {
+    // Simple query: just select what we need
     const res = await supabaseFetch(
-      '/posts?select=id,slug,title,date,category,tags,excerpt,image,published,top&published=eq.true&order=top,desc&order=date,desc'
+      '/posts?select=id,slug,title,date,category,tags,excerpt,image,published,top&published=eq.true&limit=500'
     )
     const data = await res.json()
     if (!Array.isArray(data)) {
       console.error('[getAllPosts] data is not array:', typeof data, String(data).slice(0,100))
       return []
     }
-    return data.map((p: Record<string, unknown>) => ({
+    // Sort in JS to avoid potential order parameter issues
+    const sorted = [...data].sort((a, b) => {
+      if (a.top && !b.top) return -1
+      if (!a.top && b.top) return 1
+      return String(b.date || '').localeCompare(String(a.date || ''))
+    })
+    return sorted.map((p: Record<string, unknown>) => ({
       slug: String(p.slug || ''),
       title: String(p.title || ''),
       date: String(p.date || ''),
