@@ -7,6 +7,7 @@ import LikeButton from '@/components/LikeButton';
 import Navigation from '@/components/Navigation';
 
 export const revalidate = 60;
+export const dynamicParams = true;
 
 interface Props {
   params: Promise<{ slug: string }>;
