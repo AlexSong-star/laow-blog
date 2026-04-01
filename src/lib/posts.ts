@@ -40,7 +40,6 @@ export async function getAllPosts(): Promise<Post[]> {
     )
     const data = await res.json()
     if (!Array.isArray(data)) {
-      console.error('[getAllPosts] data is not array:', typeof data, String(data).slice(0,100))
       return []
     }
     // Sort in JS to avoid potential order parameter issues
@@ -61,7 +60,7 @@ export async function getAllPosts(): Promise<Post[]> {
       top: p.top === true,
     }))
   } catch (e) {
-    console.error('[getAllPosts] ERROR:', e)
+    // 构建时 Supabase 可能网络不通，不阻塞构建
     return []
   }
 }
