@@ -3,6 +3,8 @@ import Navigation from '@/components/Navigation';
 import { getAllPosts } from '@/lib/posts';
 import './globals.css';
 
+export const revalidate = 60;
+
 export const metadata = {
   title: 'The AI Edge',
   description: '探索AI与技术的边界',
