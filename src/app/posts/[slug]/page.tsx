@@ -26,7 +26,15 @@ const articleImages: Record<string, string> = {
 };
 
 export default async function PostPage({ params }: Props) {
-  const { slug } = await params;
+  let { slug } = await params;
+  // Fix URL decoding: if slug appears garbled (Latin-1 instead of UTF-8),
+  // re-encode as Latin-1 bytes then decode as UTF-8
+  try {
+    const fixed = Buffer.from(slug, 'latin1').toString('utf8');
+    if (fixed !== slug) {
+      slug = fixed;
+    }
+  } catch {}
   const post = await getPostBySlug(slug);
   
   if (!post) {
