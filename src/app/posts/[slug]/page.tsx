@@ -26,12 +26,22 @@ const articleImages: Record<string, string> = {
 export default async function PostPage({ params }: Props) {
   const { slug } = await params;
   
-  // 获取所有文章，通过 JS filter 找到当前 slug
-  const allPosts = await getAllPosts();
-  const post = allPosts.find(p => p.slug === slug) || null;
+  // 获取所有文章
+  let allPosts: Awaited<ReturnType<typeof getAllPosts>> = [];
+  try {
+    allPosts = await getAllPosts();
+  } catch (e) {
+    console.error('[PostPage] getAllPosts failed:', e);
+  }
+  
+  // 用原始 slug 直接查 Supabase，避免 getAllPosts 的 order 问题
+  // 注意：这里直接查是为了避免 URL 解码问题，getAllPosts 只用于兜底
+  const { getPostBySlug } = await import('@/lib/posts');
+  const post = slug ? await getPostBySlug(slug) : null;
   
   if (!post) {
     notFound();
+    return;
   }
 
   // 处理 Markdown 内容
