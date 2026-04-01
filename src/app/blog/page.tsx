@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import {getAllPosts, getPostBySlug, getPostsByCategory, getPostsByTag} from '@/lib/posts';
-import { encodeSlug } from '@/lib/slug';
 
 export const revalidate = 60;
 
@@ -74,7 +73,7 @@ export default async function BlogHome() {
                     )}
                   </div>
                   
-                  <Link href={`/posts/${encodeSlug(post.slug)}`}>
+                  <Link href={`/posts/${post.slug}`}>
                     <h2 className="text-xl md:text-2xl font-bold text-white group-hover:text-emerald-400 transition-colors mb-3">
                       {post.title}
                     </h2>

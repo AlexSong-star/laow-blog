@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import { getAllPosts } from '@/lib/posts';
-import { encodeSlug } from '@/lib/slug';
 import './globals.css';
 
 export const revalidate = 60;
@@ -37,7 +36,7 @@ export default async function Home() {
             {allPosts.map((post) => (
               <div key={post.slug} className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
                 <div className="card h-100">
-                  <Link href={`/posts/${encodeSlug(post.slug)}`}>
+                  <Link href={`/posts/${post.slug}`}>
                     <div className="position-relative">
                       <img 
                         src={articleImages[post.slug] || '/images/articles/blog-launch.jpg'} 

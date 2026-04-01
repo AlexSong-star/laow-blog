@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPostBySlug } from '@/lib/posts';
-import { decodeSlug } from '@/lib/slug';
 import { remark } from 'remark';
 import html from 'remark-html';
 import CommentSection from '@/components/CommentSection';
@@ -28,7 +27,7 @@ export default async function PostPage({ params }: Props) {
   const { slug: encodedSlug } = await params;
   
   // 解码 Base64 slug 得到原始 slug
-  const slug = decodeSlug(encodedSlug);
+  const slug = encodedSlug;
   
   // 直接通过 slug 查询（不走 getAllPosts，避免 Vercel Edge 的 URL 解码问题）
   const post = slug ? await getPostBySlug(slug) : null;
