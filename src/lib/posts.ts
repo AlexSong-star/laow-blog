@@ -1,8 +1,14 @@
 import { remark } from 'remark'
 import html from 'remark-html'
+import { createClient } from '@supabase/supabase-js'
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+// Use Supabase JS SDK client for proper encoding
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { persistSession: false }
+})
 
 function supabaseFetch(path: string, options: RequestInit = {}) {
   return fetch(`${SUPABASE_URL}/rest/v1${path}`, {
@@ -52,13 +58,15 @@ export async function getAllPosts(): Promise<Post[]> {
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  const res = await supabaseFetch(
-    `/posts?slug=eq.${encodeURIComponent(slug)}&select=*`
-  )
-  const data = await res.json()
-  if (!data || data.length === 0) return null
+  // Use Supabase client SDK for proper encoding of Unicode slugs
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('slug', slug)
+    .single()
+  if (error || !data) return null
 
-  const p = data[0]
+  const p = data
   return {
     id: p.id,
     slug: String(p.slug),
