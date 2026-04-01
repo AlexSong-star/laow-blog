@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import {getAllPosts, getPostBySlug, getAllCategories, getAllTags, getPostsByCategory, getPostsByTag} from '@/lib/posts';
+import { encodeSlug } from '@/lib/slug';
 
 export const revalidate = 60;
 
@@ -62,7 +63,7 @@ export default async function SearchPage({ searchParams }: Props) {
           {results.map(post => (
             <Link
               key={post.slug}
-              href={`/posts/${post.slug}`}
+              href={`/posts/${encodeSlug(post.slug)}`}
               className="block p-6 bg-slate-800/50 border border-emerald-500/20 rounded-xl hover:border-emerald-400/50 hover:bg-slate-800 transition-all group"
             >
               <div className="flex items-center gap-3 mb-2">

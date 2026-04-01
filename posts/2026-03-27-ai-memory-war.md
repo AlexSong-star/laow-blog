@@ -1,5 +1,5 @@
 ---
-title: "AI正在打响"记忆之战"：谁能让AI记住一切，谁就赢了下一代平台"
+title: "AI正在打响‘记忆之战’：谁能让AI记住一切，谁就赢了下一代平台"
 date: "2026-03-27"
 category: "博客"
 image: "/images/articles/ai-memory-war-2026.jpg"

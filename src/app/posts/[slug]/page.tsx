@@ -1,7 +1,8 @@
 // 文章详情页
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getAllPosts } from '@/lib/posts';
+import { getPostBySlug } from '@/lib/posts';
+import { decodeSlug } from '@/lib/slug';
 import { remark } from 'remark';
 import html from 'remark-html';
 import CommentSection from '@/components/CommentSection';
@@ -24,19 +25,12 @@ const articleImages: Record<string, string> = {
 };
 
 export default async function PostPage({ params }: Props) {
-  const { slug } = await params;
+  const { slug: encodedSlug } = await params;
   
-  // 获取所有文章
-  let allPosts: Awaited<ReturnType<typeof getAllPosts>> = [];
-  try {
-    allPosts = await getAllPosts();
-  } catch (e) {
-    console.error('[PostPage] getAllPosts failed:', e);
-  }
+  // 解码 Base64 slug 得到原始 slug
+  const slug = decodeSlug(encodedSlug);
   
-  // 用原始 slug 直接查 Supabase，避免 getAllPosts 的 order 问题
-  // 注意：这里直接查是为了避免 URL 解码问题，getAllPosts 只用于兜底
-  const { getPostBySlug } = await import('@/lib/posts');
+  // 直接通过 slug 查询（不走 getAllPosts，避免 Vercel Edge 的 URL 解码问题）
   const post = slug ? await getPostBySlug(slug) : null;
   
   if (!post) {

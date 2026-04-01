@@ -1,5 +1,5 @@
 ---
-title: "英伟达 AgentCare 发布：AI 学会自己修自己，GPU 工程师要被"革命"了？"
+title: "英伟达 AgentCare 发布：AI 学会自己修自己，GPU 工程师要被‘革命’了？"
 date: "2026-03-26"
 description: "英伟达最新发布的 AgentCare 系统，让 AI Agent 在 7 天内自主进化，成功接管 GPU 固件和驱动优化工作，震惊整个硬件工程界"
 category: "新闻"

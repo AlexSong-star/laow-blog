@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {getAllPosts, getPostBySlug, getAllCategories, getAllTags, getPostsByCategory, getPostsByTag} from '@/lib/posts';
+import { encodeSlug } from '@/lib/slug';
 
 export const revalidate = 60;
 
@@ -57,7 +58,7 @@ export default async function CategoryPage({ params }: Props) {
                   )}
                 </div>
                 
-                <Link href={`/posts/${post.slug}`}>
+                <Link href={`/posts/${encodeSlug(post.slug)}`}>
                   <h2 className="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors mb-2">
                     {post.title}
                   </h2>

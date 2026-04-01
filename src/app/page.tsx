@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import { getAllPosts } from '@/lib/posts';
+import { encodeSlug } from '@/lib/slug';
 import './globals.css';
 
 export const revalidate = 60;
@@ -19,7 +20,7 @@ export default async function Home() {
     '2026-03-17-how-i-work': '/images/articles/how-i-work.jpg',
     '2026-03-19-blog-upgrade': '/images/articles/blog-upgrade.jpg',
     '2026-03-17-first-post': '/images/articles/blog-launch.jpg',
-    '2026-03-17-hello-world': '/images/articles/hello-world.jpg',
+    '2026-03-17-hello-world': '/images/articles/blog-launch.jpg',
     '2026-03-20-ai-news': '/images/articles/cloud-computing-price.png',
     '2026-03-20-agent-era': '/images/articles/agent-era.jpg',
     '2026-03-20-woodman': '/images/articles/woodman.jpg',
@@ -36,7 +37,7 @@ export default async function Home() {
             {allPosts.map((post) => (
               <div key={post.slug} className="col-12 col-md-6 col-lg-4 mb-4 blog-item">
                 <div className="card h-100">
-                  <Link href={`/posts/${post.slug}`}>
+                  <Link href={`/posts/${encodeSlug(post.slug)}`}>
                     <div className="position-relative">
                       <img 
                         src={articleImages[post.slug] || '/images/articles/blog-launch.jpg'} 
