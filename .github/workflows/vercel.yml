@@ -22,10 +22,31 @@ jobs:
           NEXT_PUBLIC_SITE_URL=https://aiedge-steel.vercel.app \
           NEXT_PUBLIC_SUPABASE_URL=https://zneonjdkseujrzlowfgp.supabase.co \
           NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_1zYpbXzxszCUacl219DpJw_DWEn-kub \
-          npm run build
+          npm run build 2>&1 | tee /tmp/build.log
+          echo "BUILD_EXIT_CODE=$?" >> /tmp/build.env
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: /tmp/build.log
+          retention-days: 1
+
+      - name: Show build result
+        run: |
+          cat /tmp/build.env 2>/dev/null || echo "No build.env"
+          tail -30 /tmp/build.log 2>/dev/null || echo "No build.log"
 
       - name: Deploy to Vercel
+        if: success()
         run: |
+          BUILD_EXIT=$(cat /tmp/build.env | grep BUILD_EXIT_CODE | cut -d= -f2)
+          echo "Build exit code: $BUILD_EXIT"
+          if [ "$BUILD_EXIT" != "0" ]; then
+            echo "Build failed, skipping deployment"
+            exit 1
+          fi
           echo "=== Creating Vercel Deployment ==="
           RESPONSE=$(curl -s -X POST "https://api.vercel.com/v13/deployments" \
             -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
@@ -42,8 +63,3 @@ jobs:
               "target": "production"
             }')
           echo "Response: $RESPONSE"
-          DEPLOY_UID=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('id', d.get('error',{}).get('code','no id')))" 2>/dev/null)
-          echo "Deploy UID: $DEPLOY_UID"
-          DEPLOY_URL=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('url', d.get('error',{}).get('message','no url')))" 2>/dev/null)
-          echo "Deploy URL: $DEPLOY_URL"
-          echo "::set-output name=deploy_url::$DEPLOY_URL"
