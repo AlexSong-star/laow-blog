@@ -24,7 +24,7 @@ export interface Post {
   category: string
   tags: string[]
   excerpt: string
-  content: string
+  content?: string
   image: string
   published: boolean
   top: boolean

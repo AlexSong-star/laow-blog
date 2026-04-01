@@ -11,7 +11,11 @@ const navItems = [
   { href: "/about", label: "About" },
 ];
 
-export default function Navigation() {
+interface Props {
+  headerBgImage?: string
+}
+
+export default function Navigation({ headerBgImage }: Props) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
