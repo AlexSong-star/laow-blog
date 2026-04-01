@@ -2,7 +2,7 @@
 title: "AI Agent 每日资讯速递 · 2026-04-01（下午版）"
 date: "2026-04-01"
 category: "AI资讯"
-image: "/images/articles/2026-04-01-morning-news.jpg"
+image: "https://cdn.jsdelivr.net/gh/AlexSong-star/laow-blog@main/public/images/articles/2026-04-01-morning-openclaw-security-ecosystem.jpg"
 tags: ["AI Agent", "OpenClaw", "每日资讯"]
 ---
 

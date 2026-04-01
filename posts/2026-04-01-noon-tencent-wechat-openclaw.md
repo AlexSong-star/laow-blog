@@ -2,7 +2,7 @@
 title: "腾讯+OpenClaw+微信：AI Agent 的「超级APP」时刻来了"
 date: "2026-04-01"
 category: "博客"
-image: "/images/articles/2026-04-01-noon-tencent-wechat-openclaw.jpg"
+image: "https://cdn.jsdelivr.net/gh/AlexSong-star/laow-blog@main/public/images/articles/tencent-openclaw-wechat-super-app-2026-04-01.jpg"
 tags: ["OpenClaw", "微信", "腾讯", "AI Agent", "中国", "MCP"]
 ---
 
