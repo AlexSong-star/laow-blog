@@ -33,21 +33,30 @@ export interface Post {
 }
 
 export async function getAllPosts(): Promise<Post[]> {
-  const res = await supabaseFetch(
-    '/posts?select=id,slug,title,date,category,tags,excerpt,image,published,top&published=eq.true&order=top,desc&order=date,desc'
-  )
-  const data = await res.json()
-  return (data || []).map((p: Record<string, unknown>) => ({
-    slug: String(p.slug || ''),
-    title: String(p.title || ''),
-    date: String(p.date || ''),
-    category: String(p.category || '未分类'),
-    tags: Array.isArray(p.tags) ? p.tags : [],
-    excerpt: String(p.excerpt || ''),
-    image: String(p.image || ''),
-    published: p.published === true,
-    top: p.top === true,
-  }))
+  try {
+    const res = await supabaseFetch(
+      '/posts?select=id,slug,title,date,category,tags,excerpt,image,published,top&published=eq.true&order=top,desc&order=date,desc'
+    )
+    const data = await res.json()
+    if (!Array.isArray(data)) {
+      console.error('[getAllPosts] data is not array:', typeof data, String(data).slice(0,100))
+      return []
+    }
+    return data.map((p: Record<string, unknown>) => ({
+      slug: String(p.slug || ''),
+      title: String(p.title || ''),
+      date: String(p.date || ''),
+      category: String(p.category || '未分类'),
+      tags: Array.isArray(p.tags) ? p.tags : [],
+      excerpt: String(p.excerpt || ''),
+      image: String(p.image || ''),
+      published: p.published === true,
+      top: p.top === true,
+    }))
+  } catch (e) {
+    console.error('[getAllPosts] ERROR:', e)
+    return []
+  }
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
