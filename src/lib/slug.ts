@@ -1,28 +1,25 @@
 // Slug 编码/解码工具：解决 Vercel Edge 中文 URL 解码 bug
 // 方案：用 Base64 URL-safe 编码存储 slug，避开中文 URL 解析问题
+// 注意：使用 Web Crypto API（btoa/atob），兼容 Edge Runtime（不支持 Buffer）
 
 export function encodeSlug(slug: string): string {
-  return Buffer.from(slug, 'utf8').toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  // 使用 btoa（Web API）进行 Base64 编码，替换 URL 不安全字符
+  const encoded = btoa(encodeURIComponent(slug));
+  return encoded.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
 export function decodeSlug(encoded: string): string {
   try {
-    // 先尝试直接 base64 解码（标准 URL-safe base64）
-    let decoded = Buffer.from(encoded, 'base64').toString('utf8');
+    // 先还原标准 Base64（替换 URL 安全字符）
+    const standard = encoded.replace(/-/g, '+').replace(/_/g, '/');
+    const padded = standard + '='.repeat((4 - standard.length % 4) % 4);
+    // 使用 atob（Web API）解码，再用 decodeURIComponent 还原原始字符
+    const decoded = decodeURIComponent(atob(padded));
     if (decoded && decoded.length > 0 && decoded.length < 300) {
       return decoded;
     }
   } catch {
-    // 尝试带 padding 的解码
-    try {
-      const padded = encoded + '='.repeat((4 - encoded.length % 4) % 4);
-      const decoded = Buffer.from(padded, 'base64').toString('utf8');
-      if (decoded && decoded.length > 0 && decoded.length < 300) {
-        return decoded;
-      }
-    } catch {
-      // fallback
-    }
+    // fallback
   }
   return encoded;
 }
