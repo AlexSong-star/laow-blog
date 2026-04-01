@@ -12,12 +12,8 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  const posts = await getAllPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
-}
+// generateStaticParams removed: pages are rendered on-demand via ISR (revalidate=60)
+// This ensures new articles appear without requiring a new build
 
 // 每篇文章对应的图片
 const articleImages: Record<string, string> = {
