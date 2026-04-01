@@ -17,15 +17,22 @@ jobs:
           cache: 'npm'
 
       - run: npm install --legacy-peer-deps
-      - run: |
-          # Build with Supabase env vars (dummy values allow build to complete)
+      
+      - name: Build
+        run: |
+          echo "=== Build Start ==="
           NEXT_PUBLIC_SITE_URL=https://aiedge-steel.vercel.app \
           NEXT_PUBLIC_SUPABASE_URL=https://zneonjdkseujrzlowfgp.supabase.co \
           NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_1zYpbXzxszCUacl219DpJw_DWEn-kub \
-          npm run build
+          npm run build 2>&1 | tee /tmp/build.log
+          echo "=== Build Exit Code: $? ==="
+          tail -20 /tmp/build.log
 
-      - run: |
-          curl -s -X POST "https://api.vercel.com/v13/deployments" \
+      - name: Deploy to Vercel
+        if: success()
+        run: |
+          echo "Deploying to Vercel..."
+          RESPONSE=$(curl -s -X POST "https://api.vercel.com/v13/deployments" \
             -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d '{
@@ -35,4 +42,7 @@ jobs:
               "target": "production",
               "buildCommand": "npm run build",
               "outputDirectory": ".next"
-            }' | python3 -c "import sys,json; d=json.load(sys.stdin); print('URL:', d.get('url', d.get('error',{}).get('message','')))"
+            }')
+          echo "Vercel Response: $RESPONSE"
+          DEPLOY_URL=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('url', d.get('error',{}).get('message','no url')))" 2>/dev/null)
+          echo "Deploy URL: $DEPLOY_URL"
