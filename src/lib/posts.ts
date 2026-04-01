@@ -1,14 +1,8 @@
 import { remark } from 'remark'
 import html from 'remark-html'
-import { createClient } from '@supabase/supabase-js'
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-
-// Use Supabase JS SDK client for proper encoding
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  auth: { persistSession: false }
-})
 
 function supabaseFetch(path: string, options: RequestInit = {}) {
   return fetch(`${SUPABASE_URL}/rest/v1${path}`, {
@@ -58,15 +52,15 @@ export async function getAllPosts(): Promise<Post[]> {
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  // Use Supabase client SDK for proper encoding of Unicode slugs
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .eq('slug', slug)
-    .single()
-  if (error || !data) return null
+  // Fetch all published posts and find by slug (avoids encoding issues with URL query params)
+  const res = await supabaseFetch(
+    '/posts?select=*&published=eq.true&limit=500'
+  )
+  const data = await res.json()
+  const found = Array.isArray(data) ? data.find((p: Record<string, unknown>) => String(p.slug) === slug) : null
+  if (!found) return null
 
-  const p = data
+  const p = found
   return {
     id: p.id,
     slug: String(p.slug),
