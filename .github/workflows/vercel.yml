@@ -3,7 +3,6 @@ name: Deploy to Vercel
 on:
   push:
     branches: [main]
-  workflow_dispatch:
 
 jobs:
   deploy:
@@ -17,32 +16,34 @@ jobs:
           cache: 'npm'
 
       - run: npm install --legacy-peer-deps
-      
+
       - name: Build
         run: |
-          echo "=== Build Start ==="
           NEXT_PUBLIC_SITE_URL=https://aiedge-steel.vercel.app \
           NEXT_PUBLIC_SUPABASE_URL=https://zneonjdkseujrzlowfgp.supabase.co \
           NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_1zYpbXzxszCUacl219DpJw_DWEn-kub \
-          npm run build 2>&1 | tee /tmp/build.log
-          echo "=== Build Exit Code: $? ==="
-          tail -20 /tmp/build.log
+          npm run build
 
       - name: Deploy to Vercel
-        if: success()
         run: |
-          echo "Deploying to Vercel..."
+          echo "=== Creating Vercel Deployment ==="
           RESPONSE=$(curl -s -X POST "https://api.vercel.com/v13/deployments" \
             -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d '{
               "name": "aiedge",
               "project": "aiedge",
-              "gitSource": {"type": "github", "repoId": "1184058054", "ref": "main", "sha": "${{ github.sha }}"},
-              "target": "production",
-              "buildCommand": "npm run build",
-              "outputDirectory": ".next"
+              "gitSource": {
+                "type": "github",
+                "repoId": "1184058054",
+                "ref": "refs/heads/main",
+                "sha": "${{ github.sha }}"
+              },
+              "target": "production"
             }')
-          echo "Vercel Response: $RESPONSE"
+          echo "Response: $RESPONSE"
+          DEPLOY_UID=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('id', d.get('error',{}).get('code','no id')))" 2>/dev/null)
+          echo "Deploy UID: $DEPLOY_UID"
           DEPLOY_URL=$(echo "$RESPONSE" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('url', d.get('error',{}).get('message','no url')))" 2>/dev/null)
           echo "Deploy URL: $DEPLOY_URL"
+          echo "::set-output name=deploy_url::$DEPLOY_URL"
