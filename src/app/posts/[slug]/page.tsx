@@ -30,30 +30,8 @@ export default async function PostPage({ params }: Props) {
   const allPosts = await getAllPosts();
   const post = allPosts.find(p => p.slug === slug) || null;
   
-  // DEBUG: 如果找不到，显示调试信息
   if (!post) {
-    return (
-      <div style={{padding:'40px',fontFamily:'monospace',background:'#111',color:'#0f0',minHeight:'100vh'}}>
-        <h1>DEBUG: POST NOT FOUND</h1>
-        <p>slug: {slug}</p>
-        <p>slug hex: {Buffer.from(slug,'utf8').toString('hex').slice(0,50)}</p>
-        <p>allPosts type: {typeof allPosts}</p>
-        <p>allPosts.isArray: {Array.isArray(allPosts)}</p>
-        <p>allPosts.length: {Array.isArray(allPosts) ? allPosts.length : 'N/A'}</p>
-        {allPosts.slice(0,3).map((p,i) => (
-          <p key={i}>post[{i}]: {p.slug} hex={Buffer.from(p.slug,'utf8').toString('hex').slice(0,40)}</p>
-        ))}
-        {allPosts.length === 0 && (
-          <p style={{color:'red'}}>⚠️ getAllPosts() returned EMPTY! Check Supabase fetch.</p>
-        )}
-        <details>
-          <summary>All slugs ({allPosts.length})</summary>
-          <pre style={{fontSize:'8px',overflow:'auto',maxHeight:'400px'}}>
-            {allPosts.map(p => `${p.slug}|${Buffer.from(p.slug,'utf8').toString('hex')}`).join('\n')}
-          </pre>
-        </details>
-      </div>
-    );
+    notFound();
   }
 
   // 处理 Markdown 内容
