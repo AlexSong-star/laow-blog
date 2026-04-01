@@ -15,7 +15,6 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-// 每篇文章对应的图片
 const articleImages: Record<string, string> = {
   '2026-03-17-ai-workflow': '/images/articles/ai-workflow.jpg',
   '2026-03-17-how-i-work': '/images/articles/how-i-work.jpg',
@@ -27,45 +26,54 @@ const articleImages: Record<string, string> = {
 export default async function PostPage({ params }: Props) {
   const { slug } = await params;
   
-  // 获取所有文章，通过 JS filter 找到当前 slug（避免 URL 编码问题）
+  // 获取所有文章，通过 JS filter 找到当前 slug
   const allPosts = await getAllPosts();
   const post = allPosts.find(p => p.slug === slug) || null;
   
-  // DEBUG: 显示查询结果（部署后删除）
+  // DEBUG: 如果找不到，显示调试信息
   if (!post) {
     return (
       <div style={{padding:'40px',fontFamily:'monospace',background:'#111',color:'#0f0',minHeight:'100vh'}}>
-        <h1>DEBUG INFO</h1>
+        <h1>DEBUG: POST NOT FOUND</h1>
         <p>slug: {slug}</p>
         <p>allPosts.length: {allPosts.length}</p>
-        <p>matching slugs: {allPosts.filter(p=>p.slug.includes('2026-04-01')||p.slug.includes('2026-03-31')).map(p=>p.slug).join('\n')}</p>
+        <p>slug type: {typeof slug}</p>
+        <p>slug bytes: {Buffer.from(slug, 'utf8').toString('hex').slice(0,40)}</p>
+        <details>
+          <summary>All slugs ({allPosts.length})</summary>
+          <pre style={{fontSize:'10px',overflow:'auto',maxHeight:'400px'}}>
+            {allPosts.map(p => `${p.slug} (${Buffer.from(p.slug,'utf8').toString('hex').slice(0,30)})`).join('\n')}
+          </pre>
+        </details>
       </div>
     );
   }
 
   // 处理 Markdown 内容
   let content = post.content || '';
-  content = content.replace(/^#\s+.+$/m, '');
-  content = content.replace(
-    /\[video\]\(https?:\/\/www\.bilibili\.com\/video\/BV[\w]+\)/g,
-    (match) => {
-      const bvid = match.match(/BV[\w]+/)?.[0] || '';
-      return `<div style="position:relative;padding-bottom:56.25%;height:0;"><iframe src="//player.bilibili.com/player.html?bvid=${bvid}&page=1" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>`;
-    }
-  );
-  content = content.replace(
-    /\[video\]\(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w-]+\)/g,
-    (match) => {
-      const vid = match.match(/v=([\w-]+)/)?.[1] || '';
-      return `<div style="position:relative;padding-bottom:56.25%;height:0;"><iframe src="https://www.youtube.com/embed/${vid}" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>`;
-    }
-  );
-  content = content.replace(
-    /\[video\]\((https?:\/\/.*\.(?:mp4|webm|ogg))\)/g,
-    (_: string, url: string) =>
-      `<video controls style="width:100%;max-width:800px;margin:1rem 0;"><source src="${url}" /></video>`
-  );
-  const processedContent = await remark().use(html).process(content);
+  if (content) {
+    content = content.replace(/^#\s+.+$/m, '');
+    content = content.replace(
+      /\[video\]\(https?:\/\/www\.bilibili\.com\/video\/BV[\w]+\)/g,
+      (match) => {
+        const bvid = match.match(/BV[\w]+/)?.[0] || '';
+        return `<div style="position:relative;padding-bottom:56.25%;height:0;"><iframe src="//player.bilibili.com/player.html?bvid=${bvid}&page=1" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>`;
+      }
+    );
+    content = content.replace(
+      /\[video\]\(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w-]+\)/g,
+      (match) => {
+        const vid = match.match(/v=([\w-]+)/)?.[1] || '';
+        return `<div style="position:relative;padding-bottom:56.25%;height:0;"><iframe src="https://www.youtube.com/embed/${vid}" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>`;
+      }
+    );
+    content = content.replace(
+      /\[video\]\((https?:\/\/.*\.(?:mp4|webm|ogg))\)/g,
+      (_: string, url: string) =>
+        `<video controls style="width:100%;max-width:800px;margin:1rem 0;"><source src="${url}" /></video>`
+    );
+  }
+  const processedContent = await remark().use(html).process(content || '<p>（无正文内容）</p>');
   const contentHtml = processedContent.toString();
 
   const heroImage = post.image || articleImages[slug] || '/images/articles/blog-launch.jpg';

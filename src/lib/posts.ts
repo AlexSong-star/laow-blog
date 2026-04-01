@@ -34,7 +34,7 @@ export interface Post {
 
 export async function getAllPosts(): Promise<Post[]> {
   const res = await supabaseFetch(
-    '/posts?select=slug,title,date,category,tags,excerpt,image,published,top,created_at&published=eq.true&order=top,desc&order=created_at,desc'
+    '/posts?select=id,slug,title,date,category,tags,excerpt,image,published,top&published=eq.true&order=top,desc&order=date,desc'
   )
   const data = await res.json()
   return (data || []).map((p: Record<string, unknown>) => ({
@@ -47,7 +47,6 @@ export async function getAllPosts(): Promise<Post[]> {
     image: String(p.image || ''),
     published: p.published === true,
     top: p.top === true,
-    created_at: p.created_at ? String(p.created_at) : undefined,
   }))
 }
 
