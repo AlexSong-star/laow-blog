@@ -27,15 +27,21 @@ const articleImages: Record<string, string> = {
 
 export default async function PostPage({ params }: Props) {
   let { slug } = await params;
+  // DEBUG: log raw slug bytes to diagnose encoding issues
+  console.log('[DEBUG] slug hex:', Buffer.from(slug, 'utf8').toString('hex'));
+  console.log('[DEBUG] slug repr:', JSON.stringify(slug));
+  
   // Fix URL decoding: if slug appears garbled (Latin-1 instead of UTF-8),
   // re-encode as Latin-1 bytes then decode as UTF-8
   try {
     const fixed = Buffer.from(slug, 'latin1').toString('utf8');
     if (fixed !== slug) {
       slug = fixed;
+      console.log('[DEBUG] slug FIXED to:', JSON.stringify(slug));
     }
   } catch {}
   const post = await getPostBySlug(slug);
+  console.log('[DEBUG] getPostBySlug result:', post ? post.title : 'NULL');
   
   if (!post) {
     notFound();
