@@ -31,8 +31,16 @@ export default async function PostPage({ params }: Props) {
   const allPosts = await getAllPosts();
   const post = allPosts.find(p => p.slug === slug) || null;
   
+  // DEBUG: 显示查询结果（部署后删除）
   if (!post) {
-    notFound();
+    return (
+      <div style={{padding:'40px',fontFamily:'monospace',background:'#111',color:'#0f0',minHeight:'100vh'}}>
+        <h1>DEBUG INFO</h1>
+        <p>slug: {slug}</p>
+        <p>allPosts.length: {allPosts.length}</p>
+        <p>matching slugs: {allPosts.filter(p=>p.slug.includes('2026-04-01')||p.slug.includes('2026-03-31')).map(p=>p.slug).join('\n')}</p>
+      </div>
+    );
   }
 
   // 处理 Markdown 内容
