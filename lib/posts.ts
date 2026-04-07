@@ -1,6 +1,15 @@
 // 博客文章读取工具 — Supabase 版本
 import { supabase } from './supabase'
 
+const CDN_BASE = 'https://cdn.jsdelivr.net/gh/AlexSong-star/laow-blog@main/public'
+
+function toCdnUrl(path: string): string {
+  if (!path) return ''
+  if (path.startsWith('http://') || path.startsWith('https://')) return path
+  if (path.startsWith('/')) return CDN_BASE + path
+  return CDN_BASE + '/' + path
+}
+
 export interface Post {
   slug: string
   title: string
@@ -27,12 +36,12 @@ export async function getAllPosts(): Promise<Post[]> {
     return []
   }
 
-  // 按置顶优先，再按日期排序
+  // 按置顶优先，再按日期排序，并转换图片 URL 为 CDN 地址
   const posts: Post[] = (data || []).sort((a, b) => {
     if (a.top && !b.top) return -1
     if (!a.top && b.top) return 1
     return new Date(b.date).getTime() - new Date(a.date).getTime()
-  })
+  }).map(p => ({ ...p, image: toCdnUrl(p.image) }))
 
   return posts
 }
@@ -55,7 +64,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     category: data.category,
     tags: data.tags || [],
     excerpt: data.excerpt || '',
-    image: data.image || '',
+    image: toCdnUrl(data.image) || '',
     published: data.published,
     top: data.top,
     content: data.content || '',
