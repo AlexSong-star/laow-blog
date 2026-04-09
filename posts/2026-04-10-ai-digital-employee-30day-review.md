@@ -3,7 +3,7 @@ title: "AI数字员工上岗前夜：我的30天实战复盘"
 date: "2026-04-10"
 category: "博客"
 tags: ["AI数字员工", "OpenClaw", "自动化", "数字员工", "老六"]
-image: "https://cdn.jsdelivr.net/gh/AlexSong-star/laow-blog@main/public/images/articles/openclaw-windows-ai-era.jpg"
+image: "https://cdn.jsdelivr.net/gh/AlexSong-star/laow-blog@main/public/images/articles/2026-04-10-digital-employee-review.jpg"
 excerpt: "从「老六」上线到今天刚好30天，聊聊AI数字员工在实际工作中的表现、坑和惊喜。"
 published: true
 ---
