@@ -1,6 +1,4 @@
-// 博客文章读取工具 — Supabase 版本
-import { supabase } from './supabase'
-
+// 博客文章读取工具 — 静态 JSON 版本（从 GitHub posts.json 读取）
 const CDN_BASE = 'https://cdn.jsdelivr.net/gh/AlexSong-star/laow-blog@main/public'
 
 function toCdnUrl(path: string): string {
@@ -24,51 +22,28 @@ export interface Post {
   content?: string
 }
 
-export async function getAllPosts(): Promise<Post[]> {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('id, slug, title, date, category, tags, excerpt, image, published, top')
-    .eq('published', true)
-    .order('created_at', { ascending: false })
+let _postsCache: Post[] | null = null
 
-  if (error) {
-    console.error('getAllPosts error:', error)
+async function loadPosts(): Promise<Post[]> {
+  if (_postsCache) return _postsCache
+  const res = await fetch(`${CDN_BASE}/posts.json`, { cache: 'no-store' })
+  if (!res.ok) {
+    console.error('Failed to load posts.json:', res.status)
     return []
   }
+  const posts: Post[] = await res.json()
+  _postsCache = posts.map(p => ({ ...p, image: toCdnUrl(p.image) }))
+  return _postsCache
+}
 
-  // 按置顶优先，再按日期排序，并转换图片 URL 为 CDN 地址
-  const posts: Post[] = (data || []).sort((a, b) => {
-    if (a.top && !b.top) return -1
-    if (!a.top && b.top) return 1
-    return new Date(b.date).getTime() - new Date(a.date).getTime()
-  }).map(p => ({ ...p, image: toCdnUrl(p.image) }))
-
-  return posts
+export async function getAllPosts(): Promise<Post[]> {
+  const posts = await loadPosts()
+  return posts.filter(p => p.published)
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .eq('slug', slug)
-    .single()
-
-  if (error || !data) {
-    return null
-  }
-
-  return {
-    slug: data.slug,
-    title: data.title,
-    date: data.date,
-    category: data.category,
-    tags: data.tags || [],
-    excerpt: data.excerpt || '',
-    image: toCdnUrl(data.image) || '',
-    published: data.published,
-    top: data.top,
-    content: data.content || '',
-  }
+  const posts = await loadPosts()
+  return posts.find(p => p.slug === slug) || null
 }
 
 export async function getPostContentHtml(slug: string): Promise<string> {
@@ -136,24 +111,11 @@ export async function getAllTags(): Promise<string[]> {
 }
 
 export async function getPostsByCategory(category: string): Promise<Post[]> {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('id, slug, title, date, category, tags, excerpt, image, published, top')
-    .eq('category', category)
-    .eq('published', true)
-    .order('created_at', { ascending: false })
-
-  if (error) return []
-  return data || []
+  const posts = await getAllPosts()
+  return posts.filter(p => p.category === category)
 }
 
 export async function getPostsByTag(tag: string): Promise<Post[]> {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('id, slug, title, date, category, tags, excerpt, image, published, top')
-    .eq('published', true)
-    .order('created_at', { ascending: false })
-
-  if (error) return []
-  return (data || []).filter(post => post.tags?.includes(tag))
+  const posts = await getAllPosts()
+  return posts.filter(p => p.tags?.includes(tag))
 }
