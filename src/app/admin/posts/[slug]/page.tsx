@@ -1,16 +1,15 @@
-// 文章编辑/新建页面 - 直接调用 Supabase（绕过 Vercel Serverless）
+// 文章编辑/新建页面
 "use client";
 
-import { useState, useEffect } from 'react'
-import { useRouter, useParams } from 'next/navigation'
-import Link from 'next/link'
-import { getPost, createPost, updatePost } from '@/lib/supabase-client'
+import { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import Link from 'next/link';
 
-export default async function EditPostPage() {
-  const router = useRouter()
-  const params = useParams()
-  const slug = params.slug as string
-  const isNew = slug === 'new'
+export default function EditPostPage() {
+  const router = useRouter();
+  const params = useParams();
+  const slug = params.slug as string;
+  const isNew = slug === 'new';
 
   const [form, setForm] = useState({
     title: '',
@@ -22,53 +21,70 @@ export default async function EditPostPage() {
     image: '',
     published: false,
     top: false,
-  })
-  const [saving, setSaving] = useState(false)
+  });
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    const auth = localStorage.getItem('admin_auth')
+    const auth = localStorage.getItem('admin_auth');
     if (!auth) {
-      router.push('/admin')
-      return
+      router.push('/admin');
+      return;
     }
 
     if (!isNew) {
-      getPost(slug).then(post => {
-        if (post) {
-          setForm({
-            ...post,
-            tags: Array.isArray(post.tags) ? post.tags.join(', ') : '',
-            image: post.image || '',
-          })
-        }
-      }).catch(() => {})
+      fetch(`/api/posts/${slug}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.post) {
+            setForm({
+              title: data.post.title || '',
+              date: data.post.date || '',
+              category: data.post.category || '博客',
+              tags: Array.isArray(data.post.tags) ? data.post.tags.join(', ') : '',
+              excerpt: data.post.excerpt || '',
+              content: data.post.content || '',
+              image: data.post.image || '',
+              published: data.post.published || false,
+              top: data.post.top || false,
+            });
+          }
+        })
+        .catch(() => {});
     }
-  }, [slug, isNew, router])
+  }, [slug, isNew, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSaving(true)
+    e.preventDefault();
+    setSaving(true);
 
     const payload = {
       ...form,
       tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
-    }
+    };
+
+    const url = isNew ? '/api/admin/posts' : `/api/admin/posts/${slug}`;
+    const method = isNew ? 'POST' : 'PUT';
 
     try {
-      if (isNew) {
-        await createPost(payload)
-        alert('创建成功！')
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      setSaving(false);
+
+      if (res.ok) {
+        alert((isNew ? '创建' : '更新') + '成功！PR #' + data.prNumber + ' 已创建，请在 GitHub 合并后自动部署。');
+        router.push('/admin/posts');
       } else {
-        await updatePost(slug, payload)
-        alert('保存成功！')
+        alert('保存失败: ' + data.error);
       }
-      router.push('/admin/posts')
     } catch (err) {
-      alert('保存失败：' + (err instanceof Error ? err.message : String(err)))
-    } finally {
-      setSaving(false)
+      setSaving(false);
+      alert('保存失败: ' + String(err));
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-slate-900 p-8">
@@ -93,8 +109,8 @@ export default async function EditPostPage() {
               <label className="block text-gray-400 mb-2">分类</label>
               <select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none">
                 <option value="博客">博客</option>
-                <option value="技术">技术</option>
                 <option value="新闻">新闻</option>
+                <option value="技术">技术</option>
                 <option value="随笔">随笔</option>
                 <option value="生活">生活</option>
               </select>
@@ -107,13 +123,13 @@ export default async function EditPostPage() {
           </div>
 
           <div>
-            <label className="block text-gray-400 mb-2">封面图URL</label>
-            <input type="text" value={form.image} onChange={e => setForm({ ...form, image: e.target.value })} placeholder="/images/articles/xxx.jpg" className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none" />
+            <label className="block text-gray-400 mb-2">摘要</label>
+            <textarea value={form.excerpt} onChange={e => setForm({ ...form, excerpt: e.target.value })} rows={2} className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none" />
           </div>
 
           <div>
-            <label className="block text-gray-400 mb-2">摘要</label>
-            <textarea value={form.excerpt} onChange={e => setForm({ ...form, excerpt: e.target.value })} rows={2} className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none" />
+            <label className="block text-gray-400 mb-2">封面图路径（如 /images/articles/xxx.jpg）</label>
+            <input type="text" value={form.image} onChange={e => setForm({ ...form, image: e.target.value })} placeholder="/images/articles/xxx.jpg" className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white focus:border-emerald-500 focus:outline-none" />
           </div>
 
           <div>
@@ -141,5 +157,5 @@ export default async function EditPostPage() {
         </form>
       </div>
     </div>
-  )
+  );
 }

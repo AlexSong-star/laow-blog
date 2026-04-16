@@ -1,39 +1,19 @@
-export const dynamic = 'force-dynamic';
-// 统计数据 API — Supabase 版本
+// 统计数据 API — 文件系统版
 import { NextResponse } from 'next/server'
+import { getAllPostsIncludeUnpublished } from '@/lib/posts'
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-
-function supabaseFetch(path: string, options: RequestInit = {}) {
-  return fetch(`${SUPABASE_URL}/rest/v1${path}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      ...options.headers,
-    },
-  })
-}
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
-  // 统计文章数
-  const postsRes = await supabaseFetch('/posts?select=id')
-  const postsData = await postsRes.json()
-  const totalPosts = Array.isArray(postsData) ? postsData.length : 0
+  try {
+    const posts = await getAllPostsIncludeUnpublished()
+    const totalPosts = posts.length
+    const totalViews = 0 // 静态博客不追踪浏览量
+    const totalLikes = 0  // 如需点赞功能可接入本地 JSON
 
-  // 统计点赞数（所有 __likes__: 开头的记录）
-  const likesRes = await supabaseFetch(
-    "/posts?slug=like.__likes__"
-  )
-  const likesData = await likesRes.json()
-  let totalLikes = 0
-  if (Array.isArray(likesData)) {
-    for (const p of likesData) {
-      totalLikes += parseInt(p.title || '0', 10)
-    }
+    return NextResponse.json({ totalPosts, totalViews, totalLikes })
+  } catch (err) {
+    console.error('GET /api/admin/stats error:', err)
+    return NextResponse.json({ totalPosts: 0, totalViews: 0, totalLikes: 0 })
   }
-
-  return NextResponse.json({ totalPosts, totalViews: 0, totalLikes })
 }

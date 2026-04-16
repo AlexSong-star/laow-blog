@@ -1,13 +1,19 @@
-// 博客文章读取工具 — Supabase 版本
-import { supabase } from './supabase'
+// 博客文章读取工具 — 本地文件系统版
+// 从 posts/ 目录读取 Markdown 文件，不再依赖 Supabase
+import fs from 'fs'
+import path from 'path'
+import matter from 'gray-matter'
+import { remark } from 'remark'
+import remarkHtml from 'remark-html'
 
+const POSTS_DIR = path.join(process.cwd(), 'posts')
 const CDN_BASE = 'https://cdn.jsdelivr.net/gh/AlexSong-star/laow-blog@main/public'
 
-function toCdnUrl(path: string): string {
-  if (!path) return ''
-  if (path.startsWith('http://') || path.startsWith('https://')) return path
-  if (path.startsWith('/')) return CDN_BASE + path
-  return CDN_BASE + '/' + path
+function toCdnUrl(imagePath: string): string {
+  if (!imagePath) return ''
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) return imagePath
+  if (imagePath.startsWith('/')) return CDN_BASE + imagePath
+  return CDN_BASE + '/' + imagePath
 }
 
 export interface Post {
@@ -24,70 +30,78 @@ export interface Post {
   content?: string
 }
 
-export async function getAllPosts(): Promise<Post[]> {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('id, slug, title, date, category, tags, excerpt, image, published, top')
-    .eq('published', true)
-    .order('created_at', { ascending: false })
-
-  if (error) {
-    console.error('getAllPosts error:', error)
-    return []
+function parsePost(filename: string, fileContent: string): Post {
+  const { data, content } = matter(fileContent)
+  const slug = filename.replace(/\.md$/, '')
+  return {
+    slug,
+    title: data.title || '',
+    date: data.date || '',
+    // frontmatter 用 description，代码用 excerpt
+    excerpt: data.description || data.excerpt || '',
+    category: data.category || '博客',
+    tags: data.tags || [],
+    image: toCdnUrl(data.image || ''),
+    published: data.published !== false,
+    top: data.top || false,
+    content,
   }
+}
 
-  // 按置顶优先，再按日期排序，并转换图片 URL 为 CDN 地址
-  const posts: Post[] = (data || []).sort((a, b) => {
-    if (a.top && !b.top) return -1
-    if (!a.top && b.top) return 1
-    return new Date(b.date).getTime() - new Date(a.date).getTime()
-  }).map(p => ({ ...p, image: toCdnUrl(p.image) }))
+function getAllPostFiles(): string[] {
+  if (!fs.existsSync(POSTS_DIR)) return []
+  return fs.readdirSync(POSTS_DIR).filter(f => f.endsWith('.md'))
+}
 
+export async function getAllPosts(): Promise<Post[]> {
+  const files = getAllPostFiles()
+  const posts = files.map(filename => {
+    const content = fs.readFileSync(path.join(POSTS_DIR, filename), 'utf-8')
+    return parsePost(filename, content)
+  })
+
+  // 只返回已发布的，按置顶优先、再按日期排序
   return posts
+    .filter(p => p.published)
+    .sort((a, b) => {
+      if (a.top && !b.top) return -1
+      if (!a.top && b.top) return 1
+      return new Date(b.date).getTime() - new Date(a.date).getTime()
+    })
+}
+
+export async function getAllPostsIncludeUnpublished(): Promise<Post[]> {
+  const files = getAllPostFiles()
+  const posts = files.map(filename => {
+    const content = fs.readFileSync(path.join(POSTS_DIR, filename), 'utf-8')
+    return parsePost(filename, content)
+  })
+  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .eq('slug', slug)
-    .single()
-
-  if (error || !data) {
-    return null
-  }
-
-  return {
-    slug: data.slug,
-    title: data.title,
-    date: data.date,
-    category: data.category,
-    tags: data.tags || [],
-    excerpt: data.excerpt || '',
-    image: toCdnUrl(data.image) || '',
-    published: data.published,
-    top: data.top,
-    content: data.content || '',
-  }
+  const filename = slug + '.md'
+  const filepath = path.join(POSTS_DIR, filename)
+  if (!fs.existsSync(filepath)) return null
+  const content = fs.readFileSync(filepath, 'utf-8')
+  return parsePost(filename, content)
 }
 
 export async function getPostContentHtml(slug: string): Promise<string> {
   const post = await getPostBySlug(slug)
-  if (!post || !post.content) {
-    return ''
-  }
+  if (!post || !post.content) return ''
 
   let content = post.content
 
-  // 如果内容已经是 HTML（以 < 开头），直接返回，跳过 remark 处理
+  // 如果内容已经是 HTML（以 < 开头），直接返回
   if (content.trim().startsWith('<')) {
     return content
   }
 
-  // 移除 Markdown 内容中的第一个标题（# title），因为 frontmatter 的 title 已在页面显示
+  // 移除 Markdown 内容中的第一个标题（# title）
   content = content.replace(/^#\s+.+$/m, '')
 
-  // 处理 B站视频
+  // B站视频
   content = content.replace(
     /\[video\]\(https?:\/\/www\.bilibili\.com\/video\/BV[\w]+\)/g,
     (match) => {
@@ -96,7 +110,7 @@ export async function getPostContentHtml(slug: string): Promise<string> {
     }
   )
 
-  // 处理 YouTube 视频
+  // YouTube 视频
   content = content.replace(
     /\[video\]\(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w-]+\)/g,
     (match) => {
@@ -105,17 +119,15 @@ export async function getPostContentHtml(slug: string): Promise<string> {
     }
   )
 
-  // 处理直接视频链接
+  // 直接视频链接
   content = content.replace(
     /\[video\]\((https?:\/\/.*\.(mp4|webm|ogg))\)/g,
-    (match, url) => {
+    (_match, url) => {
       return `<video controls style="width: 100%; max-width: 800px; margin: 1rem 0;"><source src="${url}" /></video>`
     }
   )
 
-  // Markdown → HTML 转换
-  const { remark } = await import('remark')
-  const remarkHtml = (await import('remark-html')).default
+  // Markdown → HTML
   const processedContent = await remark()
     .use(remarkHtml)
     .process(content)
@@ -136,24 +148,11 @@ export async function getAllTags(): Promise<string[]> {
 }
 
 export async function getPostsByCategory(category: string): Promise<Post[]> {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('id, slug, title, date, category, tags, excerpt, image, published, top')
-    .eq('category', category)
-    .eq('published', true)
-    .order('created_at', { ascending: false })
-
-  if (error) return []
-  return data || []
+  const posts = await getAllPosts()
+  return posts.filter(post => post.category === category)
 }
 
 export async function getPostsByTag(tag: string): Promise<Post[]> {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('id, slug, title, date, category, tags, excerpt, image, published, top')
-    .eq('published', true)
-    .order('created_at', { ascending: false })
-
-  if (error) return []
-  return (data || []).filter(post => post.tags?.includes(tag))
+  const posts = await getAllPosts()
+  return posts.filter(post => post.tags?.includes(tag))
 }

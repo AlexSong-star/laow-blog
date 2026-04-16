@@ -1,55 +1,66 @@
-// 文章管理列表 - 直接调用 Supabase（绕过 Vercel Serverless）
+// 文章管理列表
 "use client";
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { getAllPosts, deletePost } from '@/lib/supabase-client'
 
 interface Post {
-  slug: string
-  title: string
-  date: string
-  category: string
-  published: boolean
-  top: boolean
+  slug: string;
+  title: string;
+  date: string;
+  category: string;
+  published: boolean;
+  top: boolean;
 }
 
-export default async function AdminPostsPage() {
-  const [posts, setPosts] = useState<Post[]>([])
-  const router = useRouter()
+export default function AdminPostsPage() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
-    const auth = localStorage.getItem('admin_auth')
+    const auth = localStorage.getItem('admin_auth');
     if (!auth) {
-      router.push('/admin')
-      return
+      router.push('/admin');
+      return;
     }
-    getAllPosts().then(data => {
-      const published = (data || []).filter((p: Record<string, unknown>) => p.published !== false && p.slug !== undefined)
-      setPosts(published as Post[])
-    }).catch(() => {})
-  }, [router])
+
+    fetch('/api/posts')
+      .then(res => res.json())
+      .then(data => setPosts(data.posts || []))
+      .catch(() => {});
+  }, [router]);
 
   const handleDelete = async (slug: string) => {
-    if (!confirm('确定要删除这篇文章吗？')) return
-    try {
-      await deletePost(slug)
-      setPosts(posts.filter(p => p.slug !== slug))
-    } catch {
-      alert('删除失败')
+    if (!confirm('确定要删除这篇文章吗？删除后需合并 PR 才能生效。')) return;
+
+    const res = await fetch(`/api/admin/posts/${slug}`, { method: 'DELETE' });
+    if (res.ok) {
+      const data = await res.json()
+      alert('删除 PR #' + data.prNumber + ' 已创建，请在 GitHub 合并后生效。')
+      setPosts(posts.filter(p => p.slug !== slug));
+    } else {
+      const err = await res.json()
+      alert('删除失败: ' + err.error)
     }
-  }
+  };
 
   const togglePublish = async (slug: string, published: boolean) => {
-    try {
-      const { updatePost } = await import('@/lib/supabase-client')
-      await updatePost(slug, { published: !published })
-      setPosts(posts.map(p => p.slug === slug ? { ...p, published: !published } : p))
-    } catch {
-      alert('操作失败')
+    const post = posts.find(p => p.slug === slug)
+    if (!post) return
+    const res = await fetch(`/api/admin/posts/${slug}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ published: !published, title: post.title, date: post.date, category: post.category }),
+    });
+    if (res.ok) {
+      const data = await res.json()
+      alert('更新 PR #' + data.prNumber + ' 已创建，请在 GitHub 合并后生效。')
+      setPosts(posts.map(p => p.slug === slug ? { ...p, published: !published } : p));
+    } else {
+      alert('操作失败');
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-slate-900 p-8">
@@ -106,5 +117,5 @@ export default async function AdminPostsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
