@@ -1,8 +1,7 @@
-// 博客文章读取工具 — 本地文件系统版
-// 从 posts/ 目录读取 Markdown 文件，不再依赖 Supabase
+// 博客文章读取工具 — 本地文件系统版（无外部依赖）
+// 使用简单的正则解析 frontmatter，避免 gray-matter 解析失败问题
 import fs from 'fs'
 import path from 'path'
-import matter from 'gray-matter'
 import { remark } from 'remark'
 import remarkHtml from 'remark-html'
 
@@ -26,25 +25,68 @@ export interface Post {
   image: string
   published: boolean
   top: boolean
-  contentHtml?: string
   content?: string
 }
 
-function parsePost(filename: string, fileContent: string): Post {
-  const { data, content } = matter(fileContent)
-  const slug = filename.replace(/\.md$/, '')
-  return {
-    slug,
-    title: data.title || '',
-    date: data.date || '',
-    // frontmatter 用 description，代码用 excerpt
-    excerpt: data.description || data.excerpt || '',
-    category: data.category || '博客',
-    tags: data.tags || [],
-    image: toCdnUrl(data.image || ''),
-    published: data.published !== false,
-    top: data.top || false,
-    content,
+function parseFrontmatter(content: string): { data: Record<string, unknown>; content: string } {
+  const result: Record<string, unknown> = {}
+  let rest = content
+
+  // 匹配 --- 行首的 frontmatter
+  const fmMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/)
+  if (fmMatch) {
+    rest = fmMatch[2]
+    const lines = fmMatch[1].split(/\r?\n/)
+    for (const line of lines) {
+      const colonIdx = line.indexOf(':')
+      if (colonIdx === -1) continue
+      const key = line.slice(0, colonIdx).trim()
+      const val = line.slice(colonIdx + 1).trim()
+
+      // 布尔值
+      if (val === 'true') { result[key] = true; continue }
+      if (val === 'false') { result[key] = false; continue }
+
+      // 数字
+      if (!isNaN(Number(val)) && val !== '') { result[key] = Number(val); continue }
+
+      // JSON 数组 [a, b, c]
+      if (val.startsWith('[') && val.endsWith(']')) {
+        try { result[key] = JSON.parse(val.replace(/'/g, '"')); continue } catch {}
+      }
+
+      // 带引号的字符串 "..." 或 '...'
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+        result[key] = val.slice(1, -1)
+        continue
+      }
+
+      // 无引号字符串
+      result[key] = val
+    }
+  }
+
+  return { data: result, content: rest }
+}
+
+function parsePost(filename: string, fileContent: string): Post | null {
+  try {
+    const { data, content } = parseFrontmatter(fileContent)
+    const slug = filename.replace(/\.md$/, '')
+    return {
+      slug,
+      title: String(data.title || ''),
+      date: String(data.date || ''),
+      excerpt: String(data.description || data.excerpt || ''),
+      category: String(data.category || '博客'),
+      tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
+      image: toCdnUrl(String(data.image || '')),
+      published: data.published !== false,
+      top: data.top === true,
+      content,
+    }
+  } catch {
+    return null
   }
 }
 
@@ -55,27 +97,31 @@ function getAllPostFiles(): string[] {
 
 export async function getAllPosts(): Promise<Post[]> {
   const files = getAllPostFiles()
-  const posts = files.map(filename => {
-    const content = fs.readFileSync(path.join(POSTS_DIR, filename), 'utf-8')
-    return parsePost(filename, content)
+  const posts: Post[] = []
+  for (const filename of files) {
+    try {
+      const content = fs.readFileSync(path.join(POSTS_DIR, filename), 'utf-8')
+      const post = parsePost(filename, content)
+      if (post && post.published) posts.push(post)
+    } catch {}
+  }
+  return posts.sort((a, b) => {
+    if (a.top && !b.top) return -1
+    if (!a.top && b.top) return 1
+    return new Date(b.date).getTime() - new Date(a.date).getTime()
   })
-
-  // 只返回已发布的，按置顶优先、再按日期排序
-  return posts
-    .filter(p => p.published)
-    .sort((a, b) => {
-      if (a.top && !b.top) return -1
-      if (!a.top && b.top) return 1
-      return new Date(b.date).getTime() - new Date(a.date).getTime()
-    })
 }
 
 export async function getAllPostsIncludeUnpublished(): Promise<Post[]> {
   const files = getAllPostFiles()
-  const posts = files.map(filename => {
-    const content = fs.readFileSync(path.join(POSTS_DIR, filename), 'utf-8')
-    return parsePost(filename, content)
-  })
+  const posts: Post[] = []
+  for (const filename of files) {
+    try {
+      const content = fs.readFileSync(path.join(POSTS_DIR, filename), 'utf-8')
+      const post = parsePost(filename, content)
+      if (post) posts.push(post)
+    } catch {}
+  }
   return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 }
 
@@ -83,8 +129,12 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   const filename = slug + '.md'
   const filepath = path.join(POSTS_DIR, filename)
   if (!fs.existsSync(filepath)) return null
-  const content = fs.readFileSync(filepath, 'utf-8')
-  return parsePost(filename, content)
+  try {
+    const content = fs.readFileSync(filepath, 'utf-8')
+    return parsePost(filename, content)
+  } catch {
+    return null
+  }
 }
 
 export async function getPostContentHtml(slug: string): Promise<string> {
@@ -93,15 +143,10 @@ export async function getPostContentHtml(slug: string): Promise<string> {
 
   let content = post.content
 
-  // 如果内容已经是 HTML（以 < 开头），直接返回
-  if (content.trim().startsWith('<')) {
-    return content
-  }
+  if (content.trim().startsWith('<')) return content
 
-  // 移除 Markdown 内容中的第一个标题（# title）
   content = content.replace(/^#\s+.+$/m, '')
 
-  // B站视频
   content = content.replace(
     /\[video\]\(https?:\/\/www\.bilibili\.com\/video\/BV[\w]+\)/g,
     (match) => {
@@ -110,7 +155,6 @@ export async function getPostContentHtml(slug: string): Promise<string> {
     }
   )
 
-  // YouTube 视频
   content = content.replace(
     /\[video\]\(https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w-]+\)/g,
     (match) => {
@@ -119,15 +163,13 @@ export async function getPostContentHtml(slug: string): Promise<string> {
     }
   )
 
-  // 直接视频链接
   content = content.replace(
-    /\[video\]\((https?:\/\/.*\.(mp4|webm|ogg))\)/g,
+    /\[video\]\((https?:\/\/.*\.(?:mp4|webm|ogg))\)/g,
     (_match, url) => {
       return `<video controls style="width: 100%; max-width: 800px; margin: 1rem 0;"><source src="${url}" /></video>`
     }
   )
 
-  // Markdown → HTML
   const processedContent = await remark()
     .use(remarkHtml)
     .process(content)
@@ -137,22 +179,20 @@ export async function getPostContentHtml(slug: string): Promise<string> {
 
 export async function getAllCategories(): Promise<string[]> {
   const posts = await getAllPosts()
-  const categories = new Set(posts.map(post => post.category))
-  return Array.from(categories)
+  return Array.from(new Set(posts.map(p => p.category)))
 }
 
 export async function getAllTags(): Promise<string[]> {
   const posts = await getAllPosts()
-  const tags = new Set(posts.flatMap(post => post.tags))
-  return Array.from(tags)
+  return Array.from(new Set(posts.flatMap(p => p.tags)))
 }
 
 export async function getPostsByCategory(category: string): Promise<Post[]> {
   const posts = await getAllPosts()
-  return posts.filter(post => post.category === category)
+  return posts.filter(p => p.category === category)
 }
 
 export async function getPostsByTag(tag: string): Promise<Post[]> {
   const posts = await getAllPosts()
-  return posts.filter(post => post.tags?.includes(tag))
+  return posts.filter(p => p.tags?.includes(tag))
 }
