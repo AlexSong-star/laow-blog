@@ -1,16 +1,26 @@
 // 评论 API — 读取 & 发布
 import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs'
+import path from 'path'
 import { filterComment } from '@/lib/sensitive-filter'
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+export const dynamic = 'force-dynamic'
 
-function sfFetch(path: string, opts: RequestInit = {}) {
-  return fetch(`${SUPABASE_URL}/rest/v1${path}`, {
-    ...opts,
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', ...opts.headers },
-  })
+const DATA_FILE = path.join(process.cwd(), 'data', 'comments.json')
+
+interface Comment {
+  id: string
+  slug: string
+  author_name: string
+  content: string
+  created_at: string
+}
+
+function getComments(): Comment[] {
+  try {
+    if (existsSync(DATA_FILE)) return JSON.parse(readFileSync(DATA_FILE, 'utf-8'))
+  } catch {}
+  return []
 }
 
 export async function GET(
@@ -18,14 +28,8 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params
-  const { data, error } = await supabase
-    .from('comments')
-    .select('id, author_name, content, created_at')
-    .eq('slug', slug)
-    .order('created_at', { ascending: true })
-
-  if (error) return NextResponse.json({ comments: [] })
-  return NextResponse.json({ comments: data || [] })
+  const all = getComments()
+  return NextResponse.json({ comments: all.filter((c: Comment) => c.slug === slug) })
 }
 
 export async function POST(
@@ -40,18 +44,24 @@ export async function POST(
     return NextResponse.json({ error: '昵称和内容不能为空' }, { status: 400 })
   }
 
-  // 敏感词过滤
   const result = filterComment(author_name.trim(), content.trim())
   if (!result.passed) {
     return NextResponse.json({ error: '评论内容包含敏感词，禁止发表' }, { status: 403 })
   }
 
-  const { data, error } = await supabase
-    .from('comments')
-    .insert({ slug, author_name: author_name.trim(), content: content.trim() })
-    .select('id, author_name, content, created_at')
-    .single()
+  const comment: Comment = {
+    id: Date.now().toString(),
+    slug,
+    author_name: author_name.trim(),
+    content: content.trim(),
+    created_at: new Date().toISOString(),
+  }
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ comment: data })
+  const comments = getComments()
+  comments.push(comment)
+  const dir = path.dirname(DATA_FILE)
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
+  writeFileSync(DATA_FILE, JSON.stringify(comments))
+
+  return NextResponse.json({ comment })
 }

@@ -1,27 +1,17 @@
-export const dynamic = 'force-dynamic';
-
-// 分类/标签 API — Supabase 版本
+// 分类/标签 API — 本地文件系统版
 import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { getAllPostsIncludeUnpublished } from '@/lib/posts'
+
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('category, tags')
-    .eq('published', true)
-
-  if (error) {
-    return NextResponse.json({ categories: [], tags: [] })
-  }
-
+  const posts = await getAllPostsIncludeUnpublished()
   const categoriesSet = new Set<string>()
   const tagsSet = new Set<string>()
 
-  for (const post of data || []) {
+  for (const post of posts) {
     if (post.category) categoriesSet.add(post.category)
-    if (post.tags && Array.isArray(post.tags)) {
-      post.tags.forEach((tag: string) => tagsSet.add(tag))
-    }
+    if (post.tags) post.tags.forEach((tag: string) => tagsSet.add(tag))
   }
 
   return NextResponse.json({

@@ -1,15 +1,32 @@
-// 后台评论管理 API
+// 评论管理 API — 暂用内存存储（部署后不持久化，需后续接入数据库）
 import { NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { readFileSync, writeFileSync, existsSync } from 'fs'
+import path from 'path'
+
+export const dynamic = 'force-dynamic'
+
+const DATA_FILE = path.join(process.cwd(), 'data', 'comments.json')
+
+interface Comment {
+  id: string
+  slug: string
+  author_name: string
+  content: string
+  created_at: string
+}
+
+function getComments(): Comment[] {
+  try {
+    if (existsSync(DATA_FILE)) {
+      return JSON.parse(readFileSync(DATA_FILE, 'utf-8'))
+    }
+  } catch {}
+  return []
+}
 
 export async function GET() {
-  const { data, error } = await supabase
-    .from('comments')
-    .select('id, slug, author_name, content, created_at')
-    .order('created_at', { ascending: false })
-
-  if (error) return NextResponse.json({ comments: [] })
-  return NextResponse.json({ comments: data || [] })
+  const comments = getComments()
+  return NextResponse.json({ comments })
 }
 
 export async function DELETE(req: Request) {
@@ -17,7 +34,9 @@ export async function DELETE(req: Request) {
   const { id } = body
   if (!id) return NextResponse.json({ error: '缺少 id' }, { status: 400 })
 
-  const { error } = await supabase.from('comments').delete().eq('id', id)
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  const comments = getComments().filter(c => c.id !== id)
+  const dir = path.dirname(DATA_FILE)
+  if (!existsSync(dir)) require('fs').mkdirSync(dir, { recursive: true })
+  writeFileSync(DATA_FILE, JSON.stringify(comments))
   return NextResponse.json({ success: true })
 }
