@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getPostContentHtml, getAllPosts } from '@/lib/posts';
-import LikeButton from '@/components/LikeButton';
 import CommentSection from '@/components/CommentSection';
 import Navigation from '@/components/Navigation';
 
@@ -61,10 +60,7 @@ export default async function PostPage({ params }: Props) {
             <h1>{post.title}</h1>
             <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
             
-            {/* 点赞按钮 */}
-            <div style={{ marginTop: '24px' }}>
-              <LikeButton slug={slug} />
-            </div>
+
             
             {/* 分享链接 */}
             <div className="share-links">
